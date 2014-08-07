@@ -415,3 +415,12 @@
 	icon_state = "puddle-splash"
 	..()
 	icon_state = "puddle"
+
+
+/obj/structure/sink/left
+	name = "sink"
+	icon_state = "sink_l"
+
+/obj/structure/sink/right
+	name = "sink"
+	icon_state = "sink_r"

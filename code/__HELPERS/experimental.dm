@@ -22,14 +22,14 @@
 	if (istext(B) == 0 || length(B) > 1)
 		return -1
 
-	var/i = findtext(A, B)
+	var/i = findtextEx(A, B)
 
 	if (0 == i)
 		return 0
 
 	while (i)
 		. = i
-		i = findtext(A, B, i + 1)
+		i = findtextEx(A, B, i + 1)
 
 /**
  * Object pooling.

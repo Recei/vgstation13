@@ -398,7 +398,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				return	//all done. The ghost is auto-deleted
 
 		//check if they were a monkey
-		else if(findtext(G_found.real_name,"monkey"))
+		else if(findtextEx(G_found.real_name,"monkey"))
 			if(alert("This character appears to have been a monkey. Would you like to respawn them as such?",,"Yes","No")=="Yes")
 				var/mob/living/carbon/monkey/new_monkey = new(pick(latejoin))
 				G_found.mind.transfer_to(new_monkey)	//be careful when doing stuff like this! I've already checked the mind isn't in use

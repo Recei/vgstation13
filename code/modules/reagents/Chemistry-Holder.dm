@@ -94,6 +94,55 @@ datum
 
 				return the_id
 
+			get_master_reagent_reference()
+				var/the_reagent = null
+				var/the_volume = 0
+				for(var/datum/reagent/A in reagent_list)
+					if(A.volume > the_volume)
+						the_volume = A.volume
+						the_reagent = A
+						for(var/datum/reagent/B in reagent_list)
+							if(A.volume < B.volume)
+								the_volume = B.volume
+								the_reagent = B
+								for(var/datum/reagent/C in reagent_list)
+									if(B.volume < C.volume)
+										the_volume = C.volume
+										the_reagent = C
+				return the_reagent
+
+			get_secondary_reagent_id()
+				var/the_id = null
+				var/the_volume = 0
+				for(var/datum/reagent/A in reagent_list)
+					if(A.volume > the_volume)
+						the_volume = A.volume
+						the_id = A.id
+						for(var/datum/reagent/B in reagent_list)
+							if(A.volume > B.volume)
+								the_volume = B.volume
+								the_id = B.id
+								for(var/datum/reagent/C in reagent_list)
+									if(B.volume > C.volume)
+										the_id = B.id
+				return the_id
+
+			get_secondary_reagent_reference()
+				var/the_reagent = null
+				var/the_volume = 0
+				for(var/datum/reagent/A in reagent_list)
+					if(A.volume > the_volume)
+						the_volume = A.volume
+						the_reagent = A
+						for(var/datum/reagent/B in reagent_list)
+							if(A.volume > B.volume)
+								the_volume = B.volume
+								the_reagent = B
+								for(var/datum/reagent/C in reagent_list)
+									if(B.volume > C.volume)
+										the_reagent = B
+				return the_reagent
+
 			trans_to(var/obj/target, var/amount=1, var/multiplier=1, var/preserve_data=1)//if preserve_data=0, the reagents data will be lost. Usefull if you use data for some strange stuff and don't want it to be transferred.
 				if (!target )
 					return

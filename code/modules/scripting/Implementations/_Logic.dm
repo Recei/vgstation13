@@ -102,7 +102,7 @@
 /proc/prob_chance(var/chance)
 	return prob(chance)
 
-// Merge of list.Find() and findtext()
+// Merge of list.Find() and findtextEx()
 /proc/smartfind(var/haystack, var/needle, var/start = 1, var/end = 0)
 	if(haystack && needle)
 		if(isobject(haystack))
@@ -114,7 +114,7 @@
 		else
 			if(istext(haystack))
 				if(length(haystack) >= end && start > 0)
-					return findtext(haystack, needle, start, end)
+					return findtextEx(haystack, needle, start, end)
 
 // Clone of copytext()
 /proc/docopytext(var/string, var/start = 1, var/end = 0)
@@ -270,8 +270,8 @@ proc/n_inrange(var/num, var/min=-1, var/max=1)
 		var/count = 0
 		var/list/dat = list()
 		while (i < lenh)
-			var/found = findtext(haystack, a, i, 0)
-			//diary << "findtext([haystack], [a], [i], 0)=[found]"
+			var/found = findtextEx(haystack, a, i, 0)
+			//diary << "findtextEx([haystack], [a], [i], 0)=[found]"
 			if (found == 0) // Not found
 				break
 			else
@@ -316,7 +316,7 @@ proc/n_inrange(var/num, var/min=-1, var/max=1)
 			count += 1
 			if(count >  SCRIPT_MAX_REPLACEMENTS_ALLOWED)
 				break
-			var/found = findtext(text, find, last_found, 0)
+			var/found = findtextEx(text, find, last_found, 0)
 			. += copytext(text, last_found, found)
 			if(found)
 				. += replacement

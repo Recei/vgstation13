@@ -180,7 +180,7 @@
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtext(t, " ")
+		var/pos = findtextEx(t, " ")
 		var/name = null
 		var/value = null
 
@@ -355,7 +355,7 @@
 					config.protect_roles_from_antagonist = 1
 
 				if ("probability")
-					var/prob_pos = findtext(value, " ")
+					var/prob_pos = findtextEx(value, " ")
 					var/prob_name = null
 					var/prob_value = null
 
@@ -555,7 +555,7 @@
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtext(t, " ")
+		var/pos = findtextEx(t, " ")
 		var/name = null
 		var/value = null
 
@@ -601,7 +601,7 @@
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtext(t, " ")
+		var/pos = findtextEx(t, " ")
 		var/name = null
 		var/value = null
 

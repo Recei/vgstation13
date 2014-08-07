@@ -409,7 +409,7 @@ var/global/datum/controller/gameticker/ticker
 
 	//calls auto_declare_completion_* for all modes
 	for(var/handler in typesof(/datum/game_mode/proc))
-		if (findtext("[handler]","auto_declare_completion_"))
+		if (findtextEx("[handler]","auto_declare_completion_"))
 			call(mode, handler)()
 
 	//Print a list of antagonists to the server log

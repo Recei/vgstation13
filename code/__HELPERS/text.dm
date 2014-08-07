@@ -28,19 +28,19 @@
 	var/list/strip_chars = list("<",">")
 	t = copytext(t,1,limit)
 	for(var/char in strip_chars)
-		var/index = findtext(t, char)
+		var/index = findtextEx(t, char)
 		while(index)
 			t = copytext(t, 1, index) + copytext(t, index+1)
-			index = findtext(t, char)
+			index = findtextEx(t, char)
 	return t
 
 //Removes a few problematic characters
 /proc/sanitize_simple(var/t,var/list/repl_chars = list("\n"="#","\t"="#","�"="�"))
 	for(var/char in repl_chars)
-		var/index = findtext(t, char)
+		var/index = findtextEx(t, char)
 		while(index)
 			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
-			index = findtext(t, char)
+			index = findtextEx(t, char)
 	return t
 
 //Runs byond's sanitization proc along-side sanitize_simple
@@ -145,7 +145,7 @@
 //relpaces < with &lt;
 proc/checkhtml(var/t)
 	t = sanitize_simple(t, list("&#"="."))
-	var/p = findtext(t,"<",1)
+	var/p = findtextEx(t,"<",1)
 	while (p)	//going through all the tags
 		var/start = p++
 		var/tag = copytext(t,p, p+1)
@@ -156,7 +156,7 @@ proc/checkhtml(var/t)
 			tag = copytext(t,start+1, p)
 			if (!(tag in paper_tag_whitelist))	//if it's unkown tag, disarming it
 				t = copytext(t,1,start-1) + "&lt;" + copytext(t,start+1)
-		p = findtext(t,"<",p)
+		p = findtextEx(t,"<",p)
 	return t
 /*
  * Text searches
@@ -167,7 +167,7 @@ proc/checkhtml(var/t)
 /proc/dd_hasprefix(text, prefix)
 	var/start = 1
 	var/end = length(prefix) + 1
-	return findtext(text, prefix, start, end)
+	return findtextEx(text, prefix, start, end)
 
 //Checks the beginning of a string for a specified sub-string. This proc is case sensitive
 //Returns the position of the substring or 0 if it was not found
@@ -181,7 +181,7 @@ proc/checkhtml(var/t)
 /proc/dd_hassuffix(text, suffix)
 	var/start = length(text) - length(suffix)
 	if(start)
-		return findtext(text, suffix, start, null)
+		return findtextEx(text, suffix, start, null)
 	return
 
 //Checks the end of a string for a specified substring. This proc is case sensitive
@@ -200,7 +200,7 @@ proc/checkhtml(var/t)
 	. = ""
 	var/last_found = 1
 	while(1)
-		var/found = findtext(text, find, last_found, 0)
+		var/found = findtextEx(text, find, last_found, 0)
 		. += copytext(text, last_found, found)
 		if(found)
 			. += replacement
@@ -294,18 +294,18 @@ proc/checkhtml(var/t)
 /proc/stringsplit(txt, character)
 	var/cur_text = txt
 	var/last_found = 1
-	var/found_char = findtext(cur_text,character)
+	var/found_char = findtextEx(cur_text,character)
 	var/list/list = list()
 	if(found_char)
 		var/fs = copytext(cur_text,last_found,found_char)
 		list += fs
 		last_found = found_char+length(character)
-		found_char = findtext(cur_text,character,last_found)
+		found_char = findtextEx(cur_text,character,last_found)
 	while(found_char)
 		var/found_string = copytext(cur_text,last_found,found_char)
 		last_found = found_char+length(character)
 		list += found_string
-		found_char = findtext(cur_text,character,last_found)
+		found_char = findtextEx(cur_text,character,last_found)
 	list += copytext(cur_text,last_found,length(cur_text)+1)
 	return list
 

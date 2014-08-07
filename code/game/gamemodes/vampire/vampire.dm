@@ -232,7 +232,7 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 	verbs += /client/proc/vampire_glare
 	//testing purposes REMOVE BEFORE PUSH TO MASTER
 	/*for(var/handler in typesof(/client/proc))
-		if(findtext("[handler]","vampire_"))
+		if(findtextEx("[handler]","vampire_"))
 			verbs += handler*/
 	for(var/i = 1; i <= 3; i++) // CHANGE TO 3 RATHER THAN 12 AFTER TESTING IS DONE
 		if(!(i in mind.vampire.powers))
@@ -263,7 +263,7 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 				continue
 /mob/proc/remove_vampire_powers()
 	for(var/handler in typesof(/client/proc))
-		if(findtext("[handler]","vampire_"))
+		if(findtextEx("[handler]","vampire_"))
 			verbs -= handler
 
 /mob/proc/handle_bloodsucking(mob/living/carbon/human/H)

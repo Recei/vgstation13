@@ -35,7 +35,7 @@ datum
 				var/datum/reagent/self = src
 				src = null										  //of the reagent to the mob on TOUCHING it.
 
-				if(!istype(self.holder.my_atom, /obj/effect/effect/smoke/chem))
+				if(self.holder && !istype(self.holder.my_atom, /obj/effect/effect/smoke/chem))
 					// If the chemicals are in a smoke cloud, do not try to let the chemicals "penetrate" into the mob's system (balance station 13) -- Doohl
 
 					if(method == TOUCH)
@@ -358,7 +358,7 @@ datum
 			id = "anti_toxin"
 			description = "Dylovene is a broad-spectrum antitoxin."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#0b4361" // rgb: 11, 67, 97
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
@@ -605,7 +605,7 @@ datum
 			id = "inaprovaline"
 			description = "Inaprovaline is a synaptic stimulant and cardiostimulant. Commonly used to stabilize patients."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#137519" // rgb: 19, 117, 25
 			overdose = REAGENTS_OVERDOSE*2
 
 			on_mob_life(var/mob/living/M as mob, var/alien)
@@ -1555,7 +1555,7 @@ datum
 			id = "kelotane"
 			description = "Kelotane is a drug used to treat burns."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#81c996" // rgb: 129, 201, 150
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1570,7 +1570,7 @@ datum
 			id = "dermaline"
 			description = "Dermaline is the next step in burn medication. Works twice as good as kelotane and enables the body to restore even the direst heat-damaged tissue."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#81c9bb" // rgb: 129, 201, 187
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0) //THE GUY IS **DEAD**! BEREFT OF ALL LIFE HE RESTS IN PEACE etc etc. He does NOT metabolise shit anymore, god DAMN
@@ -1585,7 +1585,7 @@ datum
 			id = "dexalin"
 			description = "Dexalin is used in the treatment of oxygen deprivation."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#ed5a5a" // rgb: 237, 90, 90
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1602,7 +1602,7 @@ datum
 			id = "dexalinp"
 			description = "Dexalin Plus is used in the treatment of oxygen deprivation. Its highly effective."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#d04a4a" // rgb: 208, 74, 74
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1619,7 +1619,7 @@ datum
 			id = "tricordrazine"
 			description = "Tricordrazine is a highly potent stimulant, originally derived from cordrazine. Can be used to treat a wide range of injuries."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#0f5c3d" // rgb: 15, 92, 61
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1701,7 +1701,7 @@ datum
 			id = "synaptizine"
 			description = "Synaptizine is used to treat various diseases."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#f20d9c" // rgb: 200, 165, 220
 			custom_metabolism = 0.01
 			overdose = REAGENTS_OVERDOSE
 
@@ -1723,7 +1723,7 @@ datum
 			id = "impedrezene"
 			description = "Impedrezene is a narcotic that impedes one's ability by slowing down the higher brain cell functions."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#97bdbd" // rgb: 151, 189, 189
 			overdose = REAGENTS_OVERDOSE
 
 			on_mob_life(var/mob/living/M as mob)
@@ -1740,7 +1740,7 @@ datum
 			id = "hyronalin"
 			description = "Hyronalin is a medicinal drug used to counter the effect of radiation poisoning."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#a9bd6c" // rgb: 169, 189, 108
 			custom_metabolism = 0.05
 			overdose = REAGENTS_OVERDOSE
 
@@ -1755,7 +1755,7 @@ datum
 			id = "arithrazine"
 			description = "Arithrazine is an unstable medication used for the most extreme cases of radiation poisoning."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#6d1f1f" // rgb: 109, 31, 31
 			custom_metabolism = 0.05
 			overdose = REAGENTS_OVERDOSE
 
@@ -1775,7 +1775,7 @@ datum
 			id = "alkysine"
 			description = "Alkysine is a drug used to lessen the damage to neurological tissue after a catastrophic injury. Can heal brain tissue."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#ecb380" // rgb: 236, 179, 128
 			custom_metabolism = 0.05
 			overdose = REAGENTS_OVERDOSE
 
@@ -1790,7 +1790,7 @@ datum
 			id = "imidazoline"
 			description = "Heals eye damage"
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#bdc5ca" // rgb: 189, 197, 202
 			overdose = REAGENTS_OVERDOSE
 
 			on_mob_life(var/mob/living/M as mob)
@@ -1845,7 +1845,7 @@ datum
 			id = "bicaridine"
 			description = "Bicaridine is an analgesic medication and can be used to treat blunt trauma."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#488001" // rgb: 72, 128, 1
 			overdose = REAGENTS_OVERDOSE
 
 			on_mob_life(var/mob/living/M as mob, var/alien)
@@ -1862,7 +1862,7 @@ datum
 			id = "hyperzine"
 			description = "Hyperzine is a highly effective, long lasting, muscle stimulant."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#b7608f" // rgb: 183, 96, 143
 			custom_metabolism = 0.03
 			overdose = REAGENTS_OVERDOSE/2
 
@@ -1877,7 +1877,7 @@ datum
 			id = "cryoxadone"
 			description = "A chemical mixture with almost magical healing powers. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#0000ff" // rgb: 0, 0, 255
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
@@ -1894,7 +1894,7 @@ datum
 			id = "clonexadone"
 			description = "A liquid compound similar to that used in the cloning process. Can be used to 'finish' the cloning process when used in conjunction with a cryo tube."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#00afff" // rgb: 0, 175, 255
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
@@ -2415,6 +2415,78 @@ datum
 			reagent_state = SOLID
 			color = "#FFFFFF" // rgb: 255,255,255
 
+		creatine
+			name = "Creatine"
+			id = "creatine"
+			description = "Highly toxic substance that grants the user enormous strength, before their muscles seize and tear their own body to shreds."
+			reagent_state = LIQUID
+			color = "#6F884F" // rgb: 255,255,255
+			var/has_been_hulk=0
+			var/has_ripped_and_torn=0 // We've applied permanent damage.
+			var/hulked_at = 0 // World.time
+
+			custom_metabolism=0.1
+
+			on_mob_life(var/mob/living/M as mob)
+				if(!M) M = holder.my_atom
+				if(!data) data = 1
+				switch(volume)
+					if(1 to 25)
+						M.adjustToxLoss(1)
+						M.make_dizzy(5)
+						M.make_jittery(5)
+						if(prob(5))
+							M << "<span class='warning'>Oh god, the pain!</span>"
+					if(25 to INFINITY)
+						if(ishuman(M)) // Does nothing to non-humans.
+							var/mob/living/carbon/human/H=M
+							if(H.species.name!="Dionae") // Dionae are broken as fuck
+								if(H.hulk_time<world.time && !has_been_hulk)
+									H.hulk_time = world.time + (30 SECONDS)
+									hulked_at = H.hulk_time
+									if(!(M_HULK in H.mutations))
+										has_been_hulk=1
+										has_ripped_and_torn=0 // Fuck them UP after they dehulk.
+										H.mutations.Add(M_HULK)
+										H.update_mutations()		//update our mutation overlays
+										H.update_body()
+										message_admins("[key_name(M)] is TOO SWOLE TO CONTROL (on creatine)! ([formatJumpTo(M)])")
+								else if(H.hulk_time<world.time && has_been_hulk) // TIME'S UP
+									dehulk(H)
+								else if(prob(1))
+									H.say(pick("YOU TRYIN' BUILD SUM MUSSLE?","TOO SWOLE TO CONTROL","HEY MANG","HEY MAAAANG"))
+
+				data++
+				..()
+				return
+
+			proc/dehulk(var/mob/living/carbon/human/H)
+				if(has_been_hulk && !has_ripped_and_torn)
+					H << "<span class='warning'>You feel like your muscles are ripping apart!</span>"
+					has_ripped_and_torn=1
+					holder.remove_reagent(src.id) // Clean them out
+					H.adjustBruteLoss(200)        // Crit
+
+					for(var/datum/organ/external/E in H.organs)
+						if(istype(E, /datum/organ/external/chest))
+							continue
+						if(istype(E, /datum/organ/external/head))
+							continue // Permit basket cases.
+						if(prob(50))
+							// Override the current limb status and don't cause an explosion
+							E.droplimb(1,1)
+
+					if(H.species)
+						hgibs(H.loc, H.viruses, H.dna, H.species.flesh_color, H.species.blood_color)
+					else
+						hgibs(H.loc, H.viruses, H.dna)
+
+					H.hulk_time=0 // Just to be sure.
+					H.mutations.Remove(M_HULK)
+					//M.dna.SetSEState(HULKBLOCK,0)
+					H.update_mutations()		//update our mutation overlays
+					H.update_body()
+
 		blackpepper
 			name = "Black Pepper"
 			id = "blackpepper"
@@ -2458,7 +2530,58 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
-				M.adjustToxLoss(1*REM)
+				M.adjustToxLoss(1.5)
+				..()
+				return
+
+		amanatin
+			name = "Alpha-Amanatin"
+			id = "amanatin"
+			description = "A deadly poison derived from certain species of Amanita. Sits in the victim's system for a long period of time, then ravages the body."
+			color = "#792300" // rgb: 121, 35, 0
+			custom_metabolism = 0.01
+			var/activated = 0
+
+			on_mob_life(var/mob/living/M as mob)
+				if(!M) M = holder.my_atom
+				if(!data) data = 1
+				if(volume <= 3 && data >= 60 && !activated)	//minimum of 1 minute required to be useful
+					activated = 1
+				if(activated)
+					if(ishuman(M))
+						var/mob/living/carbon/human/H = M
+						if(prob(8))
+							H << "<span class = 'warning'>You feel violently ill.</span>"
+						if(prob(min(data / 10, 100)))	H.vomit()
+						var/datum/organ/internal/liver/L = H.internal_organs["liver"]
+						if (istype(L) && !L.is_broken())
+							L.take_damage(data * 0.01, 0)
+							H.adjustToxLoss(round(data / 20, 1))
+						else
+							H.adjustToxLoss(round(data / 10, 1))
+							data += 4
+					holder.remove_reagent(src.id, 0.02)
+				switch(data)
+					if(1 to 30)
+						M.druggy = max(M.druggy, 10)
+					if(540 to 600)	//start barfing violently after 9 minutes
+						if(ishuman(M))
+							var/mob/living/carbon/human/H = M
+							if(prob(12))
+								H << "<span class = 'warning'>You feel violently ill.</span>"
+							H.adjustToxLoss(0.1)
+							if(prob(8)) H.vomit()
+					if(600 to INFINITY)	//ded in 10 minutes with a minimum of 6 units
+						if(ishuman(M))
+							var/mob/living/carbon/human/H = M
+							if(prob(20))
+								H << "<span class = 'sinister'>You feel deathly ill.</span>"
+							var/datum/organ/internal/liver/L = H.internal_organs["liver"]
+							if (istype(L) && !L.is_broken())
+								L.take_damage(10, 0)
+							else
+								H.adjustToxLoss(60)
+				data++
 				..()
 				return
 
@@ -2648,8 +2771,39 @@ datum
 				..()
 				return
 
+		discount
+			name = "Discount Dan's Special Sauce"
+			id = "discount"
+			description = "You can almost feel your liver failing, just by looking at it."
+			reagent_state = LIQUID
+			color = "#6F884F" // rgb: 255,255,255 //to-do
+
+			on_mob_life(var/mob/living/M as mob)
+				if(!M) M = holder.my_atom
+				if(!data) data = 1
+				switch(volume)
+					if(1 to 30)
+						if(prob(5))
+							M << "<span class='warning'>You don't feel very good..</span>"
+					if(30 to 55)
+						if(prob(10))
+							M << "<span class='warning'>You REALLY don't feel very good..</span>"
+						if(prob(5))
+							M.adjustToxLoss(0.1)
+					if(55 to INFINITY)
+						if(prob(10))
+							M << "<span class='warning'>Your stomach grumbles unsettlingly..</span>"
+						if(prob(1))
+							M << "<span class='warning'>Something feels wrong with your body..</span>"
+							if(ishuman(M))
+								var/mob/living/carbon/human/H = M
+								var/datum/organ/internal/liver/L = H.internal_organs["liver"]
+								if (istype(L))
+									L.take_damage(0.1, 1)
+								H.adjustToxLoss(0.3)
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////// DRINKS BELOW, Beer is up there though, along with cola. Cap'n Pete's Cuban Spiced Rum////////////////////////////////
+//////////DRINKS BELOW, Beer is up there though, along with cola. Cap'n Pete's Cuban Spiced Rum//////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		drink
@@ -3790,3 +3944,8 @@ datum
 						M.confused = max(M.confused+15,15)
 					..()
 					return
+
+/datum/reagent/Destroy()
+	if(holder)
+		holder.reagent_list -= src
+		holder = null

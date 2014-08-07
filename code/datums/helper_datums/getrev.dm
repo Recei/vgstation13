@@ -28,7 +28,7 @@ var/global/datum/getrev/revdata = new("config/svndir.txt")
 				continue
 			else if (copytext(t, 1, 2) == "#")
 				continue
-			var/pos = findtext(t, " ")
+			var/pos = findtextEx(t, " ")
 			var/name = null
 			var/value = null
 			if (pos)

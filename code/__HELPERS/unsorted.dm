@@ -225,7 +225,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 //Returns whether or not a player is a guest using their ckey as an input
 /proc/IsGuestKey(key)
-	if (findtext(key, "Guest-", 1, 7) != 1) //was findtextEx
+	if (findtextEx(key, "Guest-", 1, 7) != 1) //was findtextExEx
 		return 0
 
 	var/i, ch, len = length(key)
@@ -945,7 +945,7 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 						ST.zone.remove(ST)
 
 					/* Quick visual fix for some weird shuttle corner artefacts when on transit space tiles */
-					if(direction && findtext(X.icon_state, "swall_s"))
+					if(direction && findtextEx(X.icon_state, "swall_s"))
 
 						// Spawn a new shuttle corner object
 						var/obj/corner = new()

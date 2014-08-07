@@ -109,9 +109,9 @@
 	while(1) // I know this can cause infinite loops and fuck up the whole server, but the if(istart==0) should be safe as fuck
 		var/istart = 0
 		if(links)
-			istart = findtext(info_links, "<span class=\"paper_field\">", laststart)
+			istart = findtextEx(info_links, "<span class=\"paper_field\">", laststart)
 		else
-			istart = findtext(info, "<span class=\"paper_field\">", laststart)
+			istart = findtextEx(info, "<span class=\"paper_field\">", laststart)
 
 		if(istart==0)
 			return // No field found with matching id
@@ -121,9 +121,9 @@
 		if(locid == id)
 			var/iend = 1
 			if(links)
-				iend = findtext(info_links, "</span>", istart)
+				iend = findtextEx(info_links, "</span>", istart)
 			else
-				iend = findtext(info, "</span>", istart)
+				iend = findtextEx(info, "</span>", istart)
 
 			//textindex = istart+26
 			textindex = iend
@@ -197,7 +197,7 @@
 //Count the fields
 	var/laststart = 1
 	while(1)
-		var/i = findtext(t, "<span class=\"paper_field\">", laststart)
+		var/i = findtextEx(t, "<span class=\"paper_field\">", laststart)
 		if(i==0)
 			break
 		laststart = i+1
@@ -253,7 +253,7 @@
 
 		// check for exploits
 		for(var/bad in paper_blacklist)
-			if(findtext(t,bad))
+			if(findtextEx(t,bad))
 				usr << "\blue You think to yourself, \"Hm.. this is only paper...\""
 				log_admin("PAPER: [usr] ([usr.ckey]) tried to use forbidden word in [src]: [bad].")
 				message_admins("PAPER: [usr] ([usr.ckey]) tried to use forbidden word in [src]: [bad].")

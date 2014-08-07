@@ -17,8 +17,8 @@ var/appearance_keylist[0]	//to store the keys
 /proc/appearance_isbanned(mob/M)
 	if(M)
 		for(var/s in appearance_keylist)
-			if( findtext(s,M.ckey) == 1 )
-				var/startpos = findtext(s, "## ") + 3
+			if( findtextEx(s,M.ckey) == 1 )
+				var/startpos = findtextEx(s, "## ") + 3
 				if(startpos && startpos < length(s))
 					var/text = copytext(s, startpos, 0)
 					if(text)
@@ -88,7 +88,7 @@ DEBUG
 
 /proc/appearance_remove(X)
 	for (var/i = 1; i <= length(appearance_keylist); i++)
-		if( findtext(appearance_keylist[i], "[X]") )
+		if( findtextEx(appearance_keylist[i], "[X]") )
 			appearance_keylist.Remove(appearance_keylist[i])
 			appearance_savebanfile()
 			return 1

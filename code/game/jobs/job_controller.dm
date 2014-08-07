@@ -478,7 +478,7 @@ var/global/datum/controller/occupations/job_master
 			if (!length(job))
 				continue
 
-			var/pos = findtext(job, "=")
+			var/pos = findtextEx(job, "=")
 			var/name = null
 			var/value = null
 

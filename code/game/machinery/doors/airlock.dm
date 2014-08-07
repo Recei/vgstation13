@@ -655,7 +655,7 @@ About the new airlock wires panel:
 					else
 						newfreq = input(usr, "Specify a new frequency (GHz). Decimals assigned automatically.", src, frequency) as null|num
 					if(newfreq)
-						if(findtext(num2text(newfreq), "."))
+						if(findtextEx(num2text(newfreq), "."))
 							newfreq *= 10 // shift the decimal one place
 						if(newfreq < 10000)
 							frequency = newfreq
