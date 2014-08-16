@@ -33,6 +33,31 @@
 			recentpump = 0
 		return
 
+	attackby(var/obj/item/A as obj, mob/user as mob)
+		if(istype(A, /obj/item/ammo_casing) && !load_method)
+			var/obj/item/ammo_casing/AC = A
+			if(AC.caliber == caliber && (loaded.len < max_shells) && (contents.len < max_shells))	//forgive me father, for i have sinned
+				user.drop_item()
+				AC.loc = src
+				loaded += AC
+				user << "<span class='notice'>You load a shell into \the [src]!</span>"
+		if(istype(A, /obj/item/weapon/surgicaldrill) || istype(A, /obj/item/weapon/melee/energy) || istype(A, /obj/item/weapon/pickaxe/plasmacutter))
+			user << "<span class='notice'>You begin to extend the tube magazine of \the [src].</span>"
+			if(loaded.len)
+				afterattack(user, user)
+				afterattack(user, user)
+				playsound(user, fire_sound, 50, 1)
+				user.visible_message("<span class='danger'>The shotgun goes off!</span>", "<span class='danger'>The shotgun goes off in your face!</span>")
+				return
+			if(do_after(user, 60))
+				icon_state = "shotgun+ammo"
+				max_shells = 6
+				update_icon()
+				desc = "Useful for sweeping alleys. This one looks to be modified to take one additional shell."
+				user << "<span class='warning'>You extend the tube nagazine of \the [src]!</span>"
+			A.update_icon()
+			update_icon()
+
 
 	proc/pump(mob/M as mob)
 		playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
@@ -40,6 +65,8 @@
 		if(current_shell)//We have a shell in the chamber
 			current_shell.loc = get_turf(src)//Eject casing
 			current_shell = null
+			sleep(3)//So next sound won't get muffled
+			playsound(M, 'sound/weapons/shotgunshelldrop.ogg', 60, 1)
 			if(in_chamber)
 				in_chamber = null
 		if(!loaded.len)	return 0
@@ -81,8 +108,8 @@
 		return
 
 	load_into_chamber()
-		if(in_chamber)
-			return 1
+//		if(in_chamber)
+//			return 1
 		if(!loaded.len)
 			return 0
 
@@ -105,6 +132,7 @@
 			if(shell in loaded)
 				loaded -= shell
 			shell.loc = get_turf(src.loc)
+			playsound(src, 'sound/weapons/shotgunshelldrop.ogg', 60, 1)
 
 		user << "<span class='notice'>You break \the [src].</span>"
 		update_icon()
@@ -136,3 +164,33 @@
 				name = "sawn-off shotgun"
 				desc = "Omar's coming!"
 				user << "<span class='warning'>You shorten the barrel of \the [src]!</span>"
+		if(istype(A, /obj/item/stack/rods))
+			user.visible_message("<span class='danger'>[user] begins cleaning the barrel of \the [src]!</span>")
+			user << "<span class='notice'>You begin cleaning the barrel of \the [src].</span>"
+			if(do_after(user, 50))
+				if (prob(1))
+					user.visible_message("<span class='danger'>A potato falls out of the barrel!</span>") //I don't know why I still hasn't deleted this. It's hillarious!
+					new /obj/item/weapon/reagent_containers/food/snacks/grown/potato(src.loc)
+
+
+/obj/item/weapon/gun/projectile/shotgun/doublebarrel/singlebarrel //Meh, too lazy to do it otherwise
+	name = "single-barelled shotgun"
+	desc = "A simple, yet deadly handmade firearm, only housing one round. It's missing a sling, so you can't put it on you back."
+	icon_state = "handmadeshotgun"
+	item_state = "shotgun"
+	max_shells = 1
+	flags =  FPRINT | TABLEPASS | CONDUCT | USEDELAY
+	caliber = "shotgun"
+	ammo_type = "null"
+
+
+/obj/item/weapon/gun/projectile/shotgun/doublebarrel/shorty
+	name = "shorty shotgun"
+	desc = "A short version of double-barreled shotgun. Favored by outlaws and back alley troublemakers."
+	icon_state = "cerber"
+	item_state = "sawnshotgun"
+	max_shells = 2
+	flags =  FPRINT | TABLEPASS | CONDUCT | USEDELAY
+	slot_flags = SLOT_BELT
+	caliber = "shotgun"
+	ammo_type = "/obj/item/ammo_casing/shotgun"
