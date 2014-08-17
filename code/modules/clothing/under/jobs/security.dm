@@ -70,31 +70,6 @@
 	armor = list(melee = 50, bullet = 5, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 
-/obj/item/clothing/head/det_hat/black
-	name = "black hat"
-	icon_state = "detectiveblack"
-
-/obj/item/clothing/under/det/polsuit
-	desc = "It is in this suit detectives usually go away in drunkenness."
-	name = "detective's uniform"
-	icon_state = "polsuit"
-	item_state = "polsuit"
-	_color = "polsuit"
-	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
-	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
-	species_fit = list("Vox")
-
-/obj/item/clothing/under/det/polsuit/verb/rollup()
-	set name = "Roll suit sleeves"
-	set category = "Object"
-	set src in usr
-	_color = _color == "polsuit" ? "polsuit_rolled" : "polsuit"
-	if (ishuman(loc))
-		var/mob/living/carbon/human/H = loc
-		H.update_inv_w_uniform(1)
-		playsound(loc, 'sound/effects/rustle1.ogg', 30, 1)
-
 /*
  * Head of Security
  */
