@@ -61,6 +61,7 @@
 	spawn_positions = 1
 	supervisors = "the head of security"
 	selection_color = "#ffeeee"
+	alt_titles = list("Security Lieutenant","Security Assistant Chief")
 	idtype = /obj/item/weapon/card/id/security
 	access = list(access_security, access_sec_doors, access_brig, access_armory, access_court, access_maint_tunnels, access_morgue)
 	minimal_access = list(access_security, access_sec_doors, access_brig, access_armory, access_court, access_maint_tunnels)
@@ -169,8 +170,9 @@
 	faction = "Station"
 	total_positions = 5
 	spawn_positions = 5
-	supervisors = "the head of security"
+	supervisors = "the head of security and superior officers"
 	selection_color = "#ffeeee"
+	alt_titles = list("Security Cadet","Security Corporal","Security Sergeant","Security Master Sergeant")
 	idtype = /obj/item/weapon/card/id/security
 	access = list(access_security, access_sec_doors, access_brig, access_court, access_maint_tunnels, access_morgue)
 	minimal_access = list(access_security, access_sec_doors, access_brig, access_court, access_maint_tunnels)
