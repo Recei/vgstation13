@@ -239,11 +239,14 @@
 		..()
 		sleep(2)
 		new /obj/item/clothing/under/det(src)
+		new /obj/item/clothing/under/det/polsuit(src)
 		new /obj/item/clothing/suit/storage/det_suit(src)
+//		new /obj/item/clothing/suit/storage/det_suit/black(src)
 		new /obj/item/clothing/suit/storage/forensics/blue(src)
 		new /obj/item/clothing/suit/storage/forensics/red(src)
 		new /obj/item/clothing/gloves/black(src)
 		new /obj/item/clothing/head/det_hat(src)
+//		new /obj/item/clothing/head/det_hat/black(src)
 		new /obj/item/clothing/shoes/brown(src)
 		new /obj/item/weapon/storage/box/evidence(src)
 		new /obj/item/device/radio/headset/headset_sec(src)
@@ -253,6 +256,7 @@
 		new /obj/item/ammo_magazine/c38(src)
 		new /obj/item/weapon/gun/projectile/detective(src)
 		new /obj/item/clothing/tie/holster/armpit(src)
+		new /obj/item/taperoll/police(src)
 		return
 
 /obj/structure/closet/secure_closet/detective/update_icon()
