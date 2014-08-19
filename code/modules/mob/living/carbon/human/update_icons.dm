@@ -207,6 +207,9 @@ proc/get_damage_icon_part(damage_state, body_part)
 	var/hulk = (M_HULK in src.mutations)
 	var/skeleton = (SKELETON in src.mutations)
 
+	if(gender == PLURAL && !fat)
+		gender = prev_gender
+
 	var/g = "m"
 	if(gender == FEMALE)	g = "f"
 
@@ -690,6 +693,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 	if( wear_suit && istype(wear_suit, /obj/item/clothing/suit) )	//TODO check this
 		wear_suit.screen_loc = ui_oclothing	//TODO
 		var/image/standing = null
+
 		if(gender == FEMALE)
 			standing	= image("icon" = ((wear_suit.icon_override) ? wear_suit.icon_override : 'icons/mob/suit_f.dmi'), "icon_state" = "[wear_suit.icon_state]")
 		else

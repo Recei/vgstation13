@@ -1339,6 +1339,7 @@ datum/preferences
 		character.gen_record = gen_record
 
 		character.gender = gender
+		character.prev_gender = gender
 		character.age = age
 		character.b_type = b_type
 
