@@ -227,6 +227,161 @@ datum
 					M.resistances += self.data
 				return
 
+		poo
+			name = "poo"
+			id = "poo"
+			description = "It's poo."
+			reagent_state = LIQUID
+			color = "#402000" //rgb: 64, 32 , 0
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+			//	if(prob(20))
+				//	M.contract_disease(new /datum/disease/gastric_ejections)
+				M:toxloss += 0.1
+				holder.remove_reagent(src.id, 0.2)
+				..()
+				return
+
+			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+				src = null
+			//	if(istype(M, /mob/living/carbon/human) && method==TOUCH)
+			//		if(M:wear_suit) M:wear_suit.add_poo()
+			//		if(M:w_uniform) M:w_uniform.add_poo()
+			//		if(M:shoes) M:shoes.add_poo()
+			//		if(M:gloves) M:gloves.add_poo()
+			//		if(M:head) M:head.add_poo()
+				//if(method==INGEST)
+				//	if(prob(20))
+					//	M.contract_disease(new /datum/disease/gastric_ejections)
+					//	holder.add_reagent("gastricejections", 1)
+					//	M:toxloss += 0.1
+					//	holder.remove_reagent(src.id, 0.2)
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/poo(T)
+
+		vomit
+			name = "vomit"
+			id = "vomit"
+			description = "Vomit, usually produced when someone gets drunk as hell."
+			reagent_state = LIQUID
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				if(prob(5))
+					M:toxloss += 0.5
+			//		M.contract_disease(new /datum/disease/gastric_ejections)
+				holder.remove_reagent(src.id, 0.2)
+				..()
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/vomit(T)
+
+		egg
+			name = "egg"
+			id = "egg"
+			description = "It's egg."
+			reagent_state = LIQUID
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+
+				..()
+				return
+
+			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+				src = null
+			//	if(istype(M, /mob/living/carbon/human) && method==TOUCH)
+			//		if(M:wear_suit) M:wear_suit.add_egg()
+			//		if(M:w_uniform) M:w_uniform.add_egg()
+			//		if(M:shoes) M:shoes.add_egg()
+			//		if(M:gloves) M:gloves.add_egg()
+			//		if(M:head) M:head.add_egg()
+				if(method==INGEST)
+					if(prob(20))
+				//		M.contract_disease(new /datum/disease/gastric_ejections) //we dont have salmonella, this is pretty similar though.
+						M:toxloss += 0.1
+						holder.remove_reagent(src.id, 0.2)
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+			//	if(!istype(T, /turf/space))
+			//		new /obj/effect/decal/cleanable/eggsplat(T)
+
+		synthpoo
+			name = "synthpoo"
+			id = "synthpoo"
+			description = "A synthetic replica of poo. Has the looks and the smell, but it just isn't the same."
+			reagent_state = LIQUID
+
+
+
+
+
+
+		urine
+			name = "urine"
+			id = "urine"
+			description = "It's pee."
+			reagent_state = LIQUID
+
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				M:toxloss -= 0.3
+				..()
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+			//	if(!istype(T, /turf/space))
+			//		new /obj/effect/decal/cleanable/urine(T)
+
+		jenkem
+			name = "jenkem"
+			id = "jenkem"
+			description = "A bathtub drug made from human excrement."
+			reagent_state = LIQUID
+
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				M:brainloss += 2
+				M.druggy = max(M.druggy, 10)
+				if(M.canmove) step(M, pick(cardinal))
+				if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
+			//	if(prob(5))
+			//		M.contract_disease(new /datum/disease/gastric_ejections)
+				..()
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/poo(T)
 
 		water
 			name = "Water"
