@@ -133,6 +133,8 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	//Check if we're on fire
 	handle_fire()
+	//Update icons if we're on fire    WHY THERE WAS NO UPDATE_FIRE()?!
+	update_fire()
 
 	//Status updates, death etc.
 	handle_regular_status_updates()		//Optimized a bit
@@ -594,10 +596,15 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	handle_fire()
 		if(..())
 			return
+		if (!on_fire)
+			for(var/obj/fire/F in src.loc)
+				if (prob(80))
+					src.fire_stacks++
 		var/thermal_protection = get_heat_protection(30000) //If you don't have fire suit level protection, you get a temperature increase
 		if((1 - thermal_protection) > 0.0001)
 			bodytemperature += BODYTEMP_HEATING_MAX
 		return
+
 //END FIRE CODE
 
 	/*

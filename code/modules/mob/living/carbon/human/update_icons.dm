@@ -97,26 +97,26 @@ Please contact me on #coderbus IRC. ~Carn x
 */
 
 //Human Overlays Indexes/////////
-#define FIRE_LAYER				1		//If you're on fire (/tg/ shit)
-#define MUTANTRACE_LAYER		2		//TODO: make part of body?
-#define MUTATIONS_LAYER			3
-#define DAMAGE_LAYER			4
-#define UNIFORM_LAYER			5
-#define ID_LAYER				6
-#define SHOES_LAYER				7
-#define GLOVES_LAYER			8
-#define EARS_LAYER				9
-#define SUIT_LAYER				10
-#define GLASSES_LAYER			11
-#define BELT_LAYER				12		//Possible make this an overlay of somethign required to wear a belt?
-#define SUIT_STORE_LAYER		13
-#define BACK_LAYER				14
-#define HAIR_LAYER				15		//TODO: make part of head layer?
-#define GLASSES_OVER_HAIR_LAYER	16
-#define FACEMASK_LAYER			17
-#define HEAD_LAYER				18
-#define HANDCUFF_LAYER			19
-#define LEGCUFF_LAYER			20
+#define MUTANTRACE_LAYER		1		//TODO: make part of body?
+#define MUTATIONS_LAYER			2
+#define DAMAGE_LAYER			3
+#define UNIFORM_LAYER			4
+#define ID_LAYER				5
+#define SHOES_LAYER				6
+#define GLOVES_LAYER			7
+#define EARS_LAYER				8
+#define SUIT_LAYER				9
+#define GLASSES_LAYER			10
+#define BELT_LAYER				11		//Possible make this an overlay of somethign required to wear a belt?
+#define SUIT_STORE_LAYER		12
+#define BACK_LAYER				13
+#define HAIR_LAYER				14		//TODO: make part of head layer?
+#define GLASSES_OVER_HAIR_LAYER	15
+#define FACEMASK_LAYER			16
+#define HEAD_LAYER				17
+#define HANDCUFF_LAYER			18
+#define LEGCUFF_LAYER			19
+#define FIRE_LAYER				20		//If you're on fire (/tg/ shit)
 #define L_HAND_LAYER			21
 #define R_HAND_LAYER			22
 #define TAIL_LAYER				23		//bs12 specific. this hack is probably gonna come back to haunt me
@@ -129,7 +129,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	var/previous_damage_appearance // store what the body last looked like, so we only have to update it if something changed
 	var/icon/race_icon
 	var/icon/deform_icon
-
+	var/burned_hairs  //<sarcasm>I don't know for what this var used</sarcasm>
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 //this proc is messy as I was forced to include some old laggy cloaking code to it so that I don't break cloakers
 //I'll work on removing that stuff by rewriting some of the cloaking stuff at a later date.
@@ -306,6 +306,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 //HAIR OVERLAY
 /mob/living/carbon/human/proc/update_hair(var/update_icons=1)
 	//Reset our hair
+	burned_hairs = 0
 	overlays_standing[HAIR_LAYER]	= null
 
 	var/datum/organ/external/head/head_organ = get_organ("head")
@@ -442,6 +443,12 @@ proc/get_damage_icon_part(damage_state, body_part)
 				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2", "layer"=-FIRE_LAYER)
 			if(15.1 to INFINITY)
 				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3", "layer"=-FIRE_LAYER)
+				if(prob(50) && !burned_hairs)
+					overlays_standing[HAIR_LAYER] = null
+					f_style = "Shaved"
+					h_style = "Bald"
+					src << "\red <b>YOUR HAIRS BURNS OFF!!!</b>"
+					burned_hairs = 1
 	else
 		overlays_standing[FIRE_LAYER] = null
 	if(update_icons)		update_icons()
