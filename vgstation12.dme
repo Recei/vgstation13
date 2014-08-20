@@ -1597,13 +1597,6 @@
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
 #include "maps\tgstation.dmm"
-#include "maps\RandomZLevels\Academy.dm"
-#include "maps\RandomZLevels\challenge.dm"
-#include "maps\RandomZLevels\stationCollision.dm"
-#include "maps\RandomZLevels\wildwest.dm"
-#include "maps\RandomZLevels\arcticwaste.dmm"
-#include "maps\RandomZLevels\beach.dmm"
-#include "maps\RandomZLevels\listeningpost.dmm"
 // END_INCLUDE
 // DM Environment file for baystation12.dme.
 // All manual changes should be made outside the BEGIN_ and END_ blocks.

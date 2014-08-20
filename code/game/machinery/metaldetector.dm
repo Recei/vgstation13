@@ -398,7 +398,7 @@
 				user << "\red You lack access to the control panel!"
 				return
 
-/obj/machinery/metaldetector/HasEntered(AM as mob|obj)
+/obj/machinery/metaldetector/Crossed(AM as mob|obj)
 	if(emagged)
 		return
 	if (istype(AM, /mob/living/carbon/human))

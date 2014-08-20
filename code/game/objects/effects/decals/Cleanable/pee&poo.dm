@@ -48,7 +48,7 @@
 			if (step_to(src, get_step(src, direction), 0))
 				break
 
-/obj/effect/decal/cleanable/poo/HasEntered(AM as mob|obj)
+/obj/effect/decal/cleanable/poo/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living/carbon) && src.dried == 0)
 		var/mob/M =	AM
 		if ((istype(M, /mob/living/carbon/human) && istype(M:shoes, /obj/item/clothing/shoes/galoshes)) || M.m_intent == "walk")
@@ -101,7 +101,7 @@
 //	blood_DNA = null
 //	blood_type = null
 
-/obj/effect/decal/cleanable/urine/HasEntered(AM as mob|obj)
+/obj/effect/decal/cleanable/urine/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
 		if ((istype(M, /mob/living/carbon/human) && istype(M:shoes, /obj/item/clothing/shoes/galoshes)) || M.m_intent == "walk")
