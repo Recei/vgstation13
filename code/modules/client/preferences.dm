@@ -1320,8 +1320,9 @@ datum/preferences
 		if(be_random_name)
 			real_name = random_name(gender)
 
+
 		if(config.humans_need_surnames)
-			var/firstspace = findtext(real_name, " ")
+			var/firstspace = findtextEx(real_name, " ")
 			var/name_length = length(real_name)
 			if(!firstspace)	//we need a surname
 				real_name += " [pick(last_names)]"

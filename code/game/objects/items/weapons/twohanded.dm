@@ -49,15 +49,15 @@
 /obj/item/weapon/twohanded/proc/set_icon()
 	set src in usr
 
-	if(findtext(icon_state, "fireaxe"))
+	if(findtextEx(icon_state, "fireaxe"))
 		item_state = "fireaxe[wielded]"
 
 
-	else if(findtext(icon_state, "dualsaber"))
+	else if(findtextEx(icon_state, "dualsaber"))
 		item_state = "dualsaber[wielded]"
 
 
-	else if(findtext(icon_state, "hfrequency"))
+	else if(findtextEx(icon_state, "hfrequency"))
 		item_state = "hfrequency[wielded]"
 
 	else

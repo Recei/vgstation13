@@ -512,6 +512,13 @@
 		else
 			return ..(mover, target, height, air_group)
 
+/obj/machinery/disposal/toilet
+	name = "toilet"
+	desc = "A torque rotation-based, waste disposal unit for small matter."
+	icon_state = "toilet"
+	density = 0//So you can stand on it.
+	mode = 2
+
 // virtual disposal object
 // travels through pipes in lieu of actual items
 // contents will be items flushed by the disposal

@@ -151,7 +151,7 @@ Implant Specifics:<BR>"}
 	hear(var/msg)
 		var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "")
 		msg = sanitize_simple(msg, replacechars)
-		if(findtext(msg,phrase))
+		if(findtextEx(msg,phrase))
 			activate()
 			del(src)
 

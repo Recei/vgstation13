@@ -24,7 +24,7 @@ var/global/list/alien_whitelist = list()
 		for(var/line in text2list(text, "\n"))
 			if(dd_hasprefix(line,"#"))
 				continue
-			if(!findtext(line,"-"))
+			if(!findtextEx(line,"-"))
 				continue
 			var/list/parts=text2list(line,"-")
 			var/ckey=trim(lowertext(parts[1]))

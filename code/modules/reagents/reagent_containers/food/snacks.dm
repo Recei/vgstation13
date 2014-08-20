@@ -16,6 +16,7 @@ var/global/deepfry_nutriment = 1
 	var/dried_type = null
 	var/deepfried = 0
 	var/filling_color = "#FFFFFF"
+	var/list/random_icon_states = list()
 
 	//Placeholder for effect that trigger on eating that aren't tied to reagents.
 /obj/item/weapon/reagent_containers/food/snacks/proc/On_Consume(var/mob/M)

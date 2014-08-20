@@ -69,7 +69,7 @@
 
 
 	Known issues:
-		Text search uses findtext() which is fast but unreliable for high ASCII.
+		Text search uses findtextEx() which is fast but unreliable for high ASCII.
 		Rebuilding expressions from compiled form is not complete. A re-escaper is also needed.
 		A quicker class search for simple classes would be desirable.
 
@@ -827,7 +827,7 @@ regex
 									ch=text2ascii(txt,k++)
 									ch2=text2ascii(str,j)
 									// this currently will cause some inconsistent behavior
-									// until findtext() is replaced with a routine sensitive to upper ASCII
+									// until findtextEx() is replaced with a routine sensitive to upper ASCII
 									if(ch==ch2) continue
 									ch|=32
 									if(ch!=(ch2|32)) break stringmatch
@@ -976,7 +976,9 @@ regex
 								if(!(p.pattern in first.namedvars)) {i=0;goto found}
 								str=(first.namedvars[p.pattern]||"")
 					if(anyline) e=ee
-					i=(first.flags&1)?findtext(txt,str,i):findtextEx(txt,str,i)
+
+					i=(first.flags&1)?findtextEx(txt,str,i):findtextEx(txt,str,i)
+
 					if(!i || i>stop || i>e) i=0
 
 				if(2)

@@ -18,6 +18,8 @@
 
 	var/list/affecting	// the list of all items that will be moved this ptick
 	var/id_tag = ""			// the control ID	- must match controller ID
+	var/divert = 0 		// if non-zero, direction to divert items
+	var/divdir = 0		// if diverting, will be conveyer dir needed to divert (otherwise dense)
 
 	var/frequency = 1367
 	var/datum/radio_frequency/radio_connection
@@ -144,6 +146,10 @@
 	if(!operating)
 		return
 	use_power(100)
+
+	var/movedir = dir	// base movement dir
+	if(divert && dir==divdir)	// update if diverter present
+		movedir = divert
 
 	affecting = loc.contents - src		// moved items will be all in loc
 	spawn(1)	// slight delay to prevent infinite propagation due to map order	//TODO: please no spawn() in process(). It's a very bad idea

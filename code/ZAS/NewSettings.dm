@@ -266,7 +266,7 @@ var/global/ZAS_Settings/zas_settings = new
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtext(t, " ")
+		var/pos = findtextEx(t, " ")
 		var/name = null
 		var/value = null
 

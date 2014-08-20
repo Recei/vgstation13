@@ -20,15 +20,15 @@
 /obj/item/weapon/proc/catchMessage(var/msg, var/mob/source)
 	if(speaking_to_players)
 		var/list/seperate = list()
-		if(findtext(msg,"(("))
+		if(findtextEx(msg,"(("))
 			return
-		else if(findtext(msg,"))"))
+		else if(findtextEx(msg,"))"))
 			return
-		else if(findtext(msg," ")==0)
+		else if(findtextEx(msg," ")==0)
 			return
 		else
 			/*var/l = lentext(msg)
-			if(findtext(msg," ",l,l+1)==0)
+			if(findtextEx(msg," ",l,l+1)==0)
 				msg+=" "*/
 			seperate = text2list(msg, " ")
 

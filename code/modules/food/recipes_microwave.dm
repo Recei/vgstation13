@@ -82,7 +82,7 @@ I said no!
 			human_name = HM.subjectname
 			human_job = HM.subjectjob
 			break
-		var/lastname_index = findtext(human_name, " ")
+		var/lastname_index = findtextEx(human_name, " ")
 		if (lastname_index)
 			human_name = copytext(human_name,lastname_index+1)
 

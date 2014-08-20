@@ -245,6 +245,9 @@
 	icon_state = "arcadecarpet"
 	has_siding=0
 
+/turf/simulated/floor/carpet/purple
+	name = "Carpet"
+	icon_state = "bcarpet"
 
 /turf/simulated/floor/plating/ironsand/New()
 	..()

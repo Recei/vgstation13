@@ -107,10 +107,10 @@ var/list/alldepartments = list("Central Command")
 				if(dpt == "Central Command")
 					Centcomm_fax(tofax.info, tofax.name, usr)
 				if(dpt == "Nanotrasen HR")
-					if(findtext(tofax.stamps, "magnetic"))
-						if(findtext(tofax.name,"Demotion"))
+					if(findtextEx(tofax.stamps, "magnetic"))
+						if(findtextEx(tofax.name,"Demotion"))
 							new /obj/item/demote_chip(src.loc)
-						if(findtext(tofax.name,"Commendation"))
+						if(findtextEx(tofax.name,"Commendation"))
 							new /obj/item/weapon/contraband/poster(src.loc,-1)
 				sendcooldown = 1800
 

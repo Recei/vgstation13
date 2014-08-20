@@ -1,12 +1,12 @@
 /mob/living/carbon/human/emote(var/act,var/m_type=1,var/message = null)
 	var/param = null
 
-	if (findtext(act, "-", 1, null))
-		var/t1 = findtext(act, "-", 1, null)
+	if (findtextEx(act, "-", 1, null))
+		var/t1 = findtextEx(act, "-", 1, null)
 		param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
 
-	if(findtext(act,"s",-1) && !findtext(act,"_",-2))//Removes ending s's unless they are prefixed with a '_'
+	if(findtextEx(act,"s",-1) && !findtextEx(act,"_",-2))//Removes ending s's unless they are prefixed with a '_'
 		act = copytext(act,1,length(act))
 
 	var/muzzled = istype(src.wear_mask, /obj/item/clothing/mask/muzzle)
@@ -556,24 +556,220 @@
 
 		// Needed for M_TOXIC_FART
 		if("fart")
-			if(src.op_stage.butt != 4)
-				if(world.time-lastFart >= 400)
-					var/list/farts = list("farts.","passes wind.","toots.","farts [pick("lightly", "tenderly", "softly", "with care")].","farts with the force of one thousand suns.")
-					if(miming)
-						farts = list("silently farts.", "acts out a fart.", "lets out a silent but deadly fart.")
-					var/fart = pick(farts)
+			if (fail_farts >= 15 && src.called_superfart < 1)
+				emote("superfart")
+				return
+			if(src.op_stage.butt == 4)
+				src << "\blue You don't have a butt!"
+				return
+			if (src.nutrition >= 250)
+				m_type = 2
+				if(src.reagents)
+					var/obj/effect/decal/D = new/obj/effect/decal(get_turf(src))
+					D.name = "chemicals"
+					D.icon = 'chemical.dmi'
+					D.icon_state = "sneezepuff"
+					D.create_reagents(3)
+					src.reagents.trans_to(D, 3)
 
-					for(var/mob/M in view(1))
-						if(M != src)
-							if(!miming)
-								visible_message("\red <b>[src]</b> farts in <b>[M]</b>'s face!")
-							else
-								visible_message("\red <b>[src]</b> silently farts in <b>[M]</b>'s face!")
+					spawn(0)
+						step(D, turn(src.dir, 180))
+						D.reagents.reaction(get_turf(D))
+						for(var/atom/T in get_turf(D))
+							D.reagents.reaction(T)
+						del(D)
+				if(miming)
+					message = pick("<B>[src]</B>silently farts.", "<B>[src]</B>acts out a fart.", "<B>[src]</B>lets out a silent but deadly fart.")
+				else
+					playsound(src.loc, 'fart.ogg', 65, 1)
+					switch(rand(1, 48))
+						if(1)
+							message = "<B>[src]</B> lets out a girly little 'toot' from \his butt."
+
+						if(2)
+							message = "<B>[src]</B> farts loudly!"
+
+						if(3)
+							message = "<B>[src]</B> lets one rip!"
+
+						if(4)
+							message = "<B>[src]</B> farts! It sounds wet and smells like rotten eggs."
+
+						if(5)
+							message = "<B>[src]</B> farts robustly!"
+
+						if(6)
+							message = "<B>[src]</B> farted! It reminds you of your grandmother's queefs."
+
+						if(7)
+							message = "<B>[src]</B> queefed out \his ass!"
+
+						if(8)
+							message = "<B>[src]</B> farted! It reminds you of your grandmother's queefs."
+
+						if(9)
+							message = "<B>[src]</B> farts a ten second long fart."
+
+						if(10)
+							message = "<B>[src]</B> groans and moans, farting like the world depended on it."
+
+						if(11)
+							message = "<B>[src]</B> breaks wind!"
+
+						if(12)
+							message = "<B>[src]</B> expels intestinal gas through the anus."
+
+						if(13)
+							message = "<B>[src]</B> release an audible discharge of intestinal gas."
+
+						if(14)
+							message = "\red <B>[src]</B> is a farting motherfucker!!!"
+
+						if(15)
+							message = "\red <B>[src]</B> suffers from flatulence!"
+
+						if(16)
+							message = "<B>[src]</B> releases flatus."
+
+						if(17)
+							message = "<B>[src]</B> releases gas generated in \his digestive tract, \his stomach and \his intestines. \red<B>It stinks way bad!</B>"
+
+						if(18)
+							message = "<B>[src]</B> farts like your mom used to!"
+
+						if(19)
+							message = "<B>[src]</B> farts. It smells like Soylent Surprise!"
+
+						if(20)
+							message = "<B>[src]</B> farts. It smells like pizza!"
+
+						if(21)
+							message = "<B>[src]</B> farts. It smells like George Melons' perfume!"
+
+						if(22)
+							message = "<B>[src]</B> farts. It smells like atmos in here now!"
+
+						if(23)
+							message = "<B>[src]</B> farts. It smells like medbay in here now!"
+
+						if(24)
+							message = "<B>[src]</B> farts. It smells like the bridge in here now!"
+
+						if(25)
+							message = "<B>[src]</B> farts like a pubby!"
+
+						if(26)
+							message = "<B>[src]</B> farts like a goone!"
+
+						if(27)
+							message = "<B>[src]</B> farts so hard he's certain poop came out with it, but dares not find out."
+
+						if(28)
+							message = "<B>[src]</B> farts delicately."
+
+						if(29)
+							message = "<B>[src]</B> farts timidly."
+
+						if(30)
+							message = "<B>[src]</B> farts very, very quietly. The stench is OVERPOWERING."
+
+						if(31)
+							message = "<B>[src]</B> farts and says, \"Mmm! Delightful aroma!\""
+
+						if(32)
+							message = "<B>[src]</B> farts and says, \"Mmm! Sexy!\""
+
+						if(33)
+							message = "<B>[src]</B> farts and fondles \his own buttocks."
+
+						if(34)
+							message = "<B>[src]</B> farts and fondles YOUR buttocks."
+
+						if(35)
+							message = "<B>[src]</B> fart in he own mouth. A shameful [src]."
+
+						if(36)
+							message = "<B>[src]</B> farts out pure plasma! \red<B>FUCK!</B>"
+
+						if(37)
+							message = "<B>[src]</B> farts out pure oxygen. What the fuck did he eat?"
+
+						if(38)
+							message = "<B>[src]</B> breaks wind noisily!"
+
+						if(39)
+							message = "<B>[src]</B> releases gas with the power of the gods! The very station trembles!!"
+
+						if(40)
+							message = "<B>[src] \red f \blue a \black r \red t \blue s \black !</B>"
+
+						if(41)
+							message = "<B>[src] shat \his pants!</B>"
+
+						if(42)
+							message = "<B>[src] shat \his pants!</B> Oh, no, that was just a really nasty fart."
+
+						if(43)
+							message = "<B>[src]</B> is a flatulent whore."
+
+						if(44)
+							message = "<B>[src]</B> likes the smell of \his own farts."
+
+						if(45)
+							message = "<B>[src]</B> doesnt wipe after he poops."
+
+						if(46)
+							message = "<B>[src]</B> farts! Now he smells like Tiny Turtle."
+
+						if(47)
+							message = "<B>[src]</B> burps! He farted out of \his mouth!! That's Showtime's style, baby."
+
+						if(48)
+							message = "<B>[src]</B> laughs! His breath smells like a fart."
+				if(world.time-lastFart <  5)
+					usr << "<span class='warning'>You feeling like your ass cracking. Uh-oh..."
+					fail_farts ++
+				for(var/mob/M in view(1))
+					if(M != src)
+						if(!miming)
+							visible_message("\red <b>[src]</b> farts in <b>[M]</b>'s face!")
 						else
-							continue
-					if(!miming)
-						message = "<b>[src]</b> [fart]."
-						playsound(get_turf(src), 'sound/misc/fart.ogg', 50, 1)
+							visible_message("\red <b>[src]</b> silently farts in <b>[M]</b>'s face!")
+
+				for(var/mob/M in viewers(src, null))
+					if(!M.stat && getBrainLoss() >= 60)
+						spawn(10)
+							if(prob(20))
+								switch(pick(1,2,3))
+									if(1)
+										M.say("[M == src ? "i" : src.name] made a fart!!")
+									if(2)
+										M.emote("giggle")
+									if(3)
+										M.emote("clap")
+				m_type = 2
+
+				var/turf/location = get_turf(src)
+				var/aoe_range=2 // Default
+				if(M_SUPER_FART in mutations)
+					aoe_range+=3 //Was 5
+
+				// If we're wearing a suit, don't blast or gas those around us.
+				var/wearing_suit=0
+				var/wearing_mask=0
+				if(wear_suit && wear_suit.body_parts_covered & LOWER_TORSO)
+					wearing_suit=1
+					if (internal != null && wear_mask && (wear_mask.flags & MASKINTERNALS))
+						wearing_mask=1
+
+				// Process toxic farts first.
+				if(M_TOXIC_FARTS in mutations)
+					message=""
+					playsound(get_turf(src), 'sound/effects/superfart.ogg', 50, 1)
+					if(wearing_suit)
+						if(!wearing_mask)
+							src << "\red You gas yourself!"
+							reagents.add_reagent("space_drugs", rand(10,50))
 					else
 						message = "<b>[src]</b> [fart]"
 						//Mimes can't fart.
@@ -649,6 +845,104 @@
 			else
 				message = "<b>[src]</b> lets out a [pick("disgusting","revolting","horrible","strangled","god awful")] noise out of \his mutilated asshole."
 				m_type = 2
+
+		if("superfart")
+			if(src.op_stage.butt == 4)
+				src << "\blue You don't have a butt!"
+				return
+			if(src.called_superfart >= 1)
+				return
+			else
+				if(M_SUPER_FART in mutations)
+					emote("fart")
+				else
+					called_superfart = 1
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					emote("fart")
+					sleep(1)
+					new /obj/effect/decal/cleanable/poo(src.loc)
+					anus_bombanull()
+
+		if(("poo") || ("poop") || ("shit") || ("crap"))
+			if (src.nutrition <= 300)
+				src.emote("fart")
+				m_type = 2
+			else
+				if (src.w_uniform)
+					message = "<B>[src]</B> poos in their uniform."
+					playsound(src.loc, 'fart.ogg', 60, 1)
+					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
+					src.nutrition -= 80
+					m_type = 2
+				else
+					message = "<B>[src]</B> poos on the floor."
+					playsound(src.loc, 'fart.ogg', 60, 1)
+					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
+					var/turf/location = src.loc
+
+					var/obj/effect/decal/cleanable/poo/D = new/obj/effect/decal/cleanable/poo(location)
+					if(src.reagents)
+						src.reagents.trans_to(D, 10)
+
+					var/obj/item/weapon/reagent_containers/food/snacks/poo/V = new/obj/item/weapon/reagent_containers/food/snacks/poo(location)
+					if(src.reagents)
+						src.reagents.trans_to(V, 10)
+
+//				if(!infinitebutt)
+					src.nutrition -= 80
+					m_type = 2
+
+					// check for being in sight of a working security camera
+					if(seen_by_camera(src))
+						// determine the name of the perp (goes by ID if wearing one)
+						var/perpname = src.name
+						if(!/obj/item/device/pda && src:wear_id && src:wear_id:registered_name)
+							perpname = src:wear_id:registered_name
+						else
+							perpname = src.name
+
+						// find the matching security record
+						for(var/datum/data/record/R in data_core.general)
+							if(R.fields["name"] == perpname)
+								for (var/datum/data/record/S in data_core.security)
+									if (S.fields["id"] == R.fields["id"])
+										// now add to rap sheet
+										S.fields["criminal"] = "*Arrest*"
+										S.fields["mi_crim"] = "Public defecation"
+										break
 		if ("help")
 			src << "blink, blink_r, blush, bow-(none)/mob, burp, choke, chuckle, clap, collapse, cough,\ncry, custom, deathgasp, drool, eyebrow, frown, gasp, giggle, groan, grumble, handshake, hug-(none)/mob, glare-(none)/mob,\ngrin, laugh, look-(none)/mob, moan, mumble, nod, pale, point-atom, raise, salute, shake, shiver, shrug,\nsigh, signal-#1-10, smile, sneeze, sniff, snore, stare-(none)/mob, tremble, twitch, twitch_s, whimper,\nwink, yawn"
 
@@ -693,3 +987,20 @@
 	set category = "IC"
 
 	flavor_text =  copytext(sanitize(input(usr, "Please enter your new flavour text.", "Flavour text", null)  as text), 1)
+
+//Fart helpers (HAHA) & procs
+/mob/living/carbon/human/proc/anus_bombanull()
+	src.op_stage.butt = 4
+	src.Weaken(12)
+	flick("e_flash", src.flash)
+	new /obj/item/clothing/head/butt(src.loc)
+	world << sound('superfart.ogg')
+	loc << "<B>[src]</B>'s butt explodes!"
+	src.Weaken(12)
+	var/datum/organ/external/affecting = src.get_organ("groin")
+	if(affecting)
+		if(affecting.take_damage(25, 20))
+			src.UpdateDamageIcon()
+		src.updatehealth()
+/mob/living/carbon/human/var/fail_farts = 0
+/mob/living/carbon/human/var/called_superfart = 0

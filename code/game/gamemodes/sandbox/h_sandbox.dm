@@ -50,7 +50,7 @@ var/global/list/banned_sandbox_types=list(
 
 proc/is_banned_type(typepath)
 	for(var/btype in banned_sandbox_types)
-		if(findtext("[typepath]", "[btype]")!=0)
+		if(findtextEx("[typepath]", "[btype]")!=0)
 			return 1
 	return 0
 
@@ -68,7 +68,7 @@ proc/is_banned_type(typepath)
 	for(var/path in types)
 		if(is_banned_type(path))
 			continue
-		if(findtext("[path]", object)!=0)
+		if(findtextEx("[path]", object)!=0)
 			matches += path
 
 	if(matches.len==0)

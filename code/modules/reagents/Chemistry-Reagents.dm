@@ -227,6 +227,161 @@ datum
 					M.resistances += self.data
 				return
 
+		poo
+			name = "poo"
+			id = "poo"
+			description = "It's poo."
+			reagent_state = LIQUID
+			color = "#402000" //rgb: 64, 32 , 0
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+			//	if(prob(20))
+				//	M.contract_disease(new /datum/disease/gastric_ejections)
+				M:toxloss += 0.1
+				holder.remove_reagent(src.id, 0.2)
+				..()
+				return
+
+			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+				src = null
+			//	if(istype(M, /mob/living/carbon/human) && method==TOUCH)
+			//		if(M:wear_suit) M:wear_suit.add_poo()
+			//		if(M:w_uniform) M:w_uniform.add_poo()
+			//		if(M:shoes) M:shoes.add_poo()
+			//		if(M:gloves) M:gloves.add_poo()
+			//		if(M:head) M:head.add_poo()
+				//if(method==INGEST)
+				//	if(prob(20))
+					//	M.contract_disease(new /datum/disease/gastric_ejections)
+					//	holder.add_reagent("gastricejections", 1)
+					//	M:toxloss += 0.1
+					//	holder.remove_reagent(src.id, 0.2)
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/poo(T)
+
+		vomit
+			name = "vomit"
+			id = "vomit"
+			description = "Vomit, usually produced when someone gets drunk as hell."
+			reagent_state = LIQUID
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				if(prob(5))
+					M:toxloss += 0.5
+			//		M.contract_disease(new /datum/disease/gastric_ejections)
+				holder.remove_reagent(src.id, 0.2)
+				..()
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/vomit(T)
+
+		egg
+			name = "egg"
+			id = "egg"
+			description = "It's egg."
+			reagent_state = LIQUID
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+
+				..()
+				return
+
+			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+				src = null
+			//	if(istype(M, /mob/living/carbon/human) && method==TOUCH)
+			//		if(M:wear_suit) M:wear_suit.add_egg()
+			//		if(M:w_uniform) M:w_uniform.add_egg()
+			//		if(M:shoes) M:shoes.add_egg()
+			//		if(M:gloves) M:gloves.add_egg()
+			//		if(M:head) M:head.add_egg()
+				if(method==INGEST)
+					if(prob(20))
+				//		M.contract_disease(new /datum/disease/gastric_ejections) //we dont have salmonella, this is pretty similar though.
+						M:toxloss += 0.1
+						holder.remove_reagent(src.id, 0.2)
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+			//	if(!istype(T, /turf/space))
+			//		new /obj/effect/decal/cleanable/eggsplat(T)
+
+		synthpoo
+			name = "synthpoo"
+			id = "synthpoo"
+			description = "A synthetic replica of poo. Has the looks and the smell, but it just isn't the same."
+			reagent_state = LIQUID
+
+
+
+
+
+
+		urine
+			name = "urine"
+			id = "urine"
+			description = "It's pee."
+			reagent_state = LIQUID
+
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				M:toxloss -= 0.3
+				..()
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+			//	if(!istype(T, /turf/space))
+			//		new /obj/effect/decal/cleanable/urine(T)
+
+		jenkem
+			name = "jenkem"
+			id = "jenkem"
+			description = "A bathtub drug made from human excrement."
+			reagent_state = LIQUID
+
+
+
+
+
+
+			on_mob_life(var/mob/M)
+				if(!M) M = holder.my_atom
+				M:brainloss += 2
+				M.druggy = max(M.druggy, 10)
+				if(M.canmove) step(M, pick(cardinal))
+				if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
+			//	if(prob(5))
+			//		M.contract_disease(new /datum/disease/gastric_ejections)
+				..()
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/poo(T)
 
 		water
 			name = "Water"
@@ -358,7 +513,7 @@ datum
 			id = "anti_toxin"
 			description = "Dylovene is a broad-spectrum antitoxin."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#0b4361" // rgb: 11, 67, 97
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
@@ -605,7 +760,7 @@ datum
 			id = "inaprovaline"
 			description = "Inaprovaline is a synaptic stimulant and cardiostimulant. Commonly used to stabilize patients."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#137519" // rgb: 19, 117, 25
 			overdose = REAGENTS_OVERDOSE*2
 
 			on_mob_life(var/mob/living/M as mob, var/alien)
@@ -1555,7 +1710,7 @@ datum
 			id = "kelotane"
 			description = "Kelotane is a drug used to treat burns."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#81c996" // rgb: 129, 201, 150
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1570,7 +1725,7 @@ datum
 			id = "dermaline"
 			description = "Dermaline is the next step in burn medication. Works twice as good as kelotane and enables the body to restore even the direst heat-damaged tissue."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#81c9bb" // rgb: 129, 201, 187
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0) //THE GUY IS **DEAD**! BEREFT OF ALL LIFE HE RESTS IN PEACE etc etc. He does NOT metabolise shit anymore, god DAMN
@@ -1585,7 +1740,7 @@ datum
 			id = "dexalin"
 			description = "Dexalin is used in the treatment of oxygen deprivation."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#ed5a5a" // rgb: 237, 90, 90
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1602,7 +1757,7 @@ datum
 			id = "dexalinp"
 			description = "Dexalin Plus is used in the treatment of oxygen deprivation. Its highly effective."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#d04a4a" // rgb: 208, 74, 74
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1619,7 +1774,7 @@ datum
 			id = "tricordrazine"
 			description = "Tricordrazine is a highly potent stimulant, originally derived from cordrazine. Can be used to treat a wide range of injuries."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#0f5c3d" // rgb: 15, 92, 61
 
 			on_mob_life(var/mob/living/M as mob)
 				if(M.stat == 2.0)
@@ -1701,7 +1856,7 @@ datum
 			id = "synaptizine"
 			description = "Synaptizine is used to treat various diseases."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#f20d9c" // rgb: 200, 165, 220
 			custom_metabolism = 0.01
 			overdose = REAGENTS_OVERDOSE
 
@@ -1723,7 +1878,7 @@ datum
 			id = "impedrezene"
 			description = "Impedrezene is a narcotic that impedes one's ability by slowing down the higher brain cell functions."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#97bdbd" // rgb: 151, 189, 189
 			overdose = REAGENTS_OVERDOSE
 
 			on_mob_life(var/mob/living/M as mob)
@@ -1740,7 +1895,7 @@ datum
 			id = "hyronalin"
 			description = "Hyronalin is a medicinal drug used to counter the effect of radiation poisoning."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#a9bd6c" // rgb: 169, 189, 108
 			custom_metabolism = 0.05
 			overdose = REAGENTS_OVERDOSE
 
@@ -1755,7 +1910,7 @@ datum
 			id = "arithrazine"
 			description = "Arithrazine is an unstable medication used for the most extreme cases of radiation poisoning."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#6d1f1f" // rgb: 109, 31, 31
 			custom_metabolism = 0.05
 			overdose = REAGENTS_OVERDOSE
 
@@ -1775,7 +1930,7 @@ datum
 			id = "alkysine"
 			description = "Alkysine is a drug used to lessen the damage to neurological tissue after a catastrophic injury. Can heal brain tissue."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#ecb380" // rgb: 236, 179, 128
 			custom_metabolism = 0.05
 			overdose = REAGENTS_OVERDOSE
 
@@ -1790,7 +1945,7 @@ datum
 			id = "imidazoline"
 			description = "Heals eye damage"
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#bdc5ca" // rgb: 189, 197, 202
 			overdose = REAGENTS_OVERDOSE
 
 			on_mob_life(var/mob/living/M as mob)
@@ -1845,7 +2000,7 @@ datum
 			id = "bicaridine"
 			description = "Bicaridine is an analgesic medication and can be used to treat blunt trauma."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#488001" // rgb: 72, 128, 1
 			overdose = REAGENTS_OVERDOSE
 
 			on_mob_life(var/mob/living/M as mob, var/alien)
@@ -1862,7 +2017,7 @@ datum
 			id = "hyperzine"
 			description = "Hyperzine is a highly effective, long lasting, muscle stimulant."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#b7608f" // rgb: 183, 96, 143
 			custom_metabolism = 0.03
 			overdose = REAGENTS_OVERDOSE/2
 
@@ -1877,7 +2032,7 @@ datum
 			id = "cryoxadone"
 			description = "A chemical mixture with almost magical healing powers. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#0000ff" // rgb: 0, 0, 255
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
@@ -1894,7 +2049,7 @@ datum
 			id = "clonexadone"
 			description = "A liquid compound similar to that used in the cloning process. Can be used to 'finish' the cloning process when used in conjunction with a cryo tube."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#00afff" // rgb: 0, 175, 255
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
@@ -2880,14 +3035,14 @@ datum
 			description = "Ramen, deep fried."
 			reagent_state = LIQUID
 			color = "#6F884F" // rgb: 255,255,255 //to-do
-			
+
 		peptobismol
 			name = "Peptobismol"
 			id = "peptobismol"
 			description = "Jesus juice." //You're welcome, guy in the thread that rolled a 69.
 			reagent_state = LIQUID
 			color = "#C8A5DC" // rgb: 200, 165, 220
-			
+
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
 				M.drowsyness = max(M.drowsyness-2*REM, 0)

@@ -20,6 +20,7 @@
 	tracks.AddTracks(bloodDNA,comingdir,goingdir,bloodcolor)
 
 /turf/simulated/Entered(atom/A, atom/OL)
+	var/footstepsound
 	if(movement_disabled && usr.ckey != movement_disabled_exception)
 		usr << "\red Movement is admin-disabled." //This is to identify lag problems
 		return
@@ -35,14 +36,14 @@
 				playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, 1, -3)
 				H.Stun(2)
 				H.Weaken(2)
+			//clown shoes
 			if(istype(H.shoes, /obj/item/clothing/shoes/clown_shoes))
-				var/obj/item/clothing/shoes/clown_shoes/O = H.shoes
 				if(H.m_intent == "run")
-					if(O.footstep >= 2)
-						O.footstep = 0
+					if(M.footstep >= 2)
+						M.footstep = 0
 						playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
 					else
-						O.footstep++
+						M.footstep++
 				else
 					playsound(src, "clownstep", 20, 1)
 			else if(H.shoes)
@@ -50,6 +51,44 @@
 					playsound(src, pick('sound/effects/footsteps/concrete_step2.ogg','sound/effects/footsteps/concrete_step3.ogg','sound/effects/footsteps/concrete_step4.ogg'), 25, 1) // this will get annoying very fast.
 				else
 					playsound(src, 'sound/effects/footsteps/concrete_step5.ogg', 20, 1)
+
+			//shoes
+			if(istype(src, /turf/simulated/floor/grass || /turf/simulated/floor/holofloor/grass))
+				footstepsound = "grassfootsteps"
+			else if(istype(src, /turf/simulated/floor/beach/sand))
+				footstepsound = "sandfootsteps"
+			else if(istype(src, /turf/simulated/floor/beach/water))
+				footstepsound = "waterfootsteps"
+//			else if(istype(src, /turf/simulated/floor/spacedome/concrete))
+//				footstepsound = "concretefootsteps"
+			else if(istype(src, /turf/simulated/floor/wood))
+				footstepsound = "woodfootsteps"
+			else if(istype(src, /turf/simulated/floor/carpet))
+				footstepsound = "carpetfootsteps"
+			else
+				footstepsound = "erikafootsteps"
+
+
+			if(istype(H.shoes, /obj/item/clothing/shoes))
+				if(M.m_intent == "run")
+					if(M.footstep >= 2)
+						M.footstep = 0
+						playsound(src, footstepsound, 100, 1) // this will get annoying very fast.
+					else
+						M.footstep++
+				else
+					playsound(src, footstepsound, 20, 1)
+			//butt
+			if(istype(H.head, /obj/item/clothing/head/butt))
+				if(H.m_intent == "run")
+					if(M.footstep >= 2)
+						M.footstep = 0
+						playsound(src, "buttstep", 100, 1) // this will get annoying very fast.
+					else
+						M.footstep++
+
+				else
+					playsound(src, "buttstep", 30, 1)
 
 			// Tracking blood
 			var/list/bloodDNA = null

@@ -13,7 +13,7 @@
 	possible_transfer_amounts = list(5,10,15,25,30,50)
 	volume = 50
 	flags = FPRINT | TABLEPASS | OPENCONTAINER
-
+	var/main_reagent
 	var/label_text = ""
 
 	var/list/can_be_placed_into = list(

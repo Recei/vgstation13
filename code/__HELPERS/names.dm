@@ -83,7 +83,7 @@ var/religion_name = null
 			random = 13
 		else
 			//get the first word of the Holiday and use that
-			var/i = findtext(Holiday," ",1,0)
+			var/i = findtextEx(Holiday," ",1,0)
 			name = copytext(Holiday,1,i)
 			station_name += name + " "
 
