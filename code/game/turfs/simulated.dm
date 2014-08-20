@@ -46,11 +46,6 @@
 						M.footstep++
 				else
 					playsound(src, "clownstep", 20, 1)
-			else if(H.shoes)
-				if(H.m_intent == "run")
-					playsound(src, pick('sound/effects/footsteps/concrete_step2.ogg','sound/effects/footsteps/concrete_step3.ogg','sound/effects/footsteps/concrete_step4.ogg'), 25, 1) // this will get annoying very fast.
-				else
-					playsound(src, 'sound/effects/footsteps/concrete_step5.ogg', 20, 1)
 
 			//shoes
 			if(istype(src, /turf/simulated/floor/grass || /turf/simulated/floor/holofloor/grass))

@@ -234,7 +234,6 @@ datum
 			reagent_state = LIQUID
 			color = "#402000" //rgb: 64, 32 , 0
 
-
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
 			//	if(prob(20))
@@ -269,10 +268,7 @@ datum
 			id = "vomit"
 			description = "Vomit, usually produced when someone gets drunk as hell."
 			reagent_state = LIQUID
-
-
-
-
+			color = "#cccc00"
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
@@ -287,16 +283,12 @@ datum
 				src = null
 				if(!istype(T, /turf/space))
 					new /obj/effect/decal/cleanable/vomit(T)
-
 		egg
 			name = "egg"
 			id = "egg"
 			description = "It's egg."
 			reagent_state = LIQUID
-
-
-
-
+			color = "#ffff80"
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
@@ -320,29 +312,14 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-			//	if(!istype(T, /turf/space))
-			//		new /obj/effect/decal/cleanable/eggsplat(T)
-
-		synthpoo
-			name = "synthpoo"
-			id = "synthpoo"
-			description = "A synthetic replica of poo. Has the looks and the smell, but it just isn't the same."
-			reagent_state = LIQUID
-
-
-
-
-
-
+				if(!istype(T, /turf/space))
+					new	/obj/effect/decal/cleanable/egg_smudge
 		urine
 			name = "urine"
 			id = "urine"
 			description = "It's pee."
 			reagent_state = LIQUID
-
-
-
-
+			color = "#ffff00" //rgb 255, 255, 0
 
 
 			on_mob_life(var/mob/M)
@@ -353,19 +330,14 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-			//	if(!istype(T, /turf/space))
-			//		new /obj/effect/decal/cleanable/urine(T)
+				if(!istype(T, /turf/space))
+					new /obj/effect/decal/cleanable/urine(T)
 
 		jenkem
 			name = "jenkem"
 			id = "jenkem"
 			description = "A bathtub drug made from human excrement."
 			reagent_state = LIQUID
-
-
-
-
-
 
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
