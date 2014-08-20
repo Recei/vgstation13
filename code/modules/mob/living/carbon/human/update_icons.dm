@@ -429,8 +429,15 @@ proc/get_damage_icon_part(damage_state, body_part)
 	if(update_icons)		update_icons()
 
 /mob/living/carbon/human/update_fire(var/update_icons=1)
-	if(on_fire)
-		overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)
+	if (on_fire) // On fire
+//		overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)  //Old icon
+		switch(fire_stacks)
+			if(1 to 9.9)
+				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming1", "layer"=-FIRE_LAYER)
+			if(10 to 15)
+				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2", "layer"=-FIRE_LAYER)
+			if(15.1 to INFINITY)
+				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3", "layer"=-FIRE_LAYER)
 	else
 		overlays_standing[FIRE_LAYER] = null
 	if(update_icons)		update_icons()
