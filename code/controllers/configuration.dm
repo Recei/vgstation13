@@ -59,6 +59,7 @@
 	var/respawn_as_mouse = 1
 	var/guest_jobban = 1
 	var/usewhitelist = 0
+	var/usebwhitelist = 0 //ZLOPENIS
 	var/kick_inactive = 0				//force disconnect for inactive players
 	var/load_jobs_from_txt = 0
 	var/ToRban = 0
@@ -341,6 +342,9 @@
 
 				if ("usewhitelist")
 					config.usewhitelist = 1
+
+				if ("usebwhitelist")
+					config.usebwhitelist = 1
 
 				if ("feature_object_spell_system")
 					config.feature_object_spell_system = 1
