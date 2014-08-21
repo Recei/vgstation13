@@ -129,7 +129,6 @@ Please contact me on #coderbus IRC. ~Carn x
 	var/previous_damage_appearance // store what the body last looked like, so we only have to update it if something changed
 	var/icon/race_icon
 	var/icon/deform_icon
-	var/burned_hairs  //<sarcasm>I don't know for what this var used</sarcasm>
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 //this proc is messy as I was forced to include some old laggy cloaking code to it so that I don't break cloakers
 //I'll work on removing that stuff by rewriting some of the cloaking stuff at a later date.
@@ -306,7 +305,6 @@ proc/get_damage_icon_part(damage_state, body_part)
 //HAIR OVERLAY
 /mob/living/carbon/human/proc/update_hair(var/update_icons=1)
 	//Reset our hair
-	burned_hairs = 0
 	overlays_standing[HAIR_LAYER]	= null
 
 	var/datum/organ/external/head/head_organ = get_organ("head")
@@ -432,27 +430,6 @@ proc/get_damage_icon_part(damage_state, body_part)
 	if (!targeted_by)
 		overlays_standing[TARGETED_LAYER]	= null
 	if(update_icons)		update_icons()
-
-/mob/living/carbon/human/update_fire(var/update_icons=1)
-	if (on_fire) // On fire
-//		overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)  //Old icon
-		switch(fire_stacks)
-			if(1 to 9.9)
-				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming1", "layer"=-FIRE_LAYER)
-			if(10 to 15)
-				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2", "layer"=-FIRE_LAYER)
-			if(15.1 to INFINITY)
-				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3", "layer"=-FIRE_LAYER)
-				if(prob(50) && !burned_hairs)
-					overlays_standing[HAIR_LAYER] = null
-					f_style = "Shaved"
-					h_style = "Bald"
-					src << "\red <b>YOUR HAIRS BURNS OFF!!!</b>"
-					burned_hairs = 1
-	else
-		overlays_standing[FIRE_LAYER] = null
-	if(update_icons)		update_icons()
-
 
 /* --------------------------------------- */
 //For legacy support.
@@ -828,6 +805,28 @@ proc/get_damage_icon_part(damage_state, body_part)
 	if(update_icons)   update_icons()
 
 
+//Fire icons
+/mob/living/carbon/human/update_fire(var/update_icons=1)
+	if (on_fire) // On fire
+//		overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)  //Old icon
+		switch(fire_stacks)
+			if(1 to 9.9)
+				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming1")//, "layer"=-FIRE_LAYER)
+			if(10 to 15)
+				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2")//, "layer"=-FIRE_LAYER)
+			if(15.1 to INFINITY)
+				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3")//, "layer"=-FIRE_LAYER)
+				if(prob(50) && f_style != "Shaved" && h_style != "Bald")
+					overlays_standing[HAIR_LAYER] = null
+					f_style = "Shaved"
+					h_style = "Bald"
+					src << "\red <b>YOUR HAIRS BURNS OFF!!!</b>"
+	else
+		overlays_standing[FIRE_LAYER] = null
+	if(update_icons)		update_icons()
+
+
+
 /mob/living/carbon/human/update_inv_r_hand(var/update_icons=1)
 	if(r_hand)
 		r_hand.screen_loc = ui_rhand	//TODO
@@ -897,7 +896,6 @@ proc/get_damage_icon_part(damage_state, body_part)
 	return face_lying_image
 
 //Human Overlays Indexes/////////
-#undef FIRE_LAYER
 #undef MUTANTRACE_LAYER
 #undef MUTATIONS_LAYER
 #undef DAMAGE_LAYER
@@ -916,6 +914,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 #undef HEAD_LAYER
 #undef HANDCUFF_LAYER
 #undef LEGCUFF_LAYER
+#undef FIRE_LAYER
 #undef L_HAND_LAYER
 #undef R_HAND_LAYER
 #undef TAIL_LAYER
