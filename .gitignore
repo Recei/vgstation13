@@ -32,3 +32,5 @@ info.json
 /bot/config.yml
 /bot/data
 /analysis
+data/investigate/singulo.html
+data/ban_unban_log.txt
