@@ -147,9 +147,9 @@ datum
 							M.contract_disease(D, 1, 0)
 				if(self.data && self.data["virus2"] && istype(M, /mob/living/carbon))//infecting...
 					if(method == TOUCH)
-						infect_virus2(M,self.data["virus2"])
+						infect_virus2(M,self.data["virus2"], notes="(Contact with blood)")
 					else
-						infect_virus2(M,self.data["virus2"],1) //injected, force infection!
+						infect_virus2(M,self.data["virus2"],1, notes="(INJECTED)") //injected, force infection!
 				if(self.data && self.data["antibodies"] && istype(M, /mob/living/carbon))//... and curing
 					var/mob/living/carbon/C = M
 					C.antibodies |= self.data["antibodies"]
