@@ -487,7 +487,7 @@ var/global/deepfry_nutriment = 1
 	icon_state = "egg"
 	New()
 		..()
-		reagents.add_reagent("nutriment", 1)
+		reagents.add_reagent("egg", 1)
 
 	throw_impact(atom/hit_atom)
 		..()

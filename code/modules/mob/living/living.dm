@@ -308,6 +308,7 @@
 	traumatic_shock = 0
 	radiation = 0
 	nutrition = 400
+	hydration = 400
 	bodytemperature = 310
 	sdisabilities = 0
 	disabilities = 0

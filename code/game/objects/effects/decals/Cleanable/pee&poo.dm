@@ -14,7 +14,7 @@
 //	blood_type = null
 
 /obj/effect/decal/cleanable/poo/New()
-	src.icon = 'pooeffect.dmi'
+	src.icon = 'icons/effects/pooeffect.dmi'
 	src.icon_state = pick(src.random_icon_states)
 //	spawn(5) src.reagents.add_reagent("poo",5)
 	spawn(400)
@@ -30,7 +30,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'pooeffect.dmi'
+	icon = 'icons/effects/pooeffect.dmi'
 	icon_state = "drip1"
 	random_icon_states = list("drip1", "drip2", "drip3", "drip4", "drip5")
 //	blood_DNA = null
@@ -93,7 +93,7 @@
 	density = 0
 	anchored = 1
 	layer = 2
-	icon = 'pooeffect.dmi'
+	icon = 'icons/effects/pooeffect.dmi'
 	icon_state = "pee1"
 	random_icon_states = list("pee1", "pee2", "pee3")
 //	var/datum/disease/virus = null

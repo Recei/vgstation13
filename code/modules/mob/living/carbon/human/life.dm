@@ -916,9 +916,15 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		if (nutrition > 0 && stat != 2)
 			nutrition = max (0, nutrition - HUNGER_FACTOR)
 
+		if (hydration > 0 && stat != 2)
+			hydration = max (0, hydration - THIRST_FACTOR)
+
 		if (nutrition > 450)
 			if(overeatduration < 600) //capped so people don't take forever to unfat
 				overeatduration++
+		if (hydration > 450)
+			if(overdrinkduration < 600)
+				overdrinkduration++
 		else
 			if(overeatduration > 1)
 				if(M_OBESITY in mutations)

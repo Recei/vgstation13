@@ -195,6 +195,9 @@
 		if (nutrition > 0)
 			nutrition-= HUNGER_FACTOR
 
+		if (hydration > 0)
+			hydration -= THIRST_FACTOR
+
 		if (drowsyness)
 			drowsyness--
 			eye_blurry = max(2, eye_blurry)

@@ -878,6 +878,7 @@
 			else
 				if (src.w_uniform)
 					message = "<B>[src]</B> poos in their uniform."
+					src.w_uniform.add_poo()
 					playsound(src.loc, 'fart.ogg', 60, 1)
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
 					src.nutrition -= 80
@@ -918,6 +919,82 @@
 										S.fields["criminal"] = "*Arrest*"
 										S.fields["mi_crim"] = "Public defecation"
 										break
+
+		if(("pee") || ("urinate") || ("piss"))
+			if(!src.reagents || src.hydration <= 300)
+				message = "<B>[src]</B> attempts to urinate but nothing comes out."
+			else
+				if (src.w_uniform)
+					message = "<B>[src]</B> urinates in their uniform."
+					src.hydration -= 80
+				else
+					var/obj/effect/decal/cleanable/urine/D = new/obj/effect/decal/cleanable/urine(src.loc)
+					if(src.reagents)
+						src.reagents.trans_to(D, 10)
+					message = "<B>[src]</B> urinates themselves."
+					src.hydration -= 80
+					m_type = 1
+				// check for being in sight of a working security camera
+					if(seen_by_camera(src))
+						// determine the name of the perp (goes by ID if wearing one)
+						var/perpname = src.name
+						if(!/obj/item/device/pda && src:wear_id && src:wear_id:registered_name)
+							perpname = src:wear_id:registered_name
+						else
+							perpname = src.name
+
+						// find the matching security record
+						for(var/datum/data/record/R in data_core.general)
+							if(R.fields["name"] == perpname)
+								for (var/datum/data/record/S in data_core.security)
+									if (S.fields["id"] == R.fields["id"])
+										// now add to rap sheet
+										S.fields["criminal"] = "*Arrest*"
+										S.fields["mi_crim"] = "Public urination"
+										break
+					for(var/mob/M in viewers(src, null))
+						if(!M.stat && getBrainLoss() >= 60)
+							spawn(10)
+								if(prob(20))
+									switch(pick(1,2,3))
+										if(1)
+											M.say("[M == src ? "i" : src.name] made pee pee, heeheeheeeeeeee!")
+										if(2)
+											M.emote("giggle")
+										if(3)
+											M.emote("clap")
+
+		if(("vomit") || ("puke") || ("throwup"))
+			if(!lastpuke)
+				lastpuke = 1
+			if(!src.reagents || src.nutrition <= 300)
+				message = "<B>[src]</B> attempts to vomit but nothing comes out."
+			else
+				Stun(5)
+				if(src.species.name == "Tajaran")
+					src.visible_message("<span class='warning'>[src] hacks up a hairball!</span>","<span class='warning'>You hack up a hairball!</span>")
+				else
+					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
+				var/obj/effect/decal/cleanable/vomit/V = new/obj/effect/decal/cleanable/vomit(src.loc)
+				if(src.reagents)
+					src.reagents.trans_to(V, 10)
+				playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+				if(src.dizziness)
+					src.dizziness -= rand(2,15)
+				if(src.drowsyness)
+					src.drowsyness -= rand(2,15)
+				if(src.stuttering)
+					src.stuttering -= rand(2,15)
+				if(src.confused)
+					src.confused -= rand(2,15)
+				if(src.species.name != "Tajaran")
+					src.nutrition -= 40
+					src.hydration -= 40
+					adjustToxLoss(-3)
+				spawn(350)	//wait 35 seconds before next volley
+					lastpuke = 0
+			m_type = 1
+
 		if ("help")
 			src << "blink, blink_r, blush, bow-(none)/mob, burp, choke, chuckle, clap, collapse, cough,\ncry, custom, deathgasp, drool, eyebrow, frown, gasp, giggle, groan, grumble, handshake, hug-(none)/mob, glare-(none)/mob,\ngrin, laugh, look-(none)/mob, moan, mumble, nod, pale, point-atom, raise, salute, shake, shiver, shrug,\nsigh, signal-#1-10, smile, sneeze, sniff, snore, stare-(none)/mob, tremble, twitch, twitch_s, whimper,\nwink, yawn"
 

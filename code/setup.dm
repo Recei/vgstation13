@@ -79,8 +79,9 @@ var/global/disable_vents     = 0
 // Doors!
 #define DOOR_CRUSH_DAMAGE 10
 
-// Factor of how fast mob nutrition decreases
+// Factor of how fast mob nutrition/hydration decreases
 #define HUNGER_FACTOR 0.12
+#define THIRST_FACTOR 0.12
 
 // How many units of reagent are consumed per tick, by default.
 #define REAGENTS_METABOLISM 0.2

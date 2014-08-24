@@ -498,6 +498,14 @@ proc/get_damage_icon_part(damage_state, body_part)
 			bloodsies.color		= w_uniform.blood_color
 			standing.overlays	+= bloodsies
 
+		if(w_uniform.poo_overlay)
+			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "uniformpoo")
+			standing.overlays	+= poosies
+
+		if(w_uniform.egg_overlay)
+			var/image/eggsies	= image("icon" = 'icons/effects/eggeffect.dmi', "icon_state" = "uniformegg")
+			standing.overlays	+= eggsies
+
 		if(w_uniform:hastie)	//WE CHECKED THE TYPE ABOVE. THIS REALLY SHOULD BE FINE.
 			var/tie_color = w_uniform:hastie._color
 			if(!tie_color) tie_color = w_uniform:hastie.icon_state
@@ -553,6 +561,14 @@ proc/get_damage_icon_part(damage_state, body_part)
 			var/image/bloodsies	= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "bloodyhands")
 			bloodsies.color = gloves.blood_color
 			standing.overlays	+= bloodsies
+
+		if(gloves.poo_overlay)
+			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "poohands")
+			standing.overlays	+= poosies
+
+		if(gloves.egg_overlay)
+			var/image/eggsies	= image("icon" = 'icons/effects/eggeffect.dmi', "icon_state" = "egghands")
+			standing.overlays	+= eggsies
 		gloves.screen_loc = ui_gloves
 		overlays_standing[GLOVES_LAYER]	= standing
 	else
@@ -619,6 +635,14 @@ proc/get_damage_icon_part(damage_state, body_part)
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "shoeblood")
 			bloodsies.color = shoes.blood_color
 			standing.overlays	+= bloodsies
+
+		if(shoes.poo_overlay)
+			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "shoepoo")
+			standing.overlays	+= poosies
+
+		if(shoes.egg_overlay)
+			var/image/eggsies	= image("icon" = 'icons/effects/eggeffect.dmi', "icon_state" = "shoeegg")
+			standing.overlays	+= eggsies
 		overlays_standing[SHOES_LAYER]	= standing
 	else
 		overlays_standing[SHOES_LAYER]		= null
@@ -653,6 +677,13 @@ proc/get_damage_icon_part(damage_state, body_part)
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "helmetblood")
 			bloodsies.color = head.blood_color
 			standing.overlays	+= bloodsies
+		if(head.poo_overlay)
+			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "helmetpoo")
+			standing.overlays	+= poosies
+
+		if(head.egg_overlay)
+			var/image/eggsies	= image("icon" = 'icons/effects/eggeffect.dmi', "icon_state" = "helmetegg")
+			standing.overlays	+= eggsies
 		overlays_standing[HEAD_LAYER]	= standing
 	else
 		overlays_standing[HEAD_LAYER]	= null
@@ -706,6 +737,16 @@ proc/get_damage_icon_part(damage_state, body_part)
 			bloodsies.color = wear_suit.blood_color
 			standing.overlays	+= bloodsies
 
+		if(wear_suit.poo_overlay)
+			var/obj/item/clothing/suit/S = wear_suit
+			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "[S.blood_overlay_type]poo")
+			standing.overlays	+= poosies
+
+		if(wear_suit.egg_overlay)
+			var/obj/item/clothing/suit/S = wear_suit
+			var/image/eggsies	= image("icon" = 'icons/effects/eggeffect.dmi', "icon_state" = "[S.blood_overlay_type]egg")
+			standing.overlays	+= eggsies
+
 		overlays_standing[SUIT_LAYER]	= standing
 
 		update_tail_showing(0)
@@ -741,6 +782,13 @@ proc/get_damage_icon_part(damage_state, body_part)
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "maskblood")
 			bloodsies.color = wear_mask.blood_color
 			standing.overlays	+= bloodsies
+		if( !istype(wear_mask, /obj/item/clothing/mask/cigarette) && wear_mask.poo_overlay)
+			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "maskpoo")
+			standing.overlays	+= poosies
+
+		if( !istype(wear_mask, /obj/item/clothing/mask/cigarette) && wear_mask.egg_overlay)
+			var/image/eggsies	= image("icon" = 'icons/effects/eggeffect.dmi', "icon_state" = "maskegg")
+			standing.overlays	+= eggsies
 		overlays_standing[FACEMASK_LAYER]	= standing
 	else
 		overlays_standing[FACEMASK_LAYER]	= null

@@ -245,18 +245,18 @@ datum
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				src = null
-			//	if(istype(M, /mob/living/carbon/human) && method==TOUCH)
-			//		if(M:wear_suit) M:wear_suit.add_poo()
-			//		if(M:w_uniform) M:w_uniform.add_poo()
-			//		if(M:shoes) M:shoes.add_poo()
-			//		if(M:gloves) M:gloves.add_poo()
-			//		if(M:head) M:head.add_poo()
-				//if(method==INGEST)
-				//	if(prob(20))
+				if(istype(M, /mob/living/carbon/human) && method==TOUCH)
+					if(M:wear_suit) M:wear_suit.add_poo()
+					if(M:w_uniform) M:w_uniform.add_poo()
+					if(M:shoes) M:shoes.add_poo()
+					if(M:gloves) M:gloves.add_poo()
+					if(M:head) M:head.add_poo()
+				if(method==INGEST)
+					if(prob(20))
 					//	M.contract_disease(new /datum/disease/gastric_ejections)
 					//	holder.add_reagent("gastricejections", 1)
-					//	M:toxloss += 0.1
-					//	holder.remove_reagent(src.id, 0.2)
+						M:toxloss += 0.1
+						holder.remove_reagent(src.id, 0.2)
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
@@ -298,12 +298,12 @@ datum
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				src = null
-			//	if(istype(M, /mob/living/carbon/human) && method==TOUCH)
-			//		if(M:wear_suit) M:wear_suit.add_egg()
-			//		if(M:w_uniform) M:w_uniform.add_egg()
-			//		if(M:shoes) M:shoes.add_egg()
-			//		if(M:gloves) M:gloves.add_egg()
-			//		if(M:head) M:head.add_egg()
+				if(istype(M, /mob/living/carbon/human) && method==TOUCH)
+					if(M:wear_suit) M:wear_suit.add_egg()
+					if(M:w_uniform) M:w_uniform.add_egg()
+					if(M:shoes) M:shoes.add_egg()
+					if(M:gloves) M:gloves.add_egg()
+					if(M:head) M:head.add_egg()
 				if(method==INGEST)
 					if(prob(20))
 				//		M.contract_disease(new /datum/disease/gastric_ejections) //we dont have salmonella, this is pretty similar though.

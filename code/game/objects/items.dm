@@ -2,6 +2,8 @@
 	name = "item"
 	icon = 'icons/obj/items.dmi'
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
+	var/image/poo_overlay = null
+	var/image/egg_overlay = null
 	var/abstract = 0
 	var/item_state = null
 	var/r_speed = 1.0
@@ -746,6 +748,49 @@
 	for(var/obj/item/A in world)
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
+
+/obj/item/proc/add_poo()
+	if(!poo_overlay)
+		generate_poo_overlay()
+
+/obj/item/proc/clean_poo()
+	. = ..()
+	if(poo_overlay)
+		overlays.Remove(poo_overlay)
+
+/obj/item/proc/generate_poo_overlay()
+	if(poo_overlay)
+		return
+
+	var/icon/I = new /icon(icon, icon_state)
+	I.Blend(new /icon('icons/effects/pooeffect.dmi', rgb(255,255,255)),ICON_ADD) //fills the icon_state with white (except where it's transparent)
+	I.Blend(new /icon('icons/effects/pooeffect.dmi', "itempoo"),ICON_MULTIPLY) //adds poo and the remaining white areas become transparant
+
+	for(var/obj/item/A in world)
+		if(A.type == type && !A.poo_overlay)
+			A.poo_overlay = image(I)
+
+/obj/item/proc/add_egg()
+	if(!egg_overlay)
+		generate_egg_overlay()
+
+/obj/item/proc/clean_egg()
+	. = ..()
+	if(egg_overlay)
+		overlays.Remove(egg_overlay)
+
+/obj/item/proc/generate_egg_overlay()
+	if(egg_overlay)
+		return
+
+	var/icon/I = new /icon(icon, icon_state)
+	I.Blend(new /icon('icons/effects/eggeffect.dmi', rgb(255,255,255)),ICON_ADD) //fills the icon_state with white (except where it's transparent)
+	I.Blend(new /icon('icons/effects/eggeffect.dmi', "itemegg"),ICON_MULTIPLY) //adds egg and the remaining white areas become transparant
+
+	for(var/obj/item/A in world)
+		if(A.type == type && !A.egg_overlay)
+			A.egg_overlay = image(I)
+
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))

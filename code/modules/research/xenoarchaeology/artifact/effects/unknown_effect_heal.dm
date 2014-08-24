@@ -19,6 +19,7 @@
 				//H:heal_organ_damage(25, 25)
 				H.vessel.add_reagent("blood",5)
 				H.nutrition += 50 * weakness
+				H.hydration += 50 * weakness
 				H.adjustBrainLoss(-25 * weakness)
 				H.radiation -= min(H.radiation, 25 * weakness)
 				H.bodytemperature = initial(H.bodytemperature)
