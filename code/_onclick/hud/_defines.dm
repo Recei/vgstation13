@@ -78,6 +78,7 @@
 
 //Middle right (status indicators)
 #define ui_nutrition "14:28,5:11"
+#define ui_hydration "14:28,4:9"
 #define ui_temp "14:28,6:13"
 #define ui_health "14:28,7:15"
 #define ui_internal "14:28,8:17"

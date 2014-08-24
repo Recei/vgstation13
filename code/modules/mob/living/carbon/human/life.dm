@@ -1302,6 +1302,15 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 					if(150 to 250)					nutrition_icon.icon_state = "nutrition3"
 					else							nutrition_icon.icon_state = "nutrition4"
 
+			if(hydration_icon)
+				switch(hydration)
+					if(450 to INFINITY)				hydration_icon.icon_state = "hydration0"
+					if(350 to 450)					hydration_icon.icon_state = "hydration1"
+					if(250 to 350)					hydration_icon.icon_state = "hydration2"
+					if(150 to 250)					hydration_icon.icon_state = "hydration3"
+					else							hydration_icon.icon_state = "hydration4"
+
+
 			if(pressure)
 				pressure.icon_state = "pressure[pressure_alert]"
 
