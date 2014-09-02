@@ -66,6 +66,24 @@
 
 //end intent small hud objects
 
+	using = new /obj/screen() //Right hud bar
+	using.dir = SOUTH
+	using.screen_loc = "EAST+1,SOUTH to EAST+1,NORTH"
+	using.layer = 18
+	adding += using
+
+	using = new /obj/screen() //Lower hud bar
+	using.dir = EAST
+	using.screen_loc = "WEST,SOUTH-1 to EAST,SOUTH-1"
+	using.layer = 18
+	adding += using
+
+	using = new /obj/screen() //Corner Button
+	using.dir = NORTHWEST
+	using.screen_loc = "EAST+1,SOUTH-1"
+	using.layer = 18
+	adding += using
+
 	using = new /obj/screen()
 	using.name = "mov_intent"
 	using.dir = SOUTHWEST

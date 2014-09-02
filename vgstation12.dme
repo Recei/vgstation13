@@ -23,6 +23,7 @@
 #define FILE_DIR "icons"
 #define FILE_DIR "icons/48x48"
 #define FILE_DIR "icons/ass"
+#define FILE_DIR "icons/declare_icons"
 #define FILE_DIR "icons/effects"
 #define FILE_DIR "icons/mecha"
 #define FILE_DIR "icons/misc"
@@ -1529,6 +1530,7 @@
 #include "code\modules\virus2\helpers.dm"
 #include "code\modules\virus2\isolator.dm"
 #include "code\modules\virus2\items_devices.dm"
+#include "code\modules\whitelist\whitelist.dm"
 #include "code\WorkInProgress\autopsy.dm"
 #include "code\WorkInProgress\buildmode.dm"
 #include "code\WorkInProgress\explosion_particles.dm"
@@ -1591,6 +1593,12 @@
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
 #include "maps\tgstation.dmm"
+#include "maps\Ministation\misc.dm"
+#include "maps\Ministation\supplypacks.dm"
+#include "maps\Ministation\telecomms.dm"
+#include "maps\Ministation\uplink_item.dm"
+#include "maps\Ministation\job\jobs.dm"
+#include "maps\Ministation\job\removed.dm"
 // END_INCLUDE
 // DM Environment file for baystation12.dme.
 // All manual changes should be made outside the BEGIN_ and END_ blocks.
