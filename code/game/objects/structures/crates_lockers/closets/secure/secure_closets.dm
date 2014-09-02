@@ -77,6 +77,10 @@
 		desc = "It appears to be broken."
 		icon_state = icon_off
 		flick(icon_broken, src)
+	//	var/icon/broken_overlay = image("icon"='icons/obj/closet2.dmi', "icon_state"= "brokenoverlay")
+	//	overlays += broken_overlay
+	//	spawn(10)
+	//		overlays -= broken_overlay
 		if(istype(W, /obj/item/weapon/melee/energy/blade))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
