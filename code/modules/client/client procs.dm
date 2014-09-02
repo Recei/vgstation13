@@ -416,5 +416,11 @@
 		'icons/xenoarch_icons/chart1.jpg',
 		'icons/xenoarch_icons/chart2.jpg',
 		'icons/xenoarch_icons/chart3.jpg',
-		'icons/xenoarch_icons/chart4.jpg'
+		'icons/xenoarch_icons/chart4.jpg',
+		'icons/declare_icons/assistant.png',
+		'icons/declare_icons/ready.png',
+		'icons/declare_icons/cancel.png',
+		'icons/declare_icons/ghost.png',
+		'icons/declare_icons/join_late.png',
+		'icons/declare_icons/manifest.png'
 		)
