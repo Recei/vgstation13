@@ -23,6 +23,7 @@ var/global/datum/controller/occupations/job_master
 			var/datum/job/job = new J()
 			if(!job)	continue
 			if(job.faction != faction)	continue
+			if(!job.config_check()) continue //So you can disable jobs
 			occupations += job
 
 

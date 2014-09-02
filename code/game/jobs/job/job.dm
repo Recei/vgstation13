@@ -75,3 +75,6 @@
 		return 0
 
 	return max(0, minimal_player_age - C.player_age)
+
+/datum/job/proc/config_check()
+	return 1
