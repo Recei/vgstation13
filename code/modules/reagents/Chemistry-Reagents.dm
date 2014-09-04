@@ -23,6 +23,7 @@ datum
 		var/list/data = null
 		var/volume = 0
 		var/nutriment_factor = 0
+		var/hydration_factor = 0 //Such copypasta, but is there another way?
 		var/custom_metabolism = REAGENTS_METABOLISM
 		var/overdose = 0
 		var/overdose_dam = 1
@@ -234,16 +235,14 @@ datum
 			reagent_state = LIQUID
 			color = "#402000" //rgb: 64, 32 , 0
 
-			on_mob_life(var/mob/M)
+			on_mob_life(var/mob/living/M)
 				if(!M) M = holder.my_atom
-			//	if(prob(20))
-				//	M.contract_disease(new /datum/disease/gastric_ejections)
-				M:toxloss += 0.1
+				M.adjustToxLoss(0.1*REM)
 				holder.remove_reagent(src.id, 0.2)
 				..()
 				return
 
-			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 				src = null
 				if(istype(M, /mob/living/carbon/human) && method==TOUCH)
 					if(M:wear_suit) M:wear_suit.add_poo()
@@ -253,8 +252,9 @@ datum
 					if(M:head) M:head.add_poo()
 				if(method==INGEST)
 					if(prob(20))
-					//	M.contract_disease(new /datum/disease/gastric_ejections)
-					//	holder.add_reagent("gastricejections", 1)
+						if(ishuman(M))
+							var/mob/living/carbon/human/H = M
+							H.vomit()
 						M:toxloss += 0.1
 						holder.remove_reagent(src.id, 0.2)
 
@@ -270,11 +270,9 @@ datum
 			reagent_state = LIQUID
 			color = "#cccc00"
 
-			on_mob_life(var/mob/M)
+			on_mob_life(var/mob/living/M)
 				if(!M) M = holder.my_atom
-				if(prob(5))
-					M:toxloss += 0.5
-			//		M.contract_disease(new /datum/disease/gastric_ejections)
+				M.adjustToxLoss(0.1)
 				holder.remove_reagent(src.id, 0.2)
 				..()
 				return
@@ -283,6 +281,12 @@ datum
 				src = null
 				if(!istype(T, /turf/space))
 					new /obj/effect/decal/cleanable/vomit(T)
+
+			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
+				if(method==INGEST)
+					if(prob(20) && ishuman(M))
+						var/mob/living/carbon/human/H = M
+						H.vomit()
 		egg
 			name = "egg"
 			id = "egg"
@@ -296,7 +300,7 @@ datum
 				..()
 				return
 
-			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 				src = null
 				if(istype(M, /mob/living/carbon/human) && method==TOUCH)
 					if(M:wear_suit) M:wear_suit.add_egg()
@@ -305,9 +309,8 @@ datum
 					if(M:gloves) M:gloves.add_egg()
 					if(M:head) M:head.add_egg()
 				if(method==INGEST)
+					M.adjustToxLoss(0.1)
 					if(prob(20))
-				//		M.contract_disease(new /datum/disease/gastric_ejections) //we dont have salmonella, this is pretty similar though.
-						M:toxloss += 0.1
 						holder.remove_reagent(src.id, 0.2)
 
 			reaction_turf(var/turf/T, var/volume)
@@ -319,19 +322,35 @@ datum
 			id = "urine"
 			description = "It's pee."
 			reagent_state = LIQUID
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#ffff00" //rgb 255, 255, 0
 
-
-			on_mob_life(var/mob/M)
+			on_mob_life(var/mob/living/M)
 				if(!M) M = holder.my_atom
-				M:toxloss -= 0.3
+				M.hydration += hydration_factor*REM
+				M.adjustToxLoss(0.1)
 				..()
 				return
+
+			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
+				src = null
+				if(method==INGEST)
+					if(prob(20) && ishuman(M))
+						var/mob/living/carbon/human/H = M
+						H.vomit()
+					M.adjustToxLoss(0.1)
+					M.hydration += hydration_factor*REM
+					if(prob(20))
+						if(ishuman(M))
+							var/mob/living/carbon/human/H = M
+							H.vomit()
+						holder.remove_reagent(src.id, 0.2)
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				if(!istype(T, /turf/space))
 					new /obj/effect/decal/cleanable/urine(T)
+
 
 		jenkem
 			name = "jenkem"
@@ -339,14 +358,12 @@ datum
 			description = "A bathtub drug made from human excrement."
 			reagent_state = LIQUID
 
-			on_mob_life(var/mob/M)
+			on_mob_life(var/mob/living/M)
 				if(!M) M = holder.my_atom
-				M:brainloss += 2
+				M.adjustBrainLoss(2)
 				M.druggy = max(M.druggy, 10)
 				if(M.canmove) step(M, pick(cardinal))
 				if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
-			//	if(prob(5))
-			//		M.contract_disease(new /datum/disease/gastric_ejections)
 				..()
 				return
 
@@ -355,15 +372,23 @@ datum
 				if(!istype(T, /turf/space))
 					new /obj/effect/decal/cleanable/poo(T)
 
+			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
+				if(method==INGEST)
+					if(prob(20) && ishuman(M))
+						var/mob/living/carbon/human/H = M
+						H.vomit()
+
 		water
 			name = "Water"
 			id = "water"
 			description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
 			reagent_state = LIQUID
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#0064C8" // rgb: 0, 100, 200
 			custom_metabolism = 0.01
 
 			on_mob_life(var/mob/living/M as mob,var/alien)
+				M.hydration += hydration_factor*REM
 				if(ishuman(M))
 					var/mob/living/carbon/human/H = M
 					if(H.species.name=="Grey")
@@ -770,6 +795,7 @@ datum
 			id = "holywater"
 			description = "An ashen-obsidian-water mix, this solution will alter certain sections of the brain's rationality."
 			reagent_state = LIQUID
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#0064C8" // rgb: 0, 100, 200
 
 
@@ -778,6 +804,7 @@ datum
 					O.blessed=1
 
 			on_mob_life(var/mob/living/M as mob,var/alien)
+				M.hydration += hydration_factor*REM
 				if(ishuman(M))
 					if((M.mind in ticker.mode.cult) && prob(10))
 						M << "\blue A cooling sensation from inside you brings you an untold calmness."
@@ -1043,8 +1070,10 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M.nutrition += 1*REM
+				M.hydration -= 1*REM
 				..()
 				return
+
 
 		sacid
 			name = "Sulphuric acid"
@@ -1369,11 +1398,13 @@ datum
 			description = "A mixture of water, milk, and oxygen. Virus cells can use this mixture to reproduce."
 			reagent_state = LIQUID
 			nutriment_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#899613" // rgb: 137, 150, 19
 
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
 				M.nutrition += nutriment_factor*REM
+				M.hydration += hydration_factor*REM
 				..()
 				return
 
@@ -1847,9 +1878,9 @@ datum
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
 				M.drowsyness = max(M.drowsyness-5, 0)
-				M.AdjustParalysis(-1)
-				M.AdjustStunned(-1)
-				M.AdjustWeakened(-1)
+				M.AdjustParalysis(-4)
+				M.AdjustStunned(-4)
+				M.AdjustWeakened(-4)
 				if(holder.has_reagent("mindbreaker"))
 					holder.remove_reagent("mindbreaker", 5)
 				M.hallucination = max(0, M.hallucination - 10)
@@ -2163,13 +2194,6 @@ datum
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		holywater
-			name = "Holy Water"
-			id = "holywater"
-			description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
-			reagent_state = LIQUID
-			color = "#535E66" // rgb: 83, 94, 102
-
 		nanites
 			name = "Nanomachines"
 			id = "nanites"
@@ -2394,7 +2418,12 @@ datum
 			description = "A salty sauce made from the soy plant."
 			reagent_state = LIQUID
 			nutriment_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#792300" // rgb: 121, 35, 0
+
+			on_mob_life(var/mob/living/M as mob)
+				if(!M) M = holder.my_atom
+				M.hydration -= hydration_factor
 
 		ketchup
 			name = "Ketchup"
@@ -2552,7 +2581,12 @@ datum
 			id = "sodiumchloride"
 			description = "A salt made of sodium chloride. Commonly used to season food."
 			reagent_state = SOLID
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#FFFFFF" // rgb: 255,255,255
+
+			on_mob_life(var/mob/living/M as mob)
+				if(!M) M = holder.my_atom
+				M.hydration -= hydration_factor
 
 		creatine
 			name = "Creatine"
@@ -2652,12 +2686,14 @@ datum
 			description = "Made with love! And coco beans."
 			reagent_state = LIQUID
 			nutriment_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#403010" // rgb: 64, 48, 16
 
 			on_mob_life(var/mob/living/M as mob)
 				if (M.bodytemperature < 310)//310 is the normal bodytemp. 310.055
 					M.bodytemperature = min(310, M.bodytemperature + (5 * TEMPERATURE_DAMAGE_COEFFICIENT))
 				M.nutrition += nutriment_factor
+				M.hydration += hydration_factor
 				..()
 				return
 
@@ -3046,6 +3082,7 @@ datum
 			description = "Uh, some kind of drink."
 			reagent_state = LIQUID
 			nutriment_factor = 1 * REAGENTS_METABOLISM
+			hydration_factor = 2 * REAGENTS_METABOLISM
 			color = "#E78108" // rgb: 231, 129, 8
 			var/adj_dizzy = 0
 			var/adj_drowsy = 0
@@ -3055,6 +3092,7 @@ datum
 			on_mob_life(var/mob/living/M as mob)
 				if(!M) M = holder.my_atom
 				M.nutrition += nutriment_factor
+				M.hydration += hydration_factor
 				holder.remove_reagent(src.id, FOOD_METABOLISM)
 				if (adj_dizzy) M.dizziness = max(0,M.dizziness + adj_dizzy)
 				if (adj_drowsy)	M.drowsyness = max(0,M.drowsyness + adj_drowsy)
