@@ -193,6 +193,8 @@
 		return
 
 	if (istype(W, /obj/item/device/core_sampler))
+		if(!geologic_data)
+			geologic_data = new/datum/geosample(src)
 		geologic_data.UpdateNearbyArtifactInfo(src)
 		var/obj/item/device/core_sampler/C = W
 		C.sample_item(src, user)
@@ -324,6 +326,8 @@
 			while(next_rock > 100)
 				next_rock -= 100
 				var/obj/item/weapon/ore/O = new(src)
+				if(!geologic_data)
+					geologic_data = new/datum/geosample(src)
 				geologic_data.UpdateNearbyArtifactInfo(src)
 				O.geologic_data = geologic_data
 
@@ -385,6 +389,8 @@
 		X = new /obj/item/weapon/archaeological_find(src, new_item_type = F.find_type)
 	else
 		X = new /obj/item/weapon/ore/strangerock(src, inside_item_type = F.find_type)
+		if(!geologic_data)
+			geologic_data = new/datum/geosample(src)
 		geologic_data.UpdateNearbyArtifactInfo(src)
 		X:geologic_data = geologic_data
 

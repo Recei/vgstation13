@@ -604,9 +604,10 @@
 			sleep(1)		// was 1
 			var/obj/structure/disposalpipe/curr = loc
 			last = curr
-			curr = curr.transfer(src)
 			if(!curr)
 				last.expel(src, loc, dir)
+			curr = curr.transfer(src)
+
 
 			//
 			if(!(count--))
@@ -765,6 +766,9 @@
 	//
 
 	proc/expel(var/obj/structure/disposalholder/H, var/turf/T, var/direction)
+
+		if(istype(src, /obj/structure/disposalpipe/trunk))
+			T = get_turf(src)
 
 		var/turf/target
 
