@@ -1,6 +1,5 @@
 var/CMinutes = null
 var/savefile/Banlist
-var/list/bwhitelist
 
 
 /proc/CheckBan(var/ckey, var/id, var/address)
