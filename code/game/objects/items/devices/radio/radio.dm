@@ -707,6 +707,9 @@ var/GLOBAL_RADIO_TYPE = 1 // radio type to use
 		channels[ch_name] = 0
 	..()
 
+/obj/item/device/radio/cool
+	icon_state = "walkietalkie_cool"
+
 ///////////////////////////////
 //////////Borg Radios//////////
 ///////////////////////////////

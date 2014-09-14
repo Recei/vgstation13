@@ -228,6 +228,17 @@
 				var/mob/living/L = usr
 				L.resist()
 
+		if("rest")
+			if(isliving(usr))
+				var/mob/living/L = usr
+				L.lay_down()
+
+		if("health")
+			if(ishuman(usr))
+				var/mob/living/carbon/human/H = usr
+				H.help_shake_act(H)
+
+
 		if("mov_intent")
 			if(iscarbon(usr))
 				var/mob/living/carbon/C = usr
@@ -365,16 +376,16 @@
 			usr.a_intent_change("right")
 		if("help")
 			usr.a_intent = "help"
-			usr.hud_used.action_intent.icon_state = "intent_help"
+			usr.hud_used.action_intent.icon_state = "help"
 		if("harm")
 			usr.a_intent = "hurt"
-			usr.hud_used.action_intent.icon_state = "intent_hurt"
+			usr.hud_used.action_intent.icon_state = "hurt"
 		if("grab")
 			usr.a_intent = "grab"
-			usr.hud_used.action_intent.icon_state = "intent_grab"
+			usr.hud_used.action_intent.icon_state = "grab"
 		if("disarm")
 			usr.a_intent = "disarm"
-			usr.hud_used.action_intent.icon_state = "intent_disarm"
+			usr.hud_used.action_intent.icon_state = "disarm"
 
 		if("pull")
 			usr.stop_pulling()

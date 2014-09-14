@@ -101,6 +101,8 @@ var/datum/global_hud/global_hud = new()
 	var/obj/screen/l_hand_hud_object
 	var/obj/screen/action_intent
 	var/obj/screen/move_intent
+	var/obj/screen/rest_hud_object
+	var/obj/screen/swaphands_hud_object
 
 	var/list/adding
 	var/list/other
@@ -116,9 +118,7 @@ datum/hud/New(mob/owner)
 
 
 /datum/hud/proc/hidden_inventory_update()
-	if(!mymob)
-		return
-
+	if(!mymob) return
 	if(ishuman(mymob))
 		var/mob/living/carbon/human/H = mymob
 		if(inventory_shown && hud_shown)
@@ -126,21 +126,22 @@ datum/hud/New(mob/owner)
 			if(H.gloves)	H.gloves.screen_loc = ui_gloves
 			if(H.ears)		H.ears.screen_loc = ui_ears
 			if(H.glasses)	H.glasses.screen_loc = ui_glasses
-			if(H.w_uniform)	H.w_uniform.screen_loc = ui_iclothing
-			if(H.wear_suit)	H.wear_suit.screen_loc = ui_oclothing
-			if(H.wear_mask)	H.wear_mask.screen_loc = ui_mask
-			if(H.head)		H.head.screen_loc = ui_head
+			if(H.s_store)	H.s_store.screen_loc = ui_sstore1
+//			if(H.w_uniform)	H.w_uniform.screen_loc = ui_iclothing
+//			if(H.wear_suit)	H.wear_suit.screen_loc = ui_oclothing
+//			if(H.wear_mask)	H.wear_mask.screen_loc = ui_mask
+//			if(H.head)		H.head.screen_loc = ui_head
 		else
 			if(H.shoes)		H.shoes.screen_loc = null
 			if(H.gloves)	H.gloves.screen_loc = null
 			if(H.ears)		H.ears.screen_loc = null
 			if(H.glasses)	H.glasses.screen_loc = null
-			if(H.w_uniform)	H.w_uniform.screen_loc = null
-			if(H.wear_suit)	H.wear_suit.screen_loc = null
-			if(H.wear_mask)	H.wear_mask.screen_loc = null
-			if(H.head)		H.head.screen_loc = null
-
-
+			if(H.s_store)	H.s_store.screen_loc = null
+/*			if(H.w_uniform)	H.w_uniform.screen_loc = ui_iclothing		//It is no longer hidden.
+			if(H.wear_suit)	H.wear_suit.screen_loc = ui_oclothing
+			if(H.wear_mask)	H.wear_mask.screen_loc = ui_mask
+			if(H.head)		H.head.screen_loc = ui_head
+*/
 /datum/hud/proc/persistant_inventory_update()
 	if(!mymob)
 		return

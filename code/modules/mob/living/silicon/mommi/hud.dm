@@ -24,7 +24,7 @@
 	using.dir = SOUTHWEST
 	using.icon = 'icons/mob/screen1_robot.dmi'
 	using.icon_state = "inv1"
-	using.screen_loc = ui_inv2
+	using.screen_loc = ui_id
 	using.layer = 20
 	src.adding += using
 	M.inv_tool = using
@@ -34,7 +34,7 @@
 	using.dir = SOUTHWEST
 	using.icon = 'icons/mob/screen1_robot.dmi'
 	using.icon_state = "sight"
-	using.screen_loc = ui_inv1
+	using.screen_loc = ui_iclothing
 	using.layer = 20
 	src.adding += using
 	M.inv_sight = using
@@ -88,7 +88,7 @@
 	mymob.throw_icon.icon = 'icons/mob/screen1_robot.dmi'
 	mymob.throw_icon.icon_state = "store"
 	mymob.throw_icon.name = "store"
-	mymob.throw_icon.screen_loc = ui_borg_store
+	mymob.throw_icon.screen_loc = ui_swaphand
 
 //Temp
 	mymob.bodytemp = new /obj/screen()

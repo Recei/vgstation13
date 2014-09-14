@@ -30,12 +30,6 @@
 		if(M.lying)	return
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			if(locate(/obj/item/weapon, src) && prob(5) && H.m_intent == "run")
-				H.stop_pulling()
-				H << "\blue You stumbled over something!"
-				playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, 1, -3)
-				H.Stun(2)
-				H.Weaken(2)
 			//clown shoes
 			if(istype(H.shoes, /obj/item/clothing/shoes/clown_shoes))
 				if(H.m_intent == "run")

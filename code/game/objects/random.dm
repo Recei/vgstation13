@@ -157,30 +157,28 @@
 //			"/obj/item/weapon/storage/testtubebox",
 //			"/obj/item/weapon/surgicaltube")
 
+/obj/random/medkit
+	name = "Random First-Aid"
+	desc = "A random first-aid"
+	icon = 'icons/obj/storage.dmi'
+	icon_state = "firstaid"
+	item_to_spawn()
+		return pick(/obj/item/weapon/storage/firstaid/regular,\
+					/obj/item/weapon/storage/firstaid/fire,\
+					/obj/item/weapon/storage/firstaid/toxin,\
+					/obj/item/weapon/storage/firstaid/o2,\
+					/obj/item/weapon/storage/firstaid/adv)
+
+
 //r&d storage shits --soyuz
 
-/*proc/antimeta_rnd()
-	for(var/obj/effect/landmark/C in landmarks_list)
-		if(C.name == "a-rnd")
-			var/antimeta_rnd = pick("/obj/item/weapon/ore/Elerium",	//MATERIALS OUTTA THE ASS
-			"/obj/item/weapon/ore/cerenkite",
-			"/obj/item/stack/sheet/glass/m50",
-			"/obj/item/weapon/ore/uranium",
-			"/obj/item/weapon/ore/erebite",
-			"/obj/item/weapon/storage/firstaid/regular",
-			"/obj/item/weapon/storage/firstaid/fire", //we ARE dealing with toxins here after all
-			"/obj/item/stack/sheet/diamond",
-			"/obj/item/stack/sheet/gold",
-			"/obj/item/stack/sheet/silver",
-			"/obj/item/stack/sheet/plasma",
-			"/obj/item/weapon/ore/slag",
-			"/obj/item/weapon/ore/mauxite",
-			"/obj/item/weapon/ore/char",
-			"/obj/item/weapon/ore/pharosium",
-			"/obj/item/weapon/ore/molitz",
-			"/obj/item/weapon/ore/cobryl",
-			"/obj/item/weapon/ore/claretine",
-			"/obj/item/weapon/ore/syreline",
-			"/obj/item/stack/sheet/metal/m50",
-			"/obj/item/weapon/ore/bohrum",)
-			new antimeta_rnd(C.loc)*/ //
+/*
+/obj/random/rnd_tool
+	name = "Random RnD Tool"
+	desc = "A random RnD tool"
+	icon = 'icons/obj/stock_parts.dmi'
+	icon_state = "scan_module"
+	item_to_spawn()
+		return pick(
+					)
+*/
