@@ -273,6 +273,9 @@
 		src.sight_state:screen_loc = ui_iclothing
 	if(src.tool_state)
 		src.tool_state:screen_loc = ui_id
+	if(src.head_state)
+		src.head_state:screen_loc = ui_monkey_mask
+
 
 /mob/living/silicon/robot/mommi/update_canmove()
 	canmove = !(paralysis || stunned || weakened || buckled || lockcharge || anchored)

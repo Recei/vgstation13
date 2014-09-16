@@ -240,7 +240,9 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 							"PACKETS!!!", \
 							"SARAH HALE DID IT!!!", \
 							"Don't tell Chase", \
-							"not so tough now huh"))
+							"not so tough now huh", \
+							"WERE NOT BAY!!", \
+							"BLAME HOSHI!!!"))
 					if(3)
 						emote("drool")
 
@@ -1106,19 +1108,10 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		return 1
 
 	proc/handle_regular_hud_updates()
-		if(hud_updateflag)
-			handle_hud_list()
-
-
 		if(!client)	return 0
 
-		if(hud_updateflag)
-			handle_hud_list()
+		regular_hud_updates()
 
-
-		for(var/image/hud in client.images)
-			if(copytext(hud.icon_state,1,4) == "hud") //ugly, but icon comparison is worse, I believe
-				client.images.Remove(hud)
 
 		client.screen.Remove(global_hud.blurry, global_hud.druggy, global_hud.vimpaired, global_hud.darkMask/*, global_hud.nvg*/)
 

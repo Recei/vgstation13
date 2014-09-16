@@ -240,11 +240,6 @@
 
 	msg += "<span class='warning'>"
 
-	if(fire_stacks > 0)
-		msg += "[t_He] [t_is] covered in something flammable.\n"
-	if(fire_stacks < 0)
-		msg += "[t_He] looks a little soaked.\n"
-
 	if(nutrition < 100)
 		msg += "[t_He] [t_is] severely malnourished.\n"
 	else if(nutrition >= 500)
@@ -486,7 +481,7 @@
 
 	msg += "*---------*</span>"
 	if (pose)
-		if( findtextEx(pose,".",lentext(pose)) == 0 && findtextEx(pose,"!",lentext(pose)) == 0 && findtextEx(pose,"?",lentext(pose)) == 0 )
+		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\n[t_He] is [pose]"
 

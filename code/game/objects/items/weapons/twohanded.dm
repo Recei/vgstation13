@@ -49,16 +49,17 @@
 /obj/item/weapon/twohanded/proc/set_icon()
 	set src in usr
 
-	if(findtextEx(icon_state, "fireaxe"))
+	if(findtext(icon_state, "fireaxe"))
 		item_state = "fireaxe[wielded]"
 
-
-	else if(findtextEx(icon_state, "dualsaber"))
+	else if(findtext(icon_state, "dualsaber"))
 		item_state = "dualsaber[wielded]"
 
-
-	else if(findtextEx(icon_state, "hfrequency"))
+	else if(findtext(icon_state, "hfrequency"))
 		item_state = "hfrequency[wielded]"
+
+	else if(findtext(icon_state, "Gibtonite Ore"))
+	//Do nothing. Gibtonite ore has no wielded sprites
 
 	else
 		item_state = "spearglass[wielded]"

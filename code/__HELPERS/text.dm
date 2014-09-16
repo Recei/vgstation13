@@ -20,7 +20,7 @@
 
 	var/sqltext = dbcon.Quote(t)
 	//testing("sanitizeSQL(): BEFORE copytext(): [sqltext]")
-	sqltext = copytext(sqltext, 2, lentext(sqltext))//Quote() adds quotes around input, we already do that
+	sqltext = copytext(sqltext, 2, length(sqltext))//Quote() adds quotes around input, we already do that
 	//testing("sanitizeSQL(): AFTER copytext(): [sqltext]")
 	return sqltext
 
@@ -88,19 +88,33 @@
 /proc/adminscrub(var/t,var/limit=MAX_MESSAGE_LEN)
 	return copytext((sanitize(strip_html_simple(t))),1,limit)
 
+/*
+ * returns null if there is any bad text in the string
+ */
+/proc/reject_bad_text(const/text, var/max_length = 512)
+	var/text_length = length(text)
 
-//Returns null if there is any bad text in the string
-/proc/reject_bad_text(var/text, var/max_length=512)
-	if(length(text) > max_length)	return			//message too long
-	var/non_whitespace = 0
-	for(var/i=1, i<=length(text), i++)
-		switch(text2ascii(text,i))
-			if(62,60,92,47)	return			//rejects the text if it contains these bad characters: <, >, \ or /
-			if(127 to 255)	return			//rejects weird letters like
-			if(0 to 31)		return			//more weird stuff
-			if(32)			continue		//whitespace
-			else			non_whitespace = 1
-	if(non_whitespace)		return text		//only accepts the text if it has some non-spaces
+	if(text_length > max_length)
+		return // message too long
+
+	var/non_whitespace = FALSE
+
+	for(var/i = 1 to text_length)
+		switch(text2ascii(text, i))
+			if(62, 60, 92, 47)
+				return // rejects the text if it contains these bad characters: <, >, \ or /
+			if(127 to 255)
+				return // rejects weird letters like �
+			if(0 to 31)
+				return // more weird stuff
+			if(32)
+				continue //whitespace
+			else
+				non_whitespace = TRUE
+
+	if(non_whitespace)
+		return text // only accepts the text if it has some non-spaces
+
 
 // Used to get a sanitized input.
 /proc/stripped_input(var/mob/user, var/message = "", var/title = "", var/default = "", var/max_length=MAX_MESSAGE_LEN)
@@ -346,9 +360,9 @@ proc/checkhtml(var/t)
 //is in the other string at the same spot (assuming it is not a replace char).
 //This is used for fingerprints
 	var/newtext = text
-	if(lentext(text) != lentext(compare))
+	if(length(text) != length(compare))
 		return 0
-	for(var/i = 1, i < lentext(text), i++)
+	for(var/i = 1, i < length(text), i++)
 		var/a = copytext(text,i,i+1)
 		var/b = copytext(compare,i,i+1)
 //if it isn't both the same letter, or if they are both the replacement character
@@ -368,7 +382,7 @@ proc/checkhtml(var/t)
 	if(!text || !character)
 		return 0
 	var/count = 0
-	for(var/i = 1, i <= lentext(text), i++)
+	for(var/i = 1, i <= length(text), i++)
 		var/a = copytext(text,i,i+1)
 		if(a == character)
 			count++

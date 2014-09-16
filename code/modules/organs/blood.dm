@@ -263,10 +263,10 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 proc/blood_incompatible(donor,receiver)
 	if(!donor || !receiver) return 0
 	var
-		donor_antigen = copytext(donor,1,lentext(donor))
-		receiver_antigen = copytext(receiver,1,lentext(receiver))
-		donor_rh = (findtextEx(donor,"+")>0)
-		receiver_rh = (findtextEx(receiver,"+")>0)
+		donor_antigen = copytext(donor,1,length(donor))
+		receiver_antigen = copytext(receiver,1,length(receiver))
+		donor_rh = (findtext(donor,"+")>0)
+		receiver_rh = (findtext(receiver,"+")>0)
 	if(donor_rh && !receiver_rh) return 1
 	switch(receiver_antigen)
 		if("A")
