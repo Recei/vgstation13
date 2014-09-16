@@ -147,7 +147,8 @@
 					/obj/item/weapon/storage/box/pillbottles,\
 					/obj/item/weapon/storage/belt/medical,\
 					/obj/item/weapon/storage/box/beakers,\
-					/obj/item/device/healthanalyzer,\
+					/obj/item/device/healthanalyzer)
+/*
 					/obj/item/weapon/scalpel,\
 					/obj/item/weapon/retractor,\
 					/obj/item/weapon/hemostat,\
@@ -156,6 +157,7 @@
 					/obj/item/weapon/circular_saw)
 //			"/obj/item/weapon/storage/testtubebox",
 //			"/obj/item/weapon/surgicaltube")
+*/
 
 /obj/random/medkit
 	name = "Random First-Aid"

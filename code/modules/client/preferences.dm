@@ -1226,8 +1226,8 @@ datum/preferences
 					if("ui")
 						switch(UI_style)
 							if("Midnight")
-								UI_style = "Orange"
-							if("Orange")
+								UI_style = "Luna"
+							if("Luna")
 								UI_style = "old"
 							if("old")
 								UI_style = "White"
