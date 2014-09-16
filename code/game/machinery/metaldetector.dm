@@ -423,7 +423,7 @@
 				meleecount++
 			if(guncount)
 				flick("metaldetector2",src)
-				playsound(src.loc, 'alert.ogg', 60, 0)
+				playsound(src.loc, 'sound/effects/alert.ogg', 60, 0)
 				for (var/mob/O in viewers(O, null))
 					O << "\red <b>[src.name]</b> beeps, \"Alert! Firearm found on [M.name]!\""
 
@@ -445,7 +445,7 @@
 				guncount = 0
 			else if(knifecount)
 				flick("metaldetector2",src)
-				playsound(src.loc, 'alert.ogg', 60, 0)
+				playsound(src.loc, 'sound/effects/alert.ogg', 60, 0)
 				for (var/mob/O in viewers(O, null))
 					O << "\red <b>[src.name]</b> beeps, \"Alert! Knife found on [M.name]!\""
 
@@ -467,7 +467,7 @@
 				knifecount = 0
 			else if(bombcount)
 				flick("metaldetector2",src)
-				playsound(src.loc, 'alert.ogg', 60, 0)
+				playsound(src.loc, 'sound/effects/alert.ogg', 60, 0)
 				for (var/mob/O in viewers(O, null))
 					O << "\red <b>[src.name]</b> beeps, \"Alert! Bomb found on [M.name]!\""
 
@@ -489,7 +489,7 @@
 				bombcount = 0
 			else if(meleecount)
 				flick("metaldetector2",src)
-				playsound(src.loc, 'alert.ogg', 60, 0)
+				playsound(src.loc, 'sound/effects/alert.ogg', 60, 0)
 				for (var/mob/O in viewers(O, null))
 					O << "\red <b>[src.name]</b> beeps, \"Alert! Melee weapon found on [M.name]!\""
 

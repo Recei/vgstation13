@@ -3,7 +3,7 @@
 
 /obj/item/device/geneticsanalyzer
 	name = "Genetics Analyser"
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "genetics"
 	w_class = 2
 	origin_tech = "magnets=4;programming=2"

@@ -21,7 +21,7 @@
 				src.overlays -= bottlec
 				src.icon_state = "bottlecolor"
 				src.main_reagent = src.reagents.get_master_reagent_reference()
-				bottlec = new/icon("icon" = 'chemical.dmi', "icon_state" = "bottlecolormod")
+				bottlec = new/icon("icon" = 'icons/obj/chemical.dmi', "icon_state" = "bottlecolormod")
 				bottlec.Blend(src.main_reagent:color, ICON_ADD)//, src.main_reagent:color_g, src.main_reagent:color_b)
 				src.overlays += bottlec
 				src.main_reagent = ""

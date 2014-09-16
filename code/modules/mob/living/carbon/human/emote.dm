@@ -567,7 +567,7 @@
 				if(src.reagents)
 					var/obj/effect/decal/D = new/obj/effect/decal(get_turf(src))
 					D.name = "chemicals"
-					D.icon = 'chemical.dmi'
+					D.icon = 'icons/obj/chemical.dmi'
 					D.icon_state = "sneezepuff"
 					D.create_reagents(3)
 					src.reagents.trans_to(D, 3)
@@ -581,7 +581,7 @@
 				if(miming)
 					message = pick("<B>[src]</B>silently farts.", "<B>[src]</B>acts out a fart.", "<B>[src]</B>lets out a silent but deadly fart.")
 				else
-					playsound(src.loc, 'fart.ogg', 65, 1)
+					playsound(src.loc, 'sound/misc/fart.ogg', 65, 1)
 					switch(rand(1, 48))
 						if(1)
 							message = "<B>[src]</B> lets out a girly little 'toot' from \his butt."
@@ -879,13 +879,13 @@
 				if (src.w_uniform)
 					message = "<B>[src]</B> poos in their uniform."
 					src.w_uniform.add_poo()
-					playsound(src.loc, 'fart.ogg', 60, 1)
+					playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
 					src.nutrition -= 80
 					m_type = 2
 				else
 					message = "<B>[src]</B> poos on the floor."
-					playsound(src.loc, 'fart.ogg', 60, 1)
+					playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
 					var/turf/location = src.loc
 
@@ -1046,7 +1046,7 @@
 	src.Weaken(12)
 	flick("e_flash", src.flash)
 	new /obj/item/clothing/head/butt(src.loc)
-	world << sound('superfart.ogg')
+	world << sound('sound/effects/superfart.ogg')
 	loc << "<B>[src]</B>'s butt explodes!"
 	src.Weaken(12)
 	var/datum/organ/external/affecting = src.get_organ("groin")

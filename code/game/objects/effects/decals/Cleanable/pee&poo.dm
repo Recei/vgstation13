@@ -57,7 +57,7 @@
 		M.pulling = null
 		M << "\blue You slipped on the wet poo stain!"
 //		M.achievement_give("Oh Shit!", 68)
-		playsound(src.loc, 'slip.ogg', 50, 1, -3)
+		playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
 		M.stunned = 6
 		M.weakened = 5
 
@@ -110,7 +110,7 @@
 		M.pulling = null
 		M << "\blue You slipped in the urine puddle!"
 //		M.achievement_give("Pissed!", 69)
-		playsound(src.loc, 'slip.ogg', 50, 1, -3)
+		playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
 		M.stunned = 8
 		M.weakened = 5
 
