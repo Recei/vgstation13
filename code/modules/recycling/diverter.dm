@@ -5,7 +5,7 @@
 //
 //
 /obj/machinery/diverter
-	icon = 'recycling.dmi'
+	icon = 'icons/obj/recycling.dmi'
 	icon_state = "diverter0"
 	name = "diverter"
 	desc = "A diverter arm for a conveyor belt."
