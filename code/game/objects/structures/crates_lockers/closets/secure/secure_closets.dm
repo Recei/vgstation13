@@ -14,6 +14,14 @@
 	var/icon_off = "secureoff"
 	wall_mounted = 0 //never solid (You can always pass over it)
 	health = 200
+/*  //WIP
+	var/icon/lock_overlay = image("icon"='icons/obj/closet2.dmi', "icon_state"= null)
+	var/icon_locked = "closedoverlay"
+	var/icon_broken = "brokenoverlay"
+	var/icon_unlocked = "openoverlay"
+	icon_closed = "secureoff"
+	icon_opened = "secureopen"
+*/
 
 /obj/structure/closet/secure_closet/can_open()
 	if(!..())
@@ -79,7 +87,7 @@
 		flick(icon_broken, src)
 	//	var/icon/broken_overlay = image("icon"='icons/obj/closet2.dmi', "icon_state"= "brokenoverlay")
 	//	overlays += broken_overlay
-	//	spawn(10)
+	//	spawn(4)
 	//		overlays -= broken_overlay
 		if(istype(W, /obj/item/weapon/melee/energy/blade))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()

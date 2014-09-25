@@ -30,6 +30,11 @@
 		return 1
 	return 0
 
+/proc/ismetroid(A)
+	if(istype(A, /mob/living/carbon/metroid))
+		return 1
+	return 0
+
 /proc/isslime(A)
 	if(istype(A, /mob/living/carbon/slime))
 		return 1

@@ -1259,6 +1259,11 @@ datum/mind
 	..()
 	mind.assigned_role = "slime"
 
+//metroid
+/mob/living/carbon/metroid/mind_initialize()
+	..()
+	mind.assigned_role = "metroid"
+
 //XENO
 /mob/living/carbon/alien/mind_initialize()
 	..()

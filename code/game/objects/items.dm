@@ -16,7 +16,7 @@
 	pressure_resistance = 5
 //	causeerrorheresoifixthis
 	var/obj/item/master = null
-	
+
 	var/attackDelay = 8 //How often a user can attack with this item (lower is faster)
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -99,7 +99,7 @@ obj/item/proc/get_clamped_volume()
 	else //TODO: Should be in mob code
 		switch(src.damtype)
 			if("brute")
-				if(istype(src,/mob/living/carbon/slime))
+				if(istype(src,/mob/living/carbon/slime) || istype(src, /mob/living/carbon/metroid))
 					target.adjustBrainLoss(power)
 				else
 					if(src.force && prob(33))
@@ -130,6 +130,45 @@ obj/item/proc/get_clamped_volume()
 				if(prob(25+power))
 					spawn(2)
 						if(slime && user) step_away(slime, user)
+		if(istype(target, /mob/living/carbon/metroid))
+			var/mob/living/carbon/metroid/metroid = target
+			if(prob(25))
+				user << "\red [src] passes right through [metroid]!"
+				return
+			if(power > 0) metroid.attacked += 10
+			if(metroid.Discipline && prob(50)) metroid.Discipline = 0
+			if(power >= 3 && istype(metroid, /mob/living/carbon/metroid/adult) && prob(5+round(power/2)))
+				if(metroid.Victim && prob(80) && !metroid.client)
+					metroid.Discipline++
+					metroid.Victim = null
+					metroid.anchored = 0
+				metroid.SStun = 1
+				spawn(rand(5,20))
+					if(metroid) metroid.SStun = 0
+				metroid.canmove = 0
+				step_away(metroid, user)
+				if(prob(25 + power))
+					spawn(2)
+						if(metroid && user)
+							step_away(metroid, user)
+							metroid.canmove = 1
+
+			else if(prob(10 + power*2))
+				if(metroid.Victim && prob(80) && !metroid.client)
+					metroid.Discipline++
+					if(metroid.Discipline == 1)
+						metroid.attacked = 0
+						metroid.Victim = null
+						metroid.anchored = 0
+				metroid.SStun = 1
+				spawn(rand(5,20))
+					if(metroid) metroid.SStun = 0
+				if(metroid && user)
+					step_away(metroid, user)
+					metroid.canmove = 0
+					if(prob(25 + power*4) && metroid && user)
+						step_away(metroid, user)
+						metroid.canmove = 1
 		var/showname = "." //TODO: Should be in a logging proc
 		if(user) showname = " by [user]!"
 		if(!(user in viewers(target,null))) showname = "."
@@ -750,7 +789,7 @@ obj/item/proc/get_clamped_volume()
 		user << "\red You're going to need to remove that mask/helmet/glasses first."
 		return
 
-	if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime))//Aliens don't have eyes./N     slimes also don't have eyes!
+	if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime) || istype(M, /mob/living/carbon/metroid))//Aliens don't have eyes./N     slimes also don't have eyes!  metroids to!
 		user << "\red You cannot locate any eyes on this creature!"
 		return
 

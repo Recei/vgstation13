@@ -929,6 +929,7 @@ var/const/tk_maxrange = 15
 #define ui_swaphand "SOUTH-1,6"
 #define ui_dropbutton "SOUTH-1,7"
 #define ui_drop_throw "SOUTH-1,8"
+#define ui_equip "SOUTH-1,9"
 #define ui_pull "SOUTH-1,10"
 #define ui_resist "EAST+1,SOUTH-1"
 #define ui_acti "SOUTH-1,12"
@@ -947,20 +948,20 @@ var/const/tk_maxrange = 15
 #define ui_gun_select "10, SOUTH-1"
 
 //Upper-middle right (damage indicators)
-#define ui_toxin "EAST+1, NORTH-6"
-#define ui_fire "EAST+1, NORTH-8"
+#define ui_toxin "EAST+1, NORTH-5"
+#define ui_fire "EAST+1, NORTH-6"
 #define ui_oxygen "EAST+1, NORTH-4"
-#define ui_pressure "EAST+1, SOUTH+5"
+#define ui_pressure "EAST+1, NORTH-7"
 
 #define ui_alien_toxin "14:28,13:25"
 #define ui_alien_fire "14:28,12:25"
 #define ui_alien_oxygen "14:28,11:25"
 
 //Middle right (status indicators)
-#define ui_nutrition "EAST+1, NORTH-12"
+#define ui_nutrition "EAST+1, NORTH-11"
 #define ui_hydration "EAST+1, NORTH-12"
-#define ui_temp "EAST+1, NORTH-10"
-#define ui_health "EAST+1, NORTH-11"
+#define ui_temp "EAST+1, NORTH-8"
+#define ui_health "EAST+1, NORTH-10"
 #define ui_internal "EAST+1, NORTH-2"
 									//borgs
 #define ui_borg_health "EAST+1, NORTH-11" //borgs have the health display where humans have the pressure damage indicator.

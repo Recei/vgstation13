@@ -7,6 +7,8 @@
 	priority = 2
 	blood_level = 1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
 		return target_zone == "head" && hasorgans(target)
 
 /datum/surgery_step/brain/saw_skull
@@ -177,6 +179,8 @@
 
 /datum/surgery_step/slime/
 	can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
 		return istype(target, /mob/living/carbon/slime/) && target.stat == 2
 
 /datum/surgery_step/slime/cut_flesh
@@ -260,5 +264,99 @@
 
 
 	fail_step(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
+		user.visible_message("\red [user]'s hand slips, failing to cut core out!", \
+		"\red Your hand slips, failing to cut core out!")
+
+//////////////////////////////////////////////////////////////////
+//				METROID CORE EXTRACTION							//
+//////////////////////////////////////////////////////////////////
+
+/datum/surgery_step/metroid/
+	can_use(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
+		return istype(target, /mob/living/carbon/metroid/) && target.stat == 2
+
+/datum/surgery_step/metroid/cut_flesh
+	allowed_tools = list(
+	/obj/item/weapon/scalpel = 100,		\
+	/obj/item/weapon/kitchenknife = 75,	\
+	/obj/item/weapon/shard = 50, 		\
+	)
+
+	min_duration = 30
+	max_duration = 50
+
+	can_use(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		return ..() && target.brain_op_stage == 0
+
+	begin_step(mob/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("[user] starts cutting [target]'s flesh with \the [tool].", \
+		"You start cutting [target]'s flesh with \the [tool].")
+
+	end_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("\blue [user] cuts [target]'s flesh with \the [tool].",	\
+		"\blue You cut [target]'s flesh with \the [tool], exposing the cores")
+		target.brain_op_stage = 1
+
+	fail_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("\red [user]'s hand slips, tearing [target]'s flesh with \the [tool]!", \
+		"\red Your hand slips, tearing [target]'s flesh with \the [tool]!")
+
+/datum/surgery_step/metroid/cut_innards
+	allowed_tools = list(
+	/obj/item/weapon/scalpel = 100,		\
+	/obj/item/weapon/kitchenknife = 75,	\
+	/obj/item/weapon/shard = 50, 		\
+	)
+
+	min_duration = 30
+	max_duration = 50
+
+	can_use(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		return ..() && target.brain_op_stage == 1
+
+	begin_step(mob/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("[user] starts cutting [target]'s silky innards apart with \the [tool].", \
+		"You start cutting [target]'s silky innards apart with \the [tool].")
+
+	end_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("\blue [user] cuts [target]'s innards apart with \the [tool], exposing the cores",	\
+		"\blue You cut [target]'s innards apart with \the [tool], exposing the cores")
+		target.brain_op_stage = 2
+
+	fail_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("\red [user]'s hand slips, tearing [target]'s innards with \the [tool]!", \
+		"\red Your hand slips, tearing [target]'s innards with \the [tool]!")
+
+/datum/surgery_step/metroid/saw_core
+	allowed_tools = list(
+	/obj/item/weapon/circular_saw = 100, \
+	/obj/item/weapon/hatchet = 75
+	)
+
+	min_duration = 50
+	max_duration = 70
+
+	can_use(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		return ..() && target.brain_op_stage == 2 && target.cores > 0
+
+	begin_step(mob/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		user.visible_message("[user] starts cutting out one of [target]'s cores with \the [tool].", \
+		"You start cutting out one of [target]'s cores with \the [tool].")
+
+	end_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
+		target.cores--
+		user.visible_message("\blue [user] cuts out one of [target]'s cores with \the [tool].",,	\
+		"\blue You cut out one of [target]'s cores with \the [tool]. [target.cores] cores left.")
+
+		if(target.cores >= 0)
+			var/mctrandom = pickweight(target.mctrand)
+			new mctrandom(target.loc)
+		if(target.cores <= 0)
+			target.icon_state = "baby metroid dead-nocore"
+
+
+	fail_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
 		user.visible_message("\red [user]'s hand slips, failing to cut core out!", \
 		"\red Your hand slips, failing to cut core out!")

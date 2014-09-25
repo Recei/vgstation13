@@ -90,6 +90,7 @@
 						var/list/monkeys = typesof(/mob/living/carbon/monkey)
 						var/list/silicons = typesof(/mob/living/silicon)
 						var/list/slimes = typesof(/mob/living/carbon/slime)
+						var/list/metroids = typesof(/mob/living/carbon/metroid)
 						var/list/animals = typesof(/mob/living/simple_animal)
 
 						if(mobtype in humans)
@@ -104,6 +105,10 @@
 
 						else if(mobtype in slimes) // NT knows a lot about slimes, but not aliens. Can identify slimes
 							race = "slime"
+							language = race
+
+						else if(mobtype in metroids) // And metroids
+							race = "metroid"
 							language = race
 
 						else if(mobtype in animals)

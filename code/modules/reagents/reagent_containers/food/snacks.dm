@@ -465,6 +465,22 @@
 			name = "Frosted Jelly Donut"
 			reagents.add_reagent("sprinkles", 2)
 
+/obj/item/weapon/reagent_containers/food/snacks/donut/metroidjelly
+	name = "jelly donut"
+	desc = "You jelly?"
+	icon_state = "jdonut1"
+	bitesize = 5
+	New()
+		..()
+		reagents.add_reagent("nutriment", 3)
+		reagents.add_reagent("sprinkles", 1)
+		reagents.add_reagent("metroidjelly", 5)
+		bitesize = 5
+		if(prob(30))
+			icon_state = "jdonut2"
+			name = "Frosted Jelly Donut"
+			reagents.add_reagent("sprinkles", 2)
+
 /obj/item/weapon/reagent_containers/food/snacks/donut/cherryjelly
 	name = "jelly donut"
 	desc = "You jelly?"
@@ -1389,6 +1405,16 @@
 		reagents.add_reagent("water", 10)
 		bitesize = 5
 
+/obj/item/weapon/reagent_containers/food/snacks/metroidsoup
+	name = "metroid soup"
+	desc = "Totaly not a slime soup."
+	icon_state = "slimesoup"
+	New()
+		..()
+		reagents.add_reagent("metroidelly", 5)
+		reagents.add_reagent("water", 10)
+		bitesize = 5
+
 /obj/item/weapon/reagent_containers/food/snacks/bloodsoup
 	name = "Tomato soup"
 	desc = "Smells like copper"
@@ -1749,6 +1775,11 @@
 		..()
 		reagents.add_reagent("slimejelly", 5)
 
+/obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/metroid
+	New()
+		..()
+		reagents.add_reagent("metroidjelly", 5)
+
 /obj/item/weapon/reagent_containers/food/snacks/jellyburger
 	name = "Jelly Burger"
 	desc = "Culinary delight..?"
@@ -1759,6 +1790,11 @@
 		bitesize = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/jellyburger/slime
+	New()
+		..()
+		reagents.add_reagent("slimejelly", 5)
+
+/obj/item/weapon/reagent_containers/food/snacks/jellyburger/metroid
 	New()
 		..()
 		reagents.add_reagent("slimejelly", 5)
@@ -1940,6 +1976,11 @@
 	New()
 		..()
 		reagents.add_reagent("slimejelly", 5)
+
+/obj/item/weapon/reagent_containers/food/snacks/jellysandwich/metroid
+	New()
+		..()
+		reagents.add_reagent("metroidjelly", 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/cherry
 	New()

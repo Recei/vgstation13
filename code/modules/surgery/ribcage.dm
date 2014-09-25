@@ -7,6 +7,8 @@
 	can_infect = 1
 	blood_level = 1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
 		return target_zone == "chest"
 
 /datum/surgery_step/ribcage/saw_ribcage
@@ -19,8 +21,6 @@
 	max_duration = 70
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if (!istype(target))
-			return
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		return ..() && target.op_stage.ribcage == 0 && affected.open >= 2
 
@@ -162,6 +162,8 @@
 	max_duration = 100
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
 		var/embryo = 0
 		for(var/obj/item/alien_embryo/A in target)
 			embryo = 1
@@ -197,6 +199,8 @@
 	max_duration = 90
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
 		var/is_chest_organ_damaged = 0
 		var/datum/organ/external/chest/chest = target.get_organ("chest")
 		for(var/datum/organ/internal/I in chest.internal_organs) if(I.damage > 0)

@@ -89,6 +89,10 @@
 			input = /mob/living/carbon/slime
 			output = null
 
+	//	metroid
+	//		input = /mob/living/carbon/metroid
+	//		output = /obj/item/weapon/reagent_containers/glass/beaker/metroid
+
 		monkey
 			process(loc, what)
 				var/mob/living/carbon/monkey/O = what

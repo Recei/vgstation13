@@ -82,10 +82,13 @@
 		if(istype(G, /obj/item/weapon/grab))
 			if(!ismob(G:affecting))
 				return
-			for(var/mob/living/carbon/slime/M in range(1,G:affecting))
-				if(M.Victim == G:affecting)
-					usr << "[G:affecting:name] will not fit into the [src.name] because they have a slime latched onto their head."
-					return
+			for(var/mob/living/carbon/M in range(1,G:affecting))
+				if(isslime(M) || ismetroid(M))
+					var/mob/living/carbon/metroid/metroid = M
+					var/mob/living/carbon/slime/slime = M
+					if(metroid.Victim == G:affecting || slime.Victim == G:affecting)
+						usr << "[G:affecting:name] will not fit into the [src.name] because they have a slime or a metroid latched onto their head."
+						return
 			var/mob/M = G:affecting
 			if(put_mob(M))
 				del(G)

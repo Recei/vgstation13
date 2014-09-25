@@ -127,7 +127,7 @@
 		icon_state = "grabbed1"
 	else
 		if(state < GRAB_NECK)
-			if(isslime(affecting))
+			if(isslime(affecting) || ismetroid(affecting))
 				assailant << "<span class='notice'>You squeeze [affecting], but nothing interesting happens.</span>"
 				return
 			assailant.visible_message("<span class='warning'>[assailant] has reinforced \his grip on [affecting] (now neck)!</span>")

@@ -231,6 +231,8 @@
 						M_job = M.job
 					else if(isslime(M))
 						M_job = "slime"
+					else if(ismetroid(M))
+						M_job = "metroid"
 					else if(ismonkey(M))
 						M_job = "Monkey"
 					else if(isalien(M)) //aliens

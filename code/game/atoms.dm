@@ -56,34 +56,37 @@
 
 /atom/proc/attack_animal(mob/user)
 	return
-	
+
 /atom/proc/attack_hand(mob/user)
 	return
-	
+
 /atom/proc/attack_ai(mob/user)
 	return
-	
+
 /atom/proc/AIShiftClick()
 	return
-	
+
 /atom/proc/AICtrlClick()
 	return
 
 /atom/proc/AIAltClick(var/mob/living/silicon/ai/user)
 	return src.AltClick(user)
-	
+
 /atom/proc/attack_paw(mob/user)
 	return
-	
+
 /atom/proc/attack_alien(mob/user)
 	return attack_paw(user)
-	
+
 /atom/proc/attack_larva(mob/user)
 	return
-	
+
 /atom/proc/attack_slime(mob/user as mob)
 	return
-	
+
+/atom/proc/attack_metroid(mob/user as mob)
+	return src.attack_slime(user)
+
 /atom/proc/attack_robot(mob/user)
 	return src.attack_ai(user)
 
@@ -100,10 +103,10 @@
 /atom/proc/attack_tk(mob/user)
 	if(user.stat) return
 	return user.UnarmedAttack(src)
-	
+
 /atom/proc/attack_self_tk(mob/user)
 	return
-	
+
 // Drag n Drop /////////////////////////////////////////////////
 
 /atom/MouseDrop(atom/over)
@@ -113,12 +116,12 @@
 
 /atom/proc/MouseDrop_T(atom/dropping,mob/user)
 	return
-	
+
 ////////////////////////////////////////////////////////////////
-	
+
 /atom/proc/attackby(obj/item/W,mob/user)
 	return
-	
+
 /atom/proc/throw_impact(atom/hit_atom, var/speed)
 	if(istype(hit_atom,/mob/living))
 		var/mob/living/M = hit_atom

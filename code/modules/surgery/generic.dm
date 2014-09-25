@@ -7,6 +7,8 @@
 	can_infect = 1
 	var/painful=1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		if(!istype(target))
+			return 0
 		if (target_zone == "eyes")	//there are specific steps for eye surgery
 			return 0
 		if (!hasorgans(target))

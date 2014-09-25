@@ -127,6 +127,21 @@ datum
 				..()
 				return
 
+		metroidjelly
+			name = "metroid Jelly"
+			id = "metroidjelly"
+			description = "A gooey semi-liquid produced from one of the deadliest lifeforms in existence. SO REAL."
+			reagent_state = LIQUID
+			color = "#801E28" // rgb: 128, 30, 40
+			on_mob_life(var/mob/living/M as mob)
+				if(prob(10))
+					M << "\red Your insides are burning!"
+					M.adjustToxLoss(rand(20,60)*REM)
+				else if(prob(40))
+					M.heal_organ_damage(5*REM,0)
+				..()
+				return
+
 
 		blood
 			data = new/list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=null,"resistances"=null,"trace_chem"=null, "antibodies" = null)
@@ -441,6 +456,8 @@ datum
 				if(volume >= 3)
 					T.wet(800)
 				for(var/mob/living/carbon/slime/M in T)
+					M.adjustToxLoss(rand(15,20))
+				for(var/mob/living/carbon/metroid/M in T)
 					M.adjustToxLoss(rand(15,20))
 				for(var/mob/living/carbon/human/H in T)
 					if(H.dna.mutantrace == "slime")
@@ -1594,6 +1611,9 @@ datum
 					for(var/mob/living/carbon/slime/M in T)
 						M.adjustToxLoss(rand(5,10))
 
+					for(var/mob/living/carbon/metroid/M in T)
+						M.adjustToxLoss(rand(5,10))
+
 					for(var/mob/living/carbon/human/H in T)
 						if(H.dna.mutantrace == "slime")
 							H.adjustToxLoss(rand(0.5,1))
@@ -2697,6 +2717,8 @@ datum
 				for(var/mob/living/carbon/human/H in T)
 					if(H.dna.mutantrace == "slime")
 						H.adjustToxLoss(rand(5,15))
+				for(var/mob/living/carbon/metroid/M in T)
+					M.adjustToxLoss(rand(15,30))
 
 		sodiumchloride
 			name = "Table Salt"
