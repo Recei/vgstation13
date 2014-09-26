@@ -1,5 +1,6 @@
 /mob/living/carbon/human/emote(var/act,var/m_type=1,var/message = null)
 	var/param = null
+	var/toilet = get_excrement_holder()
 
 	if (findtextEx(act, "-", 1, null))
 		var/t1 = findtextEx(act, "-", 1, null)
@@ -817,9 +818,7 @@
 			else
 				message = "<b>[src]</b> strains, and nothing happens."
 				m_type = 1
-//			else
-//				message = "<b>[src]</b> lets out a [pick("disgusting","revolting","horrible","strangled","god awful")] noise out of \his mutilated asshole."
-//				m_type = 2
+
 
 		if("superfart")
 			if(src.op_stage.butt == 4)
@@ -872,8 +871,18 @@
 					anus_bombanull()
 
 		if(("poo") || ("poop") || ("shit") || ("crap"))
+
 			if (src.nutrition <= 300)
 				src.emote("fart")
+				m_type = 2
+			else if(toilet)
+				message = "<B>[src]</B> poos in [toilet]."
+				playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
+				playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
+				var/obj/item/weapon/reagent_containers/food/snacks/poo/V = new/obj/item/weapon/reagent_containers/food/snacks/poo(toilet)
+				if(src.reagents)
+					src.reagents.trans_to(V, 10)
+				src.nutrition -= 80
 				m_type = 2
 			else
 				if (src.w_uniform)
@@ -897,7 +906,6 @@
 					if(src.reagents)
 						src.reagents.trans_to(V, 10)
 
-//				if(!infinitebutt)
 					src.nutrition -= 80
 					m_type = 2
 
@@ -924,14 +932,15 @@
 			if(!src.reagents || src.hydration <= 300)
 				message = "<B>[src]</B> attempts to urinate but nothing comes out."
 			else
-				if (src.w_uniform)
-					message = "<B>[src]</B> urinates in their uniform."
+				if(toilet)
+					message = "<B>[src]</B> urinates in [toilet]."
 					src.hydration -= 80
+					m_type = 1
 				else
 					var/obj/effect/decal/cleanable/urine/D = new/obj/effect/decal/cleanable/urine(src.loc)
 					if(src.reagents)
 						src.reagents.trans_to(D, 10)
-					message = "<B>[src]</B> urinates themselves."
+					message = "<B>[src]</B> urinates on the floor."
 					src.hydration -= 80
 					m_type = 1
 				// check for being in sight of a working security camera
@@ -971,13 +980,6 @@
 				message = "<B>[src]</B> attempts to vomit but nothing comes out."
 			else
 				Stun(5)
-				if(src.species.name == "Tajaran")
-					src.visible_message("<span class='warning'>[src] hacks up a hairball!</span>","<span class='warning'>You hack up a hairball!</span>")
-				else
-					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
-				var/obj/effect/decal/cleanable/vomit/V = new/obj/effect/decal/cleanable/vomit(src.loc)
-				if(src.reagents)
-					src.reagents.trans_to(V, 10)
 				playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 				if(src.dizziness)
 					src.dizziness -= rand(2,15)
@@ -991,6 +993,22 @@
 					src.nutrition -= 40
 					src.hydration -= 40
 					adjustToxLoss(-3)
+				if(toilet)
+					if(src.species.name == "Tajaran")
+						message = "<b>[src]</b> hacks up a hairball into the [toilet]!"
+					else
+						message = "<b>[src]</b> throws up into [toilet]!"
+					var/obj/effect/decal/cleanable/vomit/V = new/obj/effect/decal/cleanable/vomit(toilet)
+					if(src.reagents)
+						src.reagents.trans_to(V, 10)
+				else
+					if(src.species.name == "Tajaran")
+						message = "<b>[src]</b> hacks up a hairball!"
+					else
+						message = "<b>[src] throws up!</b>"
+					var/obj/effect/decal/cleanable/vomit/V = new/obj/effect/decal/cleanable/vomit(src.loc)
+					if(src.reagents)
+						src.reagents.trans_to(V, 10)
 				spawn(350)	//wait 35 seconds before next volley
 					lastpuke = 0
 			m_type = 1
@@ -1040,7 +1058,7 @@
 
 	flavor_text =  copytext(sanitize(input(usr, "Please enter your new flavour text.", "Flavour text", null)  as text), 1)
 
-//Fart helpers (HAHA) & procs
+//Emote helpers & procs
 /mob/living/carbon/human/proc/anus_bombanull()
 	src.op_stage.butt = 4
 	src.Weaken(12)
@@ -1056,3 +1074,9 @@
 		src.updatehealth()
 /mob/living/carbon/human/var/fail_farts = 0
 /mob/living/carbon/human/var/called_superfart = 0
+
+/mob/living/carbon/human/proc/get_excrement_holder()
+	for(var/obj/O in src.loc)
+		if(istype(O, /obj/structure/toilet) || istype(O, /obj/structure/urinal) || istype(O, /obj/machinery/disposal))
+			return O
+	return null
