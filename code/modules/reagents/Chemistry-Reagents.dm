@@ -339,7 +339,7 @@ datum
 			id = "urine"
 			description = "It's pee."
 			reagent_state = LIQUID
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 10 * REAGENTS_METABOLISM
 			color = "#ffff00" //rgb 255, 255, 0
 
 			on_mob_life(var/mob/living/M)
@@ -400,7 +400,7 @@ datum
 			id = "water"
 			description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
 			reagent_state = LIQUID
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 15 * REAGENTS_METABOLISM
 			color = "#0064C8" // rgb: 0, 100, 200
 			custom_metabolism = 0.01
 
@@ -422,6 +422,9 @@ datum
 					M.adjust_fire_stacks(-(volume / 10))
 					if(M.fire_stacks <= 0)
 						M.ExtinguishMob()
+					return
+				if(method == INGEST)
+					M.hydration += hydration_factor*REM
 					return
 
 				// Grays treat water like acid.
@@ -822,7 +825,7 @@ datum
 			id = "holywater"
 			description = "An ashen-obsidian-water mix, this solution will alter certain sections of the brain's rationality."
 			reagent_state = LIQUID
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 15 * REAGENTS_METABOLISM
 			color = "#0064C8" // rgb: 0, 100, 200
 
 
@@ -848,6 +851,8 @@ datum
 				holder.remove_reagent(src.id, 10 * REAGENTS_METABOLISM) //high metabolism to prevent extended uncult rolls.
 
 			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)//Splashing people with water can help put them out!
+				if(method == INGEST)
+					M.hydration += hydration_factor*REM
 				// Vamps react to this like acid
 				if(ishuman(M))
 					if((M.mind in ticker.mode.vampires))
@@ -1112,7 +1117,7 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M.nutrition += 1*REM
-				M.hydration -= 1*REM
+				M.hydration -= 5*REM
 				..()
 				return
 
@@ -1452,8 +1457,8 @@ datum
 			id = "virusfood"
 			description = "A mixture of water, milk, and oxygen. Virus cells can use this mixture to reproduce."
 			reagent_state = LIQUID
-			nutriment_factor = 2 * REAGENTS_METABOLISM
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			nutriment_factor = 5 * REAGENTS_METABOLISM
+			hydration_factor = 5 * REAGENTS_METABOLISM
 			color = "#899613" // rgb: 137, 150, 19
 
 			on_mob_life(var/mob/living/M as mob)
@@ -2554,7 +2559,7 @@ datum
 			description = "A salty sauce made from the soy plant."
 			reagent_state = LIQUID
 			nutriment_factor = 2 * REAGENTS_METABOLISM
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 5 * REAGENTS_METABOLISM
 			color = "#792300" // rgb: 121, 35, 0
 
 			on_mob_life(var/mob/living/M as mob)
@@ -2833,8 +2838,8 @@ datum
 			id = "hot_coco"
 			description = "Made with love! And coco beans."
 			reagent_state = LIQUID
-			nutriment_factor = 2 * REAGENTS_METABOLISM
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			nutriment_factor = 5 * REAGENTS_METABOLISM
+			hydration_factor = 7 * REAGENTS_METABOLISM
 			color = "#403010" // rgb: 64, 48, 16
 
 			on_mob_life(var/mob/living/M as mob)
@@ -3258,7 +3263,7 @@ datum
 			description = "Uh, some kind of drink."
 			reagent_state = LIQUID
 			nutriment_factor = 1 * REAGENTS_METABOLISM
-			hydration_factor = 2 * REAGENTS_METABOLISM
+			hydration_factor = 8 * REAGENTS_METABOLISM
 			color = "#E78108" // rgb: 231, 129, 8
 			var/adj_dizzy = 0
 			var/adj_drowsy = 0
