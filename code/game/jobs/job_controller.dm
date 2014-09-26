@@ -23,7 +23,6 @@ var/global/datum/controller/occupations/job_master
 			var/datum/job/job = new J()
 			if(!job)	continue
 			if(job.faction != faction)	continue
-			if(!job.config_check()) continue //So you can disable jobs
 			occupations += job
 
 
@@ -203,6 +202,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/mob/new_player/player in player_list)
 			if(player.ready && player.mind && !player.mind.assigned_role)
 				unassigned += player
+				if(player.client.prefs.randomslot) player.client.prefs.random_character_sqlite(player, player.ckey)
 		Debug("DO, Len: [unassigned.len]")
 		if(unassigned.len == 0)	return 0
 
@@ -478,7 +478,7 @@ var/global/datum/controller/occupations/job_master
 			if (!length(job))
 				continue
 
-			var/pos = findtextEx(job, "=")
+			var/pos = findtext(job, "=")
 			var/name = null
 			var/value = null
 

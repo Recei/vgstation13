@@ -8,12 +8,6 @@
 //	flags = NOREACT
 	var/datum/mind/mind
 
-	//Combat-related
-	delayAttacks = 1 //For balance, so we can't get spam-attacked
-	var/nextAllowedAttack //When we can next attack a protected entity
-	var/attackDelayUnarmed = 8 //Ticks between unarmed attacks
-
-	
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
 	//Not in use yet
@@ -243,3 +237,4 @@
 
 	// /vg/ - Prevent mobs from being moved by a client.
 	var/deny_client_move = 0
+	var/incorporeal_move = 0

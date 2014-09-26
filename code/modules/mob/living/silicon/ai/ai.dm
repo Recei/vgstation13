@@ -78,11 +78,9 @@ var/list/ai_list = list()
 
 	proc_holder_list = new()
 
-	if(L)
-		if (istype(L, /datum/ai_laws))
-			laws = L
-	else
-		laws = new base_law_type
+	//Determine the AI's lawset
+	if(L && istype(L,/datum/ai_laws)) src.laws = L
+	else src.laws = getLawset(src)
 
 	verbs += /mob/living/silicon/ai/proc/show_laws_verb
 
@@ -126,42 +124,6 @@ var/list/ai_list = list()
 /mob/living/silicon/ai/Destroy()
 	ai_list -= src
 	..()
-
-// Clicking ////////////////////////////////////////////////////
-
-/mob/living/silicon/ai/DblClickOn(atom/target,params)
-	if(src.control_disabled || src.stat) return
-	if(ismob(target)) ai_actual_track(target)
-	else target.move_camera_by_click()
-	return
-
-/mob/living/silicon/ai/ClickOn(atom/target,params)
-	if(src.control_disabled||src.stat)	return
-	else if(findtext(params,"middle"))	src.MiddleClickOn(target)
-	else if(findtext(params,"shift"))	src.ShiftClickOn(target)
-	else if(findtext(params,"ctrl"))	src.CtrlClickOn(target)
-	else if(findtext(params,"alt"))		src.AltClickOn(target)
-	else if(aicamera.in_camera_mode)
-		aicamera.camera_mode_off()
-		aicamera.captureimage(target,src)
-	else
-		target.add_hiddenprint(src)
-		target.attack_ai(src)
-	return
-
-/mob/living/silicon/ai/ShiftClickOn(atom/target)
-	target.AIShiftClick(src)
-	return
-
-/mob/living/silicon/ai/CtrlClickOn(atom/target)
-	target.AICtrlClick(src)
-	return
-
-/mob/living/silicon/ai/AltClickOn(atom/target)
-	target.AIAltClick(src)
-	return
-
-////////////////////////////////////////////////////////////////
 
 /mob/living/silicon/ai/verb/pick_icon()
 	set category = "AI Commands"

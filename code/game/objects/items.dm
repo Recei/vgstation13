@@ -2,8 +2,6 @@
 	name = "item"
 	icon = 'icons/obj/items.dmi'
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
-	var/image/poo_overlay = null
-	var/image/egg_overlay = null
 	var/abstract = 0
 	var/item_state = null
 	var/r_speed = 1.0
@@ -17,15 +15,13 @@
 //	causeerrorheresoifixthis
 	var/obj/item/master = null
 
-	var/attackDelay = 8 //How often a user can attack with this item (lower is faster)
-
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/max_heat_protection_temperature //Set this variable to determine up to which temperature (IN KELVIN) the item protects against heat damage. Keep at null to disable protection. Only protects areas set by heat_protection flags
 	var/min_cold_protection_temperature //Set this variable to determine down to which temperature (IN KELVIN) the item protects against cold damage. 0 is NOT an acceptable number due to if(varname) tests!! Keep at null to disable protection. Only protects areas set by cold_protection flags
 
-	var/icon_action_button //If this is set, The item will make an action button on the player's HUD when picked up. The button will have the icon_action_button sprite from the screen1_action.dmi file.
-	var/action_button_name //This is the text which gets displayed on the action button. If not set it defaults to 'Use [name]'. Note that icon_action_button needs to be set in order for the action button to appear.
+	//If this is set, The item will make an action button on the player's HUD when picked up.
+	var/action_button_name //It is also the text which gets displayed on the action button. If not set it defaults to 'Use [name]'. If it's not set, there'll be no button.
 
 	//Since any item can now be a piece of clothing, this has to be put here so all items share it.
 	var/flags_inv //This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
@@ -56,145 +52,8 @@
 		src:my_atom = null*/
 	..()
 
-/obj/item/proc/preAttack(atom/target,mob/user,forceMod=1)
-	if(user.canTouch(target))
-		//TODO: Attackby() needs to take more specific instructions.
-		//		It would allow us to avoid this inelegant shit.
-		if(forceMod && (src.damtype == "brute"))
-			. = src.force
-			src.force *= forceMod
-			target.attackby(src,user)
-			src.afterattack(target,user,1)
-			src.force = .
-		else
-			target.attackby(src,user)
-			src.afterattack(target,user,1)
-	return
-
-/obj/item/proc/attack_self(mob/user)
-	return
-
-/obj/item/proc/afterattack(atom/target,mob/user,proximity)
-	return
-
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
-
-obj/item/proc/get_clamped_volume()
-	if(src.w_class)
-		if(src.force)	. = Clamp(((src.force + src.w_class)*4),30,100)
-		else			. = Clamp((src.w_class*6),10,100)
-	return
-
-/obj/item/proc/attack(mob/living/target,mob/living/user,def_zone)
-	if(!isliving(target)) return
-	if(can_operate(target) && do_surgery(target,user,src)) return
-	if(src.hitsound) playsound(src.loc,src.hitsound,50,1,-1)
-	user.lastattacked = target
-	target.lastattacker = user
-	spawn() add_logs(user,target,"attacked",object=src.name,addition="(INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(damtype)])")
-	var/power = src.force
-	 //TODO: Should be in attackArmed()
-	if(istype(target,/mob/living/carbon/human)) target:attacked_by(src,user,def_zone)
-	else //TODO: Should be in mob code
-		switch(src.damtype)
-			if("brute")
-				if(istype(src,/mob/living/carbon/slime) || istype(src, /mob/living/carbon/metroid))
-					target.adjustBrainLoss(power)
-				else
-					if(src.force && prob(33))
-						var/turf/T = get_turf(target)
-						if(istype(T,/turf/simulated)) T:add_blood_floor(target)
-					target.take_organ_damage(power)
-			if("fire")
-				if(!(M_RESIST_COLD in target.mutations))
-					target.take_organ_damage(0,power)
-					target << "<span class='danger'>Aargh it burns!</span>"
-		target.updatehealth()
-		if(istype(target,/mob/living/carbon/slime)) //TODO: Should be in slime code
-			var/mob/living/carbon/slime/slime = target
-			if(prob(25))
-				user << "<span class='warning'>[src] passes right through [slime]!</span>"
-				return
-			if(power > 0) slime.attacked += 10
-			if(prob(50)) slime.Discipline--
-			if((power >= 3) && prob(5+round(power/2)))
-				if(slime.Victim && prob(80) && !slime.client)
-					slime.Discipline++
-					slime.Victim = null
-					slime.anchored = 0
-				slime.SStun = 1
-				spawn(rand(5,20))
-					if(slime) slime.SStun = 0
-				step_away(slime,user)
-				if(prob(25+power))
-					spawn(2)
-						if(slime && user) step_away(slime, user)
-		if(istype(target, /mob/living/carbon/metroid))
-			var/mob/living/carbon/metroid/metroid = target
-			if(prob(25))
-				user << "\red [src] passes right through [metroid]!"
-				return
-			if(power > 0) metroid.attacked += 10
-			if(metroid.Discipline && prob(50)) metroid.Discipline = 0
-			if(power >= 3 && istype(metroid, /mob/living/carbon/metroid/adult) && prob(5+round(power/2)))
-				if(metroid.Victim && prob(80) && !metroid.client)
-					metroid.Discipline++
-					metroid.Victim = null
-					metroid.anchored = 0
-				metroid.SStun = 1
-				spawn(rand(5,20))
-					if(metroid) metroid.SStun = 0
-				metroid.canmove = 0
-				step_away(metroid, user)
-				if(prob(25 + power))
-					spawn(2)
-						if(metroid && user)
-							step_away(metroid, user)
-							metroid.canmove = 1
-
-			else if(prob(10 + power*2))
-				if(metroid.Victim && prob(80) && !metroid.client)
-					metroid.Discipline++
-					if(metroid.Discipline == 1)
-						metroid.attacked = 0
-						metroid.Victim = null
-						metroid.anchored = 0
-				metroid.SStun = 1
-				spawn(rand(5,20))
-					if(metroid) metroid.SStun = 0
-				if(metroid && user)
-					step_away(metroid, user)
-					metroid.canmove = 0
-					if(prob(25 + power*4) && metroid && user)
-						step_away(metroid, user)
-						metroid.canmove = 1
-		var/showname = "." //TODO: Should be in a logging proc
-		if(user) showname = " by [user]!"
-		if(!(user in viewers(target,null))) showname = "."
-		spawn()
-			if(attack_verb && attack_verb.len)
-				target.visible_message("<span class='danger'>[target] has been [pick(attack_verb)] with [src][showname]</span>",
-				"<span class='userdanger'>[target] has been [pick(attack_verb)] with [src][showname]!</span>")
-			else if(force == 0)
-				target.visible_message("<span class='danger'>[target] has been [pick("tapped","patted")] with [src][showname]</span>",
-				"<span class='userdanger'>[target] has been [pick("tapped","patted")] with [src][showname]</span>")
-			else
-				target.visible_message("<span class='danger'>[target] has been attacked with [src][showname]</span>",
-				"<span class='userdanger'>[target] has been attacked with [src][showname]</span>")
-		if(!showname && user && user.client) user << "<span class='danger'>You attack [target] with [src].<span>"
-	src.add_fingerprint(user)
-	return 1
-
-/obj/item/attack_tk(mob/user)
-	if(user.stat || (!isturf(src.loc))) return
-	if((M_TK in user.mutations) && !user.get_active_hand())
-		var/obj/item/tk_grab/O = new(src)
-		user.put_in_active_hand(O)
-		O.host = user
-		O.focus_object(src)
-	else warning("Strange attack_tk(): TK([M_TK in user.mutations]) empty hand([!user.get_active_hand()])")
-	return
 
 /obj/item/ex_act(severity)
 	switch(severity)
@@ -214,9 +73,6 @@ obj/item/proc/get_clamped_volume()
 
 /obj/item/blob_act()
 	del(src)
-
-/obj/item/proc/is_used_on(obj/O,mob/user)
-	return
 
 //user: The mob that is suiciding
 //damagetype: The type of damage the item will inflict on the user
@@ -789,7 +645,7 @@ obj/item/proc/get_clamped_volume()
 		user << "\red You're going to need to remove that mask/helmet/glasses first."
 		return
 
-	if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime) || istype(M, /mob/living/carbon/metroid))//Aliens don't have eyes./N     slimes also don't have eyes!  metroids to!
+	if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime))//Aliens don't have eyes./N     slimes also don't have eyes!
 		user << "\red You cannot locate any eyes on this creature!"
 		return
 
@@ -890,49 +746,6 @@ obj/item/proc/get_clamped_volume()
 	for(var/obj/item/A in world)
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
-
-/obj/item/proc/add_poo()
-	if(!poo_overlay)
-		generate_poo_overlay()
-
-/obj/item/proc/clean_poo()
-	. = ..()
-	if(poo_overlay)
-		overlays.Remove(poo_overlay)
-
-/obj/item/proc/generate_poo_overlay()
-	if(poo_overlay)
-		return
-
-	var/icon/I = new /icon(icon, icon_state)
-	I.Blend(new /icon('icons/effects/pooeffect.dmi', rgb(255,255,255)),ICON_ADD) //fills the icon_state with white (except where it's transparent)
-	I.Blend(new /icon('icons/effects/pooeffect.dmi', "itempoo"),ICON_MULTIPLY) //adds poo and the remaining white areas become transparant
-
-	for(var/obj/item/A in world)
-		if(A.type == type && !A.poo_overlay)
-			A.poo_overlay = image(I)
-
-/obj/item/proc/add_egg()
-	if(!egg_overlay)
-		generate_egg_overlay()
-
-/obj/item/proc/clean_egg()
-	. = ..()
-	if(egg_overlay)
-		overlays.Remove(egg_overlay)
-
-/obj/item/proc/generate_egg_overlay()
-	if(egg_overlay)
-		return
-
-	var/icon/I = new /icon(icon, icon_state)
-	I.Blend(new /icon('icons/effects/eggeffect.dmi', rgb(255,255,255)),ICON_ADD) //fills the icon_state with white (except where it's transparent)
-	I.Blend(new /icon('icons/effects/eggeffect.dmi', "itemegg"),ICON_MULTIPLY) //adds egg and the remaining white areas become transparant
-
-	for(var/obj/item/A in world)
-		if(A.type == type && !A.egg_overlay)
-			A.egg_overlay = image(I)
-
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))
