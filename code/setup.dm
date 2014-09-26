@@ -81,6 +81,7 @@ var/global/disable_vents     = 0
 
 // Factor of how fast mob nutrition decreases
 #define HUNGER_FACTOR 0.12
+#define THIRST_FACTOR 0.12
 
 // How many units of reagent are consumed per tick, by default.
 #define REAGENTS_METABOLISM 0.2

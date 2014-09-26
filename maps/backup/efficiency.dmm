@@ -2137,7 +2137,7 @@
 "aPe" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced,/turf/simulated/floor/plating,/area/security/checkpoint/medical)
 "aPf" = (/turf/simulated/floor{dir = 8; icon_state = "greencorner"},/area/hallway/primary/fore)
 "aPg" = (/obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,/turf/simulated/floor,/area/hallway/primary/fore)
-"aPh" = (/obj/machinery/camera{c_tag = "Bar Storage"},/obj/structure/table/woodentable,/obj/item/weapon/reagent_containers/food/drinks/shaker,/obj/item/weapon/gun/projectile/shotgun/pump,/turf/simulated/floor/wood,/area/crew_quarters/bar)
+"aPh" = (/obj/machinery/camera{c_tag = "Bar Storage"},/obj/structure/table/woodentable,/obj/item/weapon/reagent_containers/food/drinks/shaker,/obj/item/weapon/gun/projectile/shotgun/pump/sc_pump,/turf/simulated/floor/wood,/area/crew_quarters/bar)
 "aPi" = (/turf/simulated/floor/wood,/area/crew_quarters/bar)
 "aPj" = (/obj/structure/sink/kitchen{pixel_y = 28},/turf/simulated/floor/wood,/area/crew_quarters/bar)
 "aPk" = (/obj/machinery/smartfridge,/turf/simulated/wall,/area/crew_quarters/bar)

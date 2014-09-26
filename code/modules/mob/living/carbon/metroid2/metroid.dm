@@ -380,34 +380,6 @@
 */
 
 
-/mob/living/carbon/metroid/attack_metroid(mob/living/carbon/metroid/M as mob)
-	if (!ticker)
-		M << "You cannot attack people before the game has started."
-		return
-
-	if(Victim) return // can't attack while eating!
-
-	if (health > -100)
-
-		for(var/mob/O in viewers(src, null))
-			if ((O.client && !( O.blinded )))
-				O.show_message(text("\red <B>The [M.name] has bit []!</B>", src), 1)
-
-		var/damage = rand(1, 3)
-		attacked += 5
-
-		if(istype(src, /mob/living/carbon/metroid/adult))
-			damage = rand(1, 6)
-		else
-			damage = rand(1, 3)
-
-		adjustBruteLoss(damage)
-
-
-		updatehealth()
-
-	return
-
 
 /mob/living/carbon/metroid/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.melee_damage_upper == 0)
