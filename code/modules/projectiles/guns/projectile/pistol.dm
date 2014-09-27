@@ -113,3 +113,21 @@
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "silencer"
 	w_class = 2
+
+/obj/item/weapon/gun/projectile/pistol/mk23
+	name = "\improper Socom MK.23"
+	desc = "A small, easily concealable gun. Uses .45 ACP rounds."
+	icon_state = "mk23"
+	caliber = list(".45" = 1)
+	silenced = 0
+	origin_tech = "combat=3;materials=3;syndicate=3"
+	ammo_type = "/obj/item/ammo_casing/c45"
+	mag_type = "/obj/item/ammo_storage/magazine/c45"
+
+	New()
+		var/obj/item/weapon/silencer/I = new /obj/item/weapon/silencer(src.loc)
+		silenced = I	//dodgy?
+		w_class = 3
+		I.loc = src
+		update_icon()
+
