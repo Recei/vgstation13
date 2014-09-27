@@ -69,6 +69,20 @@ var/global/datum/controller/gameticker/ticker
 				current_state = GAME_STATE_SETTING_UP
 	while (!setup())
 
+/datum/controller/gameticker/proc/StartThematic(var/playlist)
+	if(!theme)
+		theme = new(locate(1,1,CENTCOMM_Z))
+	theme.playlist_id=playlist
+	theme.playing=1
+	theme.update_music()
+	theme.update_icon()
+
+/datum/controller/gameticker/proc/StopThematic()
+	theme.playing=0
+	theme.update_music()
+	theme.update_icon()
+
+
 /datum/controller/gameticker/proc/setup()
 	//Create and announce mode
 	if(master_mode=="secret")
@@ -176,6 +190,10 @@ var/global/datum/controller/gameticker/ticker
 	supply_shuttle.process() 		//Start the supply shuttle regenerating points -- TLE
 	master_controller.process()		//Start master_controller.process()
 	lighting_controller.process()	//Start processing DynamicAreaLighting updates
+
+	if(config.sql_enabled)
+		spawn(3000)
+		statistic_cycle() // Polls population totals regularly and stores them in an SQL DB -- TLE
 
 	return 1
 
