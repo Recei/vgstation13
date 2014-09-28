@@ -311,7 +311,7 @@
 							for(var/i=1, i<tankcheck.len+1, ++i)
 								if(istype(tankcheck[i], /obj/item/weapon/tank))
 									var/obj/item/weapon/tank/t = tankcheck[i]
-									if (!isnull(t.manipulated_by) && t.manipulated_by != C.real_name && findtextEx(t.desc,breathes))
+									if (!isnull(t.manipulated_by) && t.manipulated_by != C.real_name && findtext(t.desc,breathes))
 										contents.Add(t.air_contents.total_moles)	//Someone messed with the tank and put unknown gasses
 										continue					//in it, so we're going to believe the tank is what it says it is
 									switch(breathes)
@@ -376,16 +376,16 @@
 			usr.a_intent_change("right")
 		if("help")
 			usr.a_intent = "help"
-			usr.hud_used.action_intent.icon_state = "help"
+			usr.hud_used.action_intent.icon_state = "intent_help"
 		if("harm")
 			usr.a_intent = "hurt"
-			usr.hud_used.action_intent.icon_state = "hurt"
+			usr.hud_used.action_intent.icon_state = "intent_hurt"
 		if("grab")
 			usr.a_intent = "grab"
-			usr.hud_used.action_intent.icon_state = "grab"
+			usr.hud_used.action_intent.icon_state = "intent_grab"
 		if("disarm")
 			usr.a_intent = "disarm"
-			usr.hud_used.action_intent.icon_state = "disarm"
+			usr.hud_used.action_intent.icon_state = "intent_disarm"
 
 		if("pull")
 			usr.stop_pulling()
