@@ -458,7 +458,7 @@
 
 	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.pressure, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.healths, mymob.nutrition_icon, mymob.pullin, mymob.blind, mymob.flash, mymob.damageoverlay, mymob.gun_setting_icon) //, mymob.hands, mymob.rest, mymob.sleep) //, mymob.mach )
 	mymob.client.screen += src.adding + src.hotkeybuttons
-	inventory_shown = 0;
+	inventory_shown = 0
 
 	return
 
@@ -521,3 +521,6 @@
 					A.screen_loc = ui_action_slot5
 					break //5 slots available, so no more can be added.
 			num++
+
+
+

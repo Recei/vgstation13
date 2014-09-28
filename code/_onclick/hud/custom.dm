@@ -1,9 +1,9 @@
 /proc/get_special_ui_style(ui_style)
 	if(ui_style in list("Midnigh","old","Luna"))
-		return /datum/hud_special/newlike
+		return /datum/hud_special/oldlike
 
 
-/datum/hud_special/newlike
+/datum/hud_special/oldlike
 	locations = list(
 	"inventory" = "SOUTH,4",
 	"sstore1" = "SOUTH+1,4",
@@ -75,23 +75,8 @@
 				if(H.s_store)	H.s_store.screen_loc = null
 		return 1
 
-	persistant_inventory_update()
-		if(ishuman(myhud.mymob))
-			var/mob/living/carbon/human/H = myhud.mymob
-			if(myhud.inventory_shown && myhud.hud_shown)
-				if(H.wear_id)	H.wear_id.screen_loc = locations["id"]
-				if(H.belt)		H.belt.screen_loc = locations["belt"]
-				if(H.back)		H.back.screen_loc = locations["back"]
-				if(H.l_store)	H.l_store.screen_loc = locations["storage1"]
-				if(H.r_store)	H.r_store.screen_loc = locations["storage2"]
-			else
-				if(H.wear_id)	H.wear_id.screen_loc = null
-				if(H.belt)		H.belt.screen_loc = null
-				if(H.back)		H.back.screen_loc = null
-				if(H.l_store)	H.l_store.screen_loc = null
-				if(H.r_store)	H.r_store.screen_loc = null
 
-/datum/hud/proc/custom_hud(var/ui_style='icons/mob/screen1_Luna.dmi', var/specialtype = /datum/hud_special/newlike, var/ui_color = "#ffffff", var/ui_alpha = 255)
+/datum/hud/proc/custom_hud(var/ui_style='icons/mob/screen1_Luna.dmi', var/specialtype = /datum/hud_special/oldlike)
 	src.adding = list()
 	src.other = list()
 	src.hotkeybuttons = list() //These can be disabled for hotkey usersx
@@ -178,7 +163,10 @@
 	inv_box.icon_state = "center"
 	inv_box.screen_loc = special.locations["iclothing"]
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["iclothing"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "o_clothing"
@@ -189,6 +177,10 @@
 	inv_box.screen_loc = special.locations["oclothing"]
 	inv_box.layer = 19
 	src.adding += inv_box
+	if(special.hideable["oclothing"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "r_hand"
@@ -243,7 +235,10 @@
 	inv_box.screen_loc = special.locations["id"]
 	inv_box.slot_id = slot_wear_id
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["id"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "mask"
@@ -253,7 +248,11 @@
 	inv_box.screen_loc = special.locations["mask"]
 	inv_box.slot_id = slot_wear_mask
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["mask"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
+
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "back"
@@ -263,7 +262,10 @@
 	inv_box.screen_loc = special.locations["back"]
 	inv_box.slot_id = slot_back
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["back"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "storage1"
@@ -272,7 +274,10 @@
 	inv_box.screen_loc = special.locations["storage1"]
 	inv_box.slot_id = slot_l_store
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["storage1"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "storage2"
@@ -281,7 +286,10 @@
 	inv_box.screen_loc = special.locations["storage2"]
 	inv_box.slot_id = slot_r_store
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["storage2"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "suit storage"
@@ -291,7 +299,10 @@
 	inv_box.screen_loc = special.locations["sstore1"]
 	inv_box.slot_id = slot_s_store
 	inv_box.layer = 19
-	src.other += inv_box
+	if(special.hideable["sstore1"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	using = new /obj/screen()
 	using.name = "resist"
@@ -318,7 +329,10 @@
 	inv_box.screen_loc = special.locations["gloves"]
 	inv_box.slot_id = slot_gloves
 	inv_box.layer = 19
-	src.other += inv_box
+	if(special.hideable["gloves"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "eyes"
@@ -327,7 +341,11 @@
 	inv_box.screen_loc = special.locations["glasses"]
 	inv_box.slot_id = slot_glasses
 	inv_box.layer = 19
-	src.other += inv_box
+	if(special.hideable["glasses"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
+
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "ears"
@@ -336,7 +354,10 @@
 	inv_box.screen_loc = special.locations["ears"]
 	inv_box.slot_id = slot_ears
 	inv_box.layer = 19
-	src.other += inv_box
+	if(special.hideable["ears"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "head"
@@ -345,7 +366,11 @@
 	inv_box.screen_loc = special.locations["head"]
 	inv_box.slot_id = slot_head
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["head"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
+
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "shoes"
@@ -354,7 +379,10 @@
 	inv_box.screen_loc = special.locations["shoes"]
 	inv_box.slot_id = slot_shoes
 	inv_box.layer = 19
-	src.other += inv_box
+	if(special.hideable["shoes"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	inv_box = new /obj/screen/inventory()
 	inv_box.name = "belt"
@@ -363,7 +391,10 @@
 	inv_box.screen_loc = special.locations["belt"]
 	inv_box.slot_id = slot_belt
 	inv_box.layer = 19
-	src.adding += inv_box
+	if(special.hideable["belt"])
+		src.other += inv_box
+	else
+		src.adding += inv_box
 
 	mymob.throw_icon = new /obj/screen()
 	mymob.throw_icon.icon = ui_style
@@ -465,51 +496,37 @@
 	mymob.zone_sel.overlays += image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]")
 
 
-	if(special.locations["filler"])
-		using = new /obj/screen()
-		using.icon = ui_style
-		using.screen_loc = special.locations["filler"]
-		using.layer = 17
-		using.dir = EAST
-		src.adding += using
+	using = new /obj/screen()
+	using.icon = ui_style
+	using.screen_loc = special.locations["filler"]
+	using.layer = 17
+	using.dir = EAST
+	src.adding += using
 
-	if(special.locations["filler2"])
-		using = new /obj/screen()
-		using.icon = ui_style
-		using.screen_loc = special.locations["filler2"]
-		using.layer = 17
-		src.adding += using
-	if(special.locations["corner"])
-		using = new /obj/screen() //Corner Button
-		using.dir = NORTHWEST
-		using.icon = ui_style
-		using.screen_loc = special.locations["corner"]
-		using.layer = 18
-		adding += using
+	using = new /obj/screen()
+	using.icon = ui_style
+	using.screen_loc = special.locations["filler2"]
+	using.layer = 17
+	src.adding += using
+
+	using = new /obj/screen() //Corner Button
+	using.dir = NORTHWEST
+	using.icon = ui_style
+	using.screen_loc = special.locations["corner"]
+	using.layer = 18
+	adding += using
+
+	mymob.zone_sel = new /obj/screen/zone_sel( null )
+	mymob.zone_sel.icon = ui_style
+	mymob.zone_sel.overlays.Cut()
+	mymob.zone_sel.screen_loc = special.locations["zonesel"]
+	mymob.zone_sel.overlays += image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]")
 
 	mymob.client.screen = null
 
-	mymob.client.screen += list(
-							mymob.throw_icon,
-							mymob.zone_sel,
-							mymob.oxygen,
-							mymob.pressure,
-							mymob.toxin,
-							mymob.bodytemp,
-							mymob.internals,
-							mymob.fire,
-							mymob.healths,
-							mymob.nutrition_icon,
-							mymob.hydration_icon,
-							mymob.rest,
-							mymob.pullin,
-							mymob.hands,
-							mymob.blind,
-							mymob.flash,
-							mymob.damageoverlay
-							)
-	mymob.client.screen += src.adding
-	mymob.client.screen += src.hotkeybuttons
-	inventory_shown = 1
+	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.pressure, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.healths, mymob.nutrition_icon, mymob.rest, mymob.pullin, mymob.hands, mymob.blind, mymob.flash, mymob.damageoverlay)
+	mymob.client.screen += src.adding + src.hotkeybuttons
+	inventory_shown = 0
 
 	return
+

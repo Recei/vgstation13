@@ -130,7 +130,7 @@ var/datum/global_hud/global_hud = new()
 	mymob = owner
 	instantiate()
 	..()
-
+	return
 
 /datum/hud/proc/get_slot_loc(var/slot)
 	if(special && special.locations[slot])
@@ -247,7 +247,7 @@ var/datum/global_hud/global_hud = new()
 
 	if(ishuman(mymob))
 		if(get_special_ui_style(mymob.client.prefs.UI_style))
-			custom_hud(ui_style, get_special_ui_style(mymob.client.prefs.UI_style), ui_color = "#ffffff", ui_alpha = 255)
+			custom_hud(ui_style, get_special_ui_style(mymob.client.prefs.UI_style))
 		else
 			human_hud(ui_style, ui_color, ui_alpha) // Pass the player the UI style chosen in preferences
 
