@@ -292,6 +292,9 @@ proc/tg_list2text(list/list, glue=",")
 	switch(ui_style)
 		if("old")		return 'icons/mob/screen1_old.dmi'
 		if("Luna")	return 'icons/mob/screen1_luna.dmi'
+		if("Midnight_new") return 'icons/mob/screen1_Midnight_new.dmi'
+		if("Orange") return 'icons/mob/screen1_Orange.dmi'
+		if("White") return 'icons/mob/screen1_White.dmi'
 		else			return 'icons/mob/screen1_Midnight.dmi'
 
 /proc/num2septext(var/theNum, var/sigFig = 7,var/sep=",") // default sigFig (1,000,000)

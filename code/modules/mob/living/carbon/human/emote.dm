@@ -727,15 +727,13 @@
 
 						if(48)
 							message = "<B>[src]</B> laughs! His breath smells like a fart."
-				if(world.time-lastFart <  5)
+				if(world.time-lastFart <  20)//2 seconds
 					usr << "<span class='warning'>You feeling like your ass cracking. Uh-oh..."
 					fail_farts ++
 				for(var/mob/M in view(1))
 					if(M != src)
-						if(!miming)
-							visible_message("\red <b>[src]</b> farts in <b>[M]</b>'s face!")
-						else
-							visible_message("\red <b>[src]</b> silently farts in <b>[M]</b>'s face!")
+						visible_message("\red <b>[src]</b> farts in <b>[M]</b>'s face!")
+
 
 				for(var/mob/M in viewers(src, null))
 					if(!M.stat && getBrainLoss() >= 60)
@@ -785,7 +783,7 @@
 							// <[REDACTED]> gets between 1 and 10 units of jenkem added to them...we obviously don't have Jenkem, but Space Drugs do literally the same exact thing as Jenkem
 							// <[REDACTED]> the user, of course, isn't impacted because it's not an actual smoke cloud
 							// So, let's give 'em space drugs.
-							M.reagents.add_reagent("space_drugs",rand(1,50))
+							M.reagents.add_reagent("jenkem",rand(1,50))
 						/*
 						var/datum/effect/effect/system/smoke_spread/chem/fart/S = new /datum/effect/effect/system/smoke_spread/chem/fart
 						S.attach(location)
@@ -814,7 +812,7 @@
 								step_away(V,location,15)
 					else
 						usr << "\red You were interrupted and couldn't fart! Rude!"
-					lastFart=world.time
+				lastFart=world.time
 			else
 				message = "<b>[src]</b> strains, and nothing happens."
 				m_type = 1
@@ -1077,6 +1075,6 @@
 
 /mob/living/carbon/human/proc/get_excrement_holder()
 	for(var/obj/O in src.loc)
-		if(istype(O, /obj/structure/toilet) || istype(O, /obj/structure/urinal) || istype(O, /obj/machinery/disposal))
+		if(istype(O, /obj/structure/toilet) && O:open || istype(O, /obj/structure/urinal) || istype(O, /obj/machinery/disposal))
 			return O
 	return null

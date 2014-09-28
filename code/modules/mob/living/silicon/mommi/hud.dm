@@ -1,4 +1,4 @@
-// Process the MoMMI's visual HuD 
+// Process the MoMMI's visual HuD
 /datum/hud/proc/mommi_hud()
 	// Typecast the mymob to a MoMMI type
 	var/mob/living/silicon/robot/mommi/M=mymob
@@ -97,7 +97,7 @@
 	mymob.throw_icon.icon = 'icons/mob/screen1_robot.dmi'
 	mymob.throw_icon.icon_state = "store"
 	mymob.throw_icon.name = "store"
-	mymob.throw_icon.screen_loc = ui_swaphand
+	mymob.throw_icon.screen_loc = ui_borg_store
 
 	// Temp
 	mymob.bodytemp = new /obj/screen()

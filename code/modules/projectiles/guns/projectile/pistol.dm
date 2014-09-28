@@ -125,6 +125,7 @@
 	mag_type = "/obj/item/ammo_storage/magazine/c45"
 
 	New()
+		..()
 		var/obj/item/weapon/silencer/I = new /obj/item/weapon/silencer(src.loc)
 		silenced = I	//dodgy?
 		w_class = 3

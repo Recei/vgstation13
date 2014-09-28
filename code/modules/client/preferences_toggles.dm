@@ -156,7 +156,7 @@
 		usr << "This only for human"
 		return
 
-	var/UI_style_new = input(usr, "Select a style, we recommend White for customization") in list("White", "Midnight", "Orange", "old")
+	var/UI_style_new = input(usr, "Select a style, we recommend White for customization") in list("White","Midnight","Midnight_old","Orange","Luna","old")
 	if(!UI_style_new) return
 
 	var/UI_style_alpha_new = input(usr, "Select a new alpha(transparence) parametr for UI, between 50 and 255") as num
