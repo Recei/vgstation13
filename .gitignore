@@ -35,3 +35,6 @@ info.json
 data/investigate/singulo.html
 data/ban_unban_log.txt
 data/whitelist.txt
+
+#SQLite
+*.sqlite
