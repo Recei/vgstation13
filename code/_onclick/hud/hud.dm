@@ -244,10 +244,11 @@ var/datum/global_hud/global_hud = new()
 	var/ui_style = ui_style2icon(mymob.client.prefs.UI_style)
 	var/ui_color = mymob.client.prefs.UI_style_color
 	var/ui_alpha = mymob.client.prefs.UI_style_alpha
+	var/ui_special = get_special_ui_style(mymob.client.prefs.UI_style)
 
 	if(ishuman(mymob))
-		if(get_special_ui_style(mymob.client.prefs.UI_style))
-			custom_hud(ui_style, get_special_ui_style(mymob.client.prefs.UI_style))
+		if(ui_special)
+			custom_hud(ui_style, ui_special) // No color change cuz i can
 		else
 			human_hud(ui_style, ui_color, ui_alpha) // Pass the player the UI style chosen in preferences
 

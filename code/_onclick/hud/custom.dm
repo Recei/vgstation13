@@ -1,5 +1,5 @@
-/proc/get_special_ui_style(ui_style)
-	if(ui_style in list("Midnigh","old","Luna"))
+/datum/hud/proc/get_special_ui_style(var/uistyle = mymob.client.prefs.UI_style)
+	if(uistyle in list("Midnight","old","Luna"))
 		return /datum/hud_special/oldlike
 
 
@@ -18,16 +18,16 @@
 	"swaphand" = "SOUTH-1,6",
 	"dropbutton" = "SOUTH-1,7",
 	"drop_throw" = "SOUTH-1,8",
-	"pull" = "EAST,SOUTH-1",
+	"pull" = "SOUTH-1,10",
 	"resist" = "EAST+1,SOUTH-1",
 	"acti" =  "SOUTH-1,12",
 	"movi" = "SOUTH-1,14",
 	"zonesel" = "EAST+1, NORTH",
 	"acti_alt" = "14:28,1:5" ,
-	"toxin" = "EAST+1, NORTH-6",
-	"fire" = "EAST+1, NORTH-8",
+	"toxin" = "EAST+1, NORTH-5",
+	"fire" = "EAST+1, NORTH-6",
 	"oxygen" = "EAST+1, NORTH-4",
-	"pressure" = "EAST+1, SOUTH+5",
+	"pressure" = "EAST+1, NORTH-7",
 	"nutrition" = "EAST+1, NORTH-11",
 	"hydration" = "EAST+1, NORTH-12",
 	"temp" = "EAST+1, NORTH-8",
@@ -39,7 +39,7 @@
 	"gloves" = "SOUTH,5",
 	"glasses" = "SOUTH,7",
 	"mask" = "SOUTH+1,1",
-	"l_ear" = "SOUTH,6",
+	"ears" = "SOUTH,6",
 	"r_ear" = "SOUTH+1,6",
 	"head" = "SOUTH+1,2",
 	"att_int" = "SOUTH-1,9",
@@ -48,13 +48,12 @@
 	"rest" = "EAST+1, NORTH-14",
 	"iarrowleft" = "SOUTH-1,11",
 	"iarrowright" = "SOUTH-1,13",
-	"zonesel" = "EAST+1,NOTYTH",
 	"filler" = "WEST,SOUTH-1 to EAST,SOUTH-1",
 	"filler2" = "EAST+1,SOUTH to EAST+1,NORTH",
 	"corner" = "EAST+1,SOUTH-1")
 
 	hideable = list(
-	"s_store" =1, "shoes" = 1,
+	"sstore1" = 1, "shoes" = 1,
 	"gloves" = 1, "ears" = 1,
 	"glasses" = 1)
 
@@ -75,8 +74,34 @@
 				if(H.s_store)	H.s_store.screen_loc = null
 		return 1
 
+	persistant_inventory_update()
+		if(ishuman(myhud.mymob))
+			var/mob/living/carbon/human/H = myhud.mymob
+			if(myhud.hud_shown)
+				if(H.wear_id)	H.wear_id.screen_loc = locations["id"]
+				if(H.belt)		H.belt.screen_loc = locations["belt"]
+				if(H.back)		H.back.screen_loc = locations["back"]
+				if(H.l_store)	H.l_store.screen_loc = locations["storage1"]
+				if(H.r_store)	H.r_store.screen_loc = locations["storage2"]
+				if(H.w_uniform)	H.w_uniform.screen_loc = locations["iclothing"]
+				if(H.wear_suit)	H.wear_suit.screen_loc = locations["oclothing"]
+				if(H.wear_mask)	H.wear_mask.screen_loc = locations["mask"]
+				if(H.head)		H.head.screen_loc = locations["head"]
+			else
+				if(H.wear_id)	H.wear_id.screen_loc = null
+				if(H.belt)		H.belt.screen_loc = null
+				if(H.back)		H.back.screen_loc = null
+				if(H.l_store)	H.l_store.screen_loc = null
+				if(H.r_store)	H.r_store.screen_loc = null
+				if(H.w_uniform)	H.w_uniform.screen_loc = null
+				if(H.wear_suit)	H.wear_suit.screen_loc = null
+				if(H.wear_mask)	H.wear_mask.screen_loc = null
+				if(H.head)		H.head.screen_loc = null
+
+
 
 /datum/hud/proc/custom_hud(var/ui_style='icons/mob/screen1_Luna.dmi', var/specialtype = /datum/hud_special/oldlike)
+
 	src.adding = list()
 	src.other = list()
 	src.hotkeybuttons = list() //These can be disabled for hotkey usersx
@@ -130,7 +155,7 @@
 	using.name = "act_intent"
 	using.dir = SOUTHWEST
 	using.icon = ui_style
-	using.icon_state = mymob.a_intent
+	using.icon_state = "intent_"+mymob.a_intent
 	using.screen_loc = special.locations["acti"]
 	using.layer = 20
 	adding += using
@@ -523,9 +548,8 @@
 	mymob.zone_sel.overlays += image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]")
 
 	mymob.client.screen = null
-
-	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.pressure, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.healths, mymob.nutrition_icon, mymob.rest, mymob.pullin, mymob.hands, mymob.blind, mymob.flash, mymob.damageoverlay)
 	mymob.client.screen += src.adding + src.hotkeybuttons
+	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.pressure, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.healths, mymob.nutrition_icon, mymob.hydration_icon, mymob.rest, mymob.pullin, mymob.hands, mymob.blind, mymob.flash, mymob.damageoverlay)
 	inventory_shown = 0
 
 	return
