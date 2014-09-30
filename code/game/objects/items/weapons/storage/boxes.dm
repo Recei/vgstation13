@@ -90,6 +90,7 @@
 	name = "box of latex gloves"
 	desc = "Contains white gloves."
 	icon_state = "latex"
+
 	New()
 		..()
 		new /obj/item/clothing/gloves/latex(src)
