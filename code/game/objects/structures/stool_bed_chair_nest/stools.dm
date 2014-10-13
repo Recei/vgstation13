@@ -34,6 +34,13 @@
 		del(src)
 	return
 
+/obj/structure/stool/bar
+	icon_state = "barstool"
+
+/obj/structure/stool/bar2
+	icon_state = "barstool2"
+
+
 /obj/structure/stool/hologram/blob_act()
 	return
 

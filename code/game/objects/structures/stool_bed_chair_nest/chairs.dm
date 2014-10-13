@@ -152,6 +152,9 @@
 /obj/structure/stool/bed/chair/comfy/lime
 	icon_state = "comfychair_lime"
 
+/obj/structure/stool/bed/chair/comfy/alt
+	icon_state = "comfychair2"
+
 /obj/structure/stool/bed/chair/office/Move()
 	..()
 	handle_rotation()
