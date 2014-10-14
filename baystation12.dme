@@ -1550,4 +1550,5 @@
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
 #include "maps\tgstation.dmm"
+#include "maps\Ministation\telecomms.dm"
 // END_INCLUDE
