@@ -50,7 +50,7 @@
 
 /datum/recipe/appendixburger
 	reagents = list("flour" = 5)
-	items = list(/obj/item/weapon/reagent_containers/food/snacks/appendix)
+	items = list(/obj/item/weapon/reagent_containers/food/snacks/organ)
 	result = /obj/item/weapon/reagent_containers/food/snacks/appendixburger
 
 /datum/recipe/syntiburger
@@ -60,7 +60,7 @@
 
 /datum/recipe/brainburger
 	reagents = list("flour" = 5)
-	items = list(/obj/item/brain)
+	items = list(/obj/item/organ/brain)
 	result = /obj/item/weapon/reagent_containers/food/snacks/brainburger
 
 /datum/recipe/roburger
@@ -575,7 +575,7 @@
 		/obj/item/weapon/reagent_containers/food/snacks/egg,
 		/obj/item/weapon/reagent_containers/food/snacks/egg,
 		/obj/item/weapon/reagent_containers/food/snacks/egg,
-		/obj/item/brain
+		/obj/item/organ/brain
 		)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/braincake
 

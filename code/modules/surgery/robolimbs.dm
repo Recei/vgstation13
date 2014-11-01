@@ -11,7 +11,7 @@
 		if (!hasorgans(target))
 			return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if (!affected)
+		if (!affected || affected.name == "head")
 			return 0
 		if (!(affected.status & ORGAN_DESTROYED))
 			return 0

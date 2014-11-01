@@ -60,6 +60,12 @@
 #define ui_drone_pull "CENTER+2:2,SOUTH:5"      //maintenance drones
 #define ui_drone_storage "CENTER-2:14,SOUTH:5"  //maintenance drones
 
+#define ui_monkey_uniform "3:14,1:5"//monkey
+#define ui_monkey_hat "4:14,1:5"	//monkey
+#define ui_monkey_mask "5:14,1:5"	//monkey
+#define ui_monkey_back "6:14,1:5"	//monkey
+
+
 //Lower right, persistant menu
 #define ui_drop_throw "EAST-1:28,SOUTH+1:7"
 #define ui_pull_resist "EAST-2:26,SOUTH+1:7"
@@ -104,6 +110,13 @@
 #define ui_construct_health "15:00,7:15" //same height as humans, hugging the right border
 #define ui_construct_fire "14:16,8:13" //above health, slightly to the left
 #define ui_construct_pull "14:28,2:10" //above the zone_sel icon
+
+#define ui_construct_spell1 "7:16,1:5"
+#define ui_construct_spell2 "6:16,1:5"
+#define ui_construct_spell3 "8:16,1:5"
+#define ui_construct_spell4 "5:16,1:5"
+#define ui_construct_spell5 "9:16,1:5"
+
 //Pop-up inventory
 #define ui_shoes "WEST+1:8,SOUTH:5"
 

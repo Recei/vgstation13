@@ -24,6 +24,51 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	"4" = image("icon" = 'icons/mob/screen1_full.dmi', "icon_state" = "brutedamageoverlay4"),\
 	"5" = image("icon" = 'icons/mob/screen1_full.dmi', "icon_state" = "brutedamageoverlay5"),\
 	"6" = image("icon" = 'icons/mob/screen1_full.dmi', "icon_state" = "brutedamageoverlay6"))
+var/global/list/organ_damage_overlays = list(
+	"l_hand_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_hand_min", "layer" = 21),\
+	"l_hand_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_hand_mid", "layer" = 21),\
+	"l_hand_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_hand_max", "layer" = 21),\
+	"l_hand_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_hand_gone", "layer" = 21),\
+	"r_hand_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_hand_min", "layer" = 21),\
+	"r_hand_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_hand_mid", "layer" = 21),\
+	"r_hand_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_hand_max", "layer" = 21),\
+	"r_hand_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_hand_gone", "layer" = 21),\
+	"l_arm_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_arm_min", "layer" = 21),\
+	"l_arm_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_hand_mid", "layer" = 21),\
+	"l_arm_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_arm_max", "layer" = 21),\
+	"l_arm_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_arm_gone", "layer" = 21),\
+	"r_arm_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_arm_min", "layer" = 21),\
+	"r_arm_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_arm_mid", "layer" = 21),\
+	"r_arm_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_arm_max", "layer" = 21),\
+	"r_arm_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_arm_gone", "layer" = 21),\
+	"l_leg_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_leg_min", "layer" = 21),\
+	"l_leg_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_leg_mid", "layer" = 21),\
+	"l_leg_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_leg_max", "layer" = 21),\
+	"l_leg_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_leg_gone", "layer" = 21),\
+	"r_leg_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_leg_min", "layer" = 21),\
+	"r_leg_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_leg_mid", "layer" = 21),\
+	"r_leg_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_leg_max", "layer" = 21),\
+	"r_leg_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_leg_gone", "layer" = 21),\
+	"r_foot_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_foot_min", "layer" = 21),\
+	"r_foot_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_foot_mid", "layer" = 21),\
+	"r_foot_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_foot_max", "layer" = 21),\
+	"r_foot_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "r_foot_gone", "layer" = 21),\
+	"l_foot_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_foot_min", "layer" = 21),\
+	"l_foot_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_foot_mid", "layer" = 21),\
+	"l_foot_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_foot_max", "layer" = 21),\
+	"l_foot_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "l_foot_gone", "layer" = 21),\
+	"chest_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "chest_min", "layer" = 21),\
+	"chest_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "chest_mid", "layer" = 21),\
+	"chest_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "chest_max", "layer" = 21),\
+	"chest_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "chest_gone", "layer" = 21),\
+	"head_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "head_min", "layer" = 21),\
+	"head_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "head_mid", "layer" = 21),\
+	"head_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "head_max", "layer" = 21),\
+	"head_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "head_gone", "layer" = 21),\
+	"groin_min" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "groin_min", "layer" = 21),\
+	"groin_mid" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "groin_mid", "layer" = 21),\
+	"groin_max" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "groin_max", "layer" = 21),\
+	"groin_gone" = image("icon" = 'icons/mob/organdmg.dmi', "icon_state" = "groin_gone", "layer" = 21))
 /mob/living/carbon/human
 	var/oxygen_alert = 0
 	var/toxins_alert = 0
@@ -108,6 +153,9 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 		//Disabilities
 		handle_disabilities()
+
+		//Organ failure.
+		handle_organs()
 
 		//Random events (vomiting etc)
 		handle_random_events()
@@ -213,9 +261,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 					pixel_x = old_x
 					pixel_y = old_y
 					return
-		if (disabilities & NERVOUS)
-			if (prob(10))
-				stuttering = max(10, stuttering)
 		if (getBrainLoss() >= 60 && stat != 2)
 			if (prob(3))
 				switch(pick(1,2,3))
@@ -352,7 +397,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 		if(species && species.flags & NO_BREATHE) return
 
-		var/datum/organ/internal/lungs/L = internal_organs["lungs"]
+		var/datum/organ/internal/lungs/L = internal_organs_by_name["lungs"]
 		L.process()
 
 		var/datum/gas_mixture/environment = loc.return_air()
@@ -957,15 +1002,16 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 		handle_trace_chems()
 
-		var/datum/organ/internal/liver/liver = internal_organs["liver"]
-		liver.process()
+		var/datum/organ/internal/liver/liver = internal_organs_by_name["liver"]
+		if(liver) liver.process()
 
-		var/datum/organ/internal/eyes/eyes = internal_organs["eyes"]
-		eyes.process()
+		var/datum/organ/internal/eyes/eyes = internal_organs_by_name["eyes"]
+		if(eyes) eyes.process()
 
 		updatehealth()
 
 		return //TODO: DEFERRED
+
 
 	proc/handle_regular_status_updates()
 		if(stat == DEAD)	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
@@ -982,7 +1028,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 				handle_organs()	//Optimized.
 				handle_blood()
 
-			if(health <= config.health_threshold_dead || brain_op_stage == 4.0)
+			if(health <= config.health_threshold_dead || !has_brain())
 				death()
 				blinded = 1
 				silent = 0
@@ -1035,9 +1081,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			else if(sleeping)
 				handle_dreams()
 				adjustHalLoss(-3)
-				if (mind)
-					if((mind.active && client != null) || immune_to_ssd) //This also checks whether a client is connected, if not, sleep is not reduced.
-						sleeping = max(sleeping-1, 0)
+				sleeping = max(sleeping-1, 0)
 				blinded = 1
 				stat = UNCONSCIOUS
 				if( prob(2) && health && !hal_crit )
@@ -1059,15 +1103,23 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 					adjustHalLoss(-1)
 
 			//Eyes
-			if(sdisabilities & BLIND)	//disabled-blind, doesn't get better on its own
-				blinded = 1
-			else if(eye_blind)			//blindness, heals slowly over time
-				eye_blind = max(eye_blind-1,0)
-				blinded = 1
+			if(!species.has_organ["eyes"]) // Presumably if a species has no eyes, they see via something else.
+				eye_blind =  0
+				blinded =    0
+				eye_blurry = 0
+			else if(!has_eyes())           // Eyes cut out? Permablind.
+				eye_blind =  1
+				blinded =    1
+				eye_blurry = 1
+			else if(sdisabilities & BLIND) // Disabled-blind, doesn't get better on its own
+				blinded =    1
+			else if(eye_blind)		       // Blindness, heals slowly over time
+				eye_blind =  max(eye_blind-1,0)
+				blinded =    1
 			else if(istype(glasses, /obj/item/clothing/glasses/sunglasses/blindfold))	//resting your eyes with a blindfold heals blurry eyes faster
 				eye_blurry = max(eye_blurry-3, 0)
-				blinded = 1
-			else if(eye_blurry)	//blurry eyes heal slowly
+				blinded =    1
+			else if(eye_blurry)	           // Blurry eyes heal slowly
 				eye_blurry = max(eye_blurry-1, 0)
 
 			//Ears
@@ -1270,9 +1322,31 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 				see_invisible = SEE_INVISIBLE_LIVING
 
 			if(healths)
+				healths.overlays.Cut()
 				if (analgesic)
 					healths.icon_state = "health_health_numb"
 				else
+					var/ruptured = is_lung_ruptured()
+					if(hal_screwyhud)
+						for(var/i = 1; i <=3 ;i++)
+							healths.overlays.Add(pick(organ_damage_overlays))
+					else
+						for(var/datum/organ/external/e in organs)
+							if(istype(e, /datum/organ/external/chest))
+								if(ruptured)
+									healths.overlays.Add(organ_damage_overlays["[e.name]_max"])
+									continue
+							var/total_damage = e.brute_dam + e.burn_dam
+							if(e.status & ORGAN_BROKEN)
+								healths.overlays.Add(organ_damage_overlays["[e.name]_gone"])
+							else
+								switch(total_damage)
+									if(30 to INFINITY)
+										healths.overlays.Add(organ_damage_overlays["[e.name]_max"])
+									if(15 to 30)
+										healths.overlays.Add(organ_damage_overlays["[e.name]_mid"])
+									if(5 to 15)
+										healths.overlays.Add(organ_damage_overlays["[e.name]_min"])
 					switch(hal_screwyhud)
 						if(1)	healths.icon_state = "health6"
 						if(2)	healths.icon_state = "health7"
