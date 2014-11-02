@@ -354,7 +354,6 @@
 #include "code\game\machinery\Freezer.dm"
 #include "code\game\machinery\hologram.dm"
 #include "code\game\machinery\holosign.dm"
-#include "code\game\machinery\hydroponics.dm"
 #include "code\game\machinery\igniter.dm"
 #include "code\game\machinery\iv_drip.dm"
 #include "code\game\machinery\kinetic_accelerator.dm"
