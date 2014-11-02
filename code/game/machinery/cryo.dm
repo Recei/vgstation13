@@ -77,13 +77,10 @@
 	if(L.abiotic())
 		user << "\red <B>Subject cannot have abiotic items on.</B>"
 		return
-	for(var/mob/living/carbon/M in range(1,usr))
-		if(ismetroid(M) || isslime(M))
-			var/mob/living/carbon/metroid/metroid = M
-			var/mob/living/carbon/slime/slime = M
-			if(metroid.Victim == L || slime.Victim == L)
-				usr << "[L.name] will not fit into the cryo cell because they have a slime or a metroid latched onto their head."
-				return
+	for(var/mob/living/carbon/slime/M in range(1,L))
+		if(M.Victim == L)
+			usr << "[L.name] will not fit into the cryo cell because they have a slime latched onto their head."
+			return
 	if(put_mob(L))
 		if(L == user)
 			visible_message("[user] climbs into the cryo cell.", 3)
@@ -271,13 +268,10 @@
 	if(istype(G, /obj/item/weapon/grab))
 		if(!ismob(G:affecting))
 			return
-		for(var/mob/living/carbon/M in range(1,G:affecting))
-			if(ismetroid(M) || isslime(M))
-				var/mob/living/carbon/metroid/metroid = M
-				var/mob/living/carbon/slime/slime = M
-				if(metroid.Victim == G:affecting || slime.Victim == G:affecting)
-					usr << "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head."
-					return
+		for(var/mob/living/carbon/slime/M in range(1,G:affecting))
+			if(M.Victim == G:affecting)
+				usr << "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head."
+				return
 		var/mob/M = G:affecting
 		if(put_mob(M))
 			del(G)
@@ -410,13 +404,10 @@
 	set src in oview(1)
 	if(usr.restrained() || usr.stat || usr.weakened || usr.stunned || usr.paralysis || usr.resting) //are you cuffed, dying, lying, stunned or other
 		return
-	for(var/mob/living/carbon/M in range(1,usr))
-		if(ismetroid(M) || isslime(M))
-			var/mob/living/carbon/metroid/metroid = M
-			var/mob/living/carbon/slime/slime = M
-			if(metroid.Victim == usr || slime.Victim == usr)
-				usr << "You're too busy getting your life sucked out of you."
-				return
+	for(var/mob/living/carbon/slime/M in range(1,usr))
+		if(M.Victim == usr)
+			usr << "You're too busy getting your life sucked out of you."
+			return
 	if (usr.stat != 0 || stat & (NOPOWER|BROKEN))
 		return
 	put_mob(usr)

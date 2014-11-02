@@ -181,13 +181,10 @@
 	if(L.abiotic())
 		user << "\blue <B>Subject cannot have abiotic items on.</B>"
 		return
-	for(var/mob/living/carbon/M in range(1,L))
-		if(ismetroid(M) || isslime(M))
-			var/mob/living/carbon/metroid/metroid = M
-			var/mob/living/carbon/slime/slime = M
-			if(metroid.Victim == L || slime.Victim == L)
-				usr << "[L.name] will not fit into the sleeper because they have a slime or a metroid latched onto their head."
-				return
+	for(var/mob/living/carbon/slime/M in range(1,L))
+		if(M.Victim == L)
+			usr << "[L.name] will not fit into the sleeper because they have a slime latched onto their head."
+			return
 	if(L == user)
 		visible_message("[user] starts climbing into the sleeper.", 3)
 	else
@@ -241,13 +238,10 @@
 		user << "\blue <B>The sleeper is already occupied!</B>"
 		return
 
-	for(var/mob/living/carbon/M in range(1,G.affecting))
-		if(ismetroid(M) || isslime(M))
-			var/mob/living/carbon/metroid/metroid = M
-			var/mob/living/carbon/slime/slime = M
-			if(metroid.Victim == G.affecting || slime.Victim == G.affecting)
-				usr << "[G.affecting.name] will not fit into the sleeper because they have a slime latched onto their head."
-				return
+	for(var/mob/living/carbon/slime/M in range(1,G.affecting))
+		if(M.Victim == G.affecting)
+			usr << "[G.affecting.name] will not fit into the sleeper because they have a slime latched onto their head."
+			return
 
 	visible_message("[user] starts putting [G.affecting.name] into the sleeper.", 3)
 
@@ -401,13 +395,10 @@
 		return
 	if(usr.restrained() || usr.stat || usr.weakened || usr.stunned || usr.paralysis || usr.resting) //are you cuffed, dying, lying, stunned or other
 		return
-	for(var/mob/living/carbon/M in range(1,usr))
-		if(ismetroid(M) || isslime(M))
-			var/mob/living/carbon/metroid/metroid = M
-			var/mob/living/carbon/slime/slime = M
-			if(metroid.Victim == usr || slime.Victim == usr)
-				usr << "You're too busy getting your life sucked out of you."
-				return
+	for(var/mob/living/carbon/slime/M in range(1,usr))
+		if(M.Victim == usr)
+			usr << "You're too busy getting your life sucked out of you."
+			return
 	visible_message("[usr] starts climbing into the sleeper.", 3)
 	if(do_after(usr, 20))
 		if(src.occupant)

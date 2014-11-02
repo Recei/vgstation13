@@ -83,9 +83,17 @@
 		"\blue You cut out one of [target]'s cores with \the [tool]. [target.cores] cores left.")
 
 		if(target.cores >= 0)
-			new target.coretype(target.loc)
+			if(ismetroid(target))
+				var/mob/living/carbon/slime/metroid/metroid = target
+				var/mctrandom = pickweight(metroid.mctrand)
+				new mctrandom(target.loc)
+			else
+				new target.coretype(target.loc)
 		if(target.cores <= 0)
-			target.icon_state = "[target.colour] baby slime dead-nocore"
+			if(ismetroid(target))
+				target.icon_state = "baby metroid dead-nocore"
+			else
+				target.icon_state = "[target.colour] baby slime dead-nocore"
 
 
 	fail_step(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)

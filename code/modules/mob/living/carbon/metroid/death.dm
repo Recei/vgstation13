@@ -1,7 +1,11 @@
 /mob/living/carbon/slime/death(gibbed)
 	if(stat == DEAD)	return
 	stat = DEAD
-	icon_state = "[colour] baby slime dead"
+	if(ismetroid(src))
+		icon_state = "baby metroid dead"
+	else
+		icon_state = "[colour] baby slime dead"
+
 
 	if(!gibbed)
 		if(istype(src, /mob/living/carbon/slime/adult))

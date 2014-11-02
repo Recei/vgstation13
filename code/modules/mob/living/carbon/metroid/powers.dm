@@ -49,7 +49,11 @@
 	anchored = 1
 	var/lastnut = nutrition
 	//if(M.client) M << "\red You legs become paralyzed!"
-	if(istype(src, /mob/living/carbon/slime/adult))
+	if(ismetroidadult(src))
+		icon_state = "adult metroid eat"
+	else if(ismetroid(src))
+		icon_state = "baby metroid eat"
+	else if(istype(src, /mob/living/carbon/slime/adult))
 		icon_state = "[colour] adult slime eat"
 	else
 		icon_state = "[colour] baby slime eat"
@@ -120,13 +124,22 @@
 
 	if(stat == 2)
 		if(!istype(src, /mob/living/carbon/slime/adult))
-			icon_state = "[colour] baby slime dead"
+			if(ismetroid(src))
+				icon_state = "baby metroid dead"
+			else
+				icon_state = "[colour] baby slime dead"
 
 	else
 		if(istype(src, /mob/living/carbon/slime/adult))
-			icon_state = "[colour] adult slime"
+			if(ismetroidadult(src))
+				icon_state = "adult metroid"
+			else
+				icon_state = "[colour] adult slime"
 		else
-			icon_state = "[colour] baby slime"
+			if(ismetroid(src))
+				icon_state = "baby metroid"
+			else
+				icon_state = "[colour] baby slime"
 
 	canmove = 1
 	anchored = 0

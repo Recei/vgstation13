@@ -56,6 +56,22 @@
 			message = "<B>The [src.name]</B> vibrates!"
 			m_type = 1
 
+		if("click")
+			message = "<B>The [src.name]</B> makes a clicking noise!"
+			m_type = 1
+
+		if("chatter")
+			message = "<B>The [src.name]</B> makes a noisy chattering sound!"
+			m_type = 1
+
+		if("growl")
+			message = "<B>The [src.name]</B> growls!"
+			m_type = 1
+
+		if("shriek")
+			message = "<B>The [src.name]</B> makes a high-pitched shriek!"
+			m_type = 1
+
 		if ("help") //This is an exception
 			src << "Help for slime emotes. You can use these emotes with say \"*emote\":\n\nbounce, jiggle, light, moan, shiver, sway, twitch, vibrate"
 

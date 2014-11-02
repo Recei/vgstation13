@@ -31,9 +31,15 @@
 	return 0
 
 /proc/ismetroid(A)
-	if(istype(A, /mob/living/carbon/metroid))
+	if(istype(A, /mob/living/carbon/slime/metroid))
 		return 1
 	return 0
+
+/proc/ismetroidadult(A)
+	if(istype(A, /mob/living/carbon/slime/adult/metroid))
+		return 1
+	return 0
+
 
 /proc/isslime(A)
 	if(istype(A, /mob/living/carbon/slime))
