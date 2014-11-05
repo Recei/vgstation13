@@ -1264,7 +1264,7 @@ datum/mind
 	mind.assigned_role = "slime"
 
 //metroid
-/mob/living/carbon/metroid/mind_initialize()
+/mob/living/carbon/slime/metroid/mind_initialize()
 	..()
 	mind.assigned_role = "metroid"
 
