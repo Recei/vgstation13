@@ -422,9 +422,6 @@ datum
 					if(M.fire_stacks <= 0)
 						M.ExtinguishMob()
 					return
-				if(method == INGEST)
-					M.hydration += hydration_factor*REM
-					return
 
 				// Water now directly damages slimes instead of being a turf check
 				if(isslime(M))
@@ -868,8 +865,6 @@ datum
 				holder.remove_reagent(src.id, 10 * REAGENTS_METABOLISM) //high metabolism to prevent extended uncult rolls.
 
 			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)//Splashing people with water can help put them out!
-				if(method == INGEST)
-					M.hydration += hydration_factor*REM
 				// Vamps react to this like acid
 				if(ishuman(M))
 					if((M.mind in ticker.mode.vampires))
@@ -3783,6 +3778,7 @@ datum
 			description = "A well-known alcohol with a variety of applications."
 			reagent_state = LIQUID
 			nutriment_factor = 0 //So alcohol can fill you up! If they want to.
+			hydration_factor = 10 * REAGENTS_METABOLISM //And quench your thirst too!
 			color = "#404030" // rgb: 64, 64, 48
 			var/dizzy_adj = 7
 			var/slurr_adj = 7
@@ -3800,6 +3796,7 @@ datum
 				var/sober_str=!(M_SOBER in M.mutations)?1:2
 
 				M:nutrition += nutriment_factor
+				M:hydration += hydration_factor
 				if(!holder)
 					holder = M.reagents
 				if(holder)
