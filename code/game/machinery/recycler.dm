@@ -1,4 +1,4 @@
-var/const/SAFETY_COOLDOWN = 100
+#define SAFETY_COOLDOWN 100
 
 /obj/machinery/recycler
 	name = "crusher"
@@ -130,6 +130,8 @@ var/const/SAFETY_COOLDOWN = 100
 		gib = 0
 		if(L.stat == CONSCIOUS)
 			L.say("ARRRRRRRRRRRGH!!!")
+			if(ishuman(L))
+				L.emote("scream")
 		add_blood(L)
 
 	if(!blood && !issilicon(L))
