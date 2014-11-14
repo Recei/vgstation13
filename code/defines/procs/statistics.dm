@@ -41,3 +41,44 @@ proc/sql_commit_feedback()
 			if(!query.Execute())
 				var/err = query.ErrorMsg()
 				log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
+
+proc/statistic_cycle()
+	if(!sqllogging)
+		return
+	while(1)
+		sql_poll_players()
+		sleep(600)
+		sql_poll_admins()
+		sleep(6000) // Poll every ten minutes
+
+proc/sql_poll_players()
+	if(!sqllogging)
+		return
+	var/playercount = 0
+	for(var/mob/M in player_list)
+		if(M.client)
+			playercount += 1
+	establish_db_connection()
+	if(!dbcon.IsConnected())
+		log_game("SQL ERROR during player polling. Failed to connect.")
+	else
+		var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
+		var/DBQuery/query = dbcon.NewQuery("INSERT INTO population (playercount, time) VALUES ([playercount], '[sqltime]')")
+		if(!query.Execute())
+			var/err = query.ErrorMsg()
+			log_game("SQL ERROR during player polling. Error : \[[err]\]\n")
+
+
+proc/sql_poll_admins()
+	if(!sqllogging)
+		return
+	var/admincount = admins.len
+	establish_db_connection()
+	if(!dbcon.IsConnected())
+		log_game("SQL ERROR during admin polling. Failed to connect.")
+	else
+		var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
+		var/DBQuery/query = dbcon.NewQuery("INSERT INTO population (admincount, time) VALUES ([admincount], '[sqltime]')")
+		if(!query.Execute())
+			var/err = query.ErrorMsg()
+			log_game("SQL ERROR during admin polling. Error : \[[err]\]\n")
