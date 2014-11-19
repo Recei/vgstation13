@@ -11,7 +11,7 @@
 		act = copytext(act,1,length(act))
 
 	var/muzzled = istype(src.wear_mask, /obj/item/clothing/mask/muzzle)
-	//var/m_type = 1
+	//var/m_type = VISIBLE
 
 	for (var/obj/item/weapon/implant/I in src)
 		if (I.implanted)
@@ -32,15 +32,15 @@
 		if ("airguitar")
 			if (!src.restrained())
 				message = "<B>[src]</B> is strumming the air and headbanging like a safari chimp."
-				m_type = 1
+				m_type = VISIBLE
 
 		if ("blink")
 			message = "<B>[src]</B> blinks."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("blink_r")
 			message = "<B>[src]</B> blinks rapidly."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("bow")
 			if (!src.buckled)
@@ -57,7 +57,7 @@
 					message = "<B>[src]</B> bows to [param]."
 				else
 					message = "<B>[src]</B> bows."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("custom")
 			var/input = copytext(sanitize(input("Choose an emote to display.") as text|null),1,MAX_MESSAGE_LEN)
@@ -65,11 +65,11 @@
 				return
 			var/input2 = input("Is this a visible or hearable emote?") in list("Visible","Hearable")
 			if (input2 == "Visible")
-				m_type = 1
+				m_type = VISIBLE
 			else if (input2 == "Hearable")
 				if (src.miming)
 					return
-				m_type = 2
+				m_type = HEARABLE
 			else
 				alert("Unable to use this emote, must be either hearable or visible.")
 				return
@@ -105,114 +105,114 @@
 					message = "<B>[src]</B> salutes to [param]."
 				else
 					message = "<B>[src]</b> salutes."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("choke")
 			if(miming)
 				message = "<B>[src]</B> clutches his throat desperately!"
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> chokes!"
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a strong noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("clap")
 			if (!src.restrained())
 				message = "<B>[src]</B> claps."
-				m_type = 2
+				m_type = HEARABLE
 				if(miming)
-					m_type = 1
+					m_type = VISIBLE
 		if ("flap")
 			if (!src.restrained())
 				message = "<B>[src]</B> flaps his wings."
-				m_type = 2
+				m_type = HEARABLE
 				if(miming)
-					m_type = 1
+					m_type = VISIBLE
 
 		if ("aflap")
 			if (!src.restrained())
 				message = "<B>[src]</B> flaps his wings ANGRILY!"
-				m_type = 2
+				m_type = HEARABLE
 				if(miming)
-					m_type = 1
+					m_type = VISIBLE
 
 		if ("drool")
 			message = "<B>[src]</B> drools."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("eyebrow")
 			message = "<B>[src]</B> raises an eyebrow."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("chuckle")
 			if(miming)
 				message = "<B>[src]</B> appears to chuckle."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> chuckles."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("twitch")
 			message = "<B>[src]</B> twitches violently."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("twitch_s")
 			message = "<B>[src]</B> twitches."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("faint")
 			message = "<B>[src]</B> faints."
 			if(src.sleeping)
 				return //Can't faint while asleep
 			src.sleeping += 10 //Short-short nap
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("cough")
 			if(miming)
 				message = "<B>[src]</B> appears to cough!"
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> coughs!"
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a strong noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("frown")
 			message = "<B>[src]</B> frowns."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("nod")
 			message = "<B>[src]</B> nods."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("blush")
 			message = "<B>[src]</B> blushes."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("wave")
 			message = "<B>[src]</B> waves."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("gasp")
 			if(miming)
 				message = "<B>[src]</B> appears to be gasping!"
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> gasps!"
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a weak noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("deathgasp")
 			if(M_ELVIS in mutations)
@@ -222,19 +222,19 @@
 				message = "<B>[src]</B> whispers with his final breath, <i>'i told u i was hardcore..'</i>"
 			else
 				message = "<B>[src]</B> seizes up and falls limp, \his eyes dead and lifeless..."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("giggle")
 			if(miming)
 				message = "<B>[src]</B> giggles silently!"
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> giggles."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("glare")
 			var/M = null
@@ -281,84 +281,84 @@
 				message = "<B>[src]</B> looks at [param]."
 			else
 				message = "<B>[src]</B> looks."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("grin")
 			message = "<B>[src]</B> grins."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("cry")
 			if(miming)
 				message = "<B>[src]</B> cries."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> cries."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a weak noise. \He frowns."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("sigh")
 			if(miming)
 				message = "<B>[src]</B> sighs."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> sighs."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a weak noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("laugh")
 			if(miming)
 				message = "<B>[src]</B> acts out a laugh."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> laughs."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("mumble")
 			message = "<B>[src]</B> mumbles!"
-			m_type = 2
+			m_type = HEARABLE
 			if(miming)
-				m_type = 1
+				m_type = VISIBLE
 
 		if ("grumble")
 			if(miming)
 				message = "<B>[src]</B> grumbles!"
-				m_type = 1
+				m_type = VISIBLE
 			if (!muzzled)
 				message = "<B>[src]</B> grumbles!"
-				m_type = 2
+				m_type = HEARABLE
 			else
 				message = "<B>[src]</B> makes a noise."
-				m_type = 2
+				m_type = HEARABLE
 
 		if ("groan")
 			if(miming)
 				message = "<B>[src]</B> appears to groan!"
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> groans!"
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a loud noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("moan")
 			if(miming)
 				message = "<B>[src]</B> appears to moan!"
-				m_type = 1
+				m_type = VISIBLE
 			else
 				message = "<B>[src]</B> moans!"
-				m_type = 2
+				m_type = HEARABLE
 
 		if ("johnny")
 			var/M
@@ -369,10 +369,10 @@
 			else
 				if(miming)
 					message = "<B>[src]</B> takes a drag from a cigarette and blows \"[M]\" out in smoke."
-					m_type = 1
+					m_type = VISIBLE
 				else
 					message = "<B>[src]</B> says, \"[M], please. He had a family.\" [src.name] takes a drag from a cigarette and blows his name out in smoke."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("point")
 			if (!src.restrained())
@@ -389,20 +389,20 @@
 				else
 					pointed(object_pointed)
 
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("raise")
 			if (!src.restrained())
 				message = "<B>[src]</B> raises a hand."
-			m_type = 1
+			m_type = VISIBLE
 
 		if("shake")
 			message = "<B>[src]</B> shakes \his head."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("shrug")
 			message = "<B>[src]</B> shrugs."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("signal")
 			if (!src.restrained())
@@ -412,88 +412,88 @@
 						message = "<B>[src]</B> raises [t1] finger\s."
 					else if (t1 <= 10 && (!src.r_hand && !src.l_hand))
 						message = "<B>[src]</B> raises [t1] finger\s."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("smile")
 			message = "<B>[src]</B> smiles."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("shiver")
 			message = "<B>[src]</B> shivers."
-			m_type = 2
+			m_type = HEARABLE
 			if(miming)
-				m_type = 1
+				m_type = VISIBLE
 
 		if ("pale")
 			message = "<B>[src]</B> goes pale for a second."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("tremble")
 			message = "<B>[src]</B> trembles in fear!"
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("sneeze")
 			if (miming)
 				message = "<B>[src]</B> sneezes."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> sneezes."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a strange noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("sniff")
 			message = "<B>[src]</B> sniffs."
-			m_type = 2
+			m_type = HEARABLE
 			if(miming)
-				m_type = 1
+				m_type = VISIBLE
 
 		if ("snore")
 			if (miming)
 				message = "<B>[src]</B> sleeps soundly."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> snores."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("whimper")
 			if (miming)
 				message = "<B>[src]</B> appears hurt."
-				m_type = 1
+				m_type = VISIBLE
 			else
 				if (!muzzled)
 					message = "<B>[src]</B> whimpers."
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> makes a weak noise."
-					m_type = 2
+					m_type = HEARABLE
 
 		if ("wink")
 			message = "<B>[src]</B> winks."
-			m_type = 1
+			m_type = VISIBLE
 
 		if ("yawn")
 			if (!muzzled)
 				message = "<B>[src]</B> yawns."
-				m_type = 2
+				m_type = HEARABLE
 				if(miming)
-					m_type = 1
+					m_type = VISIBLE
 
 		if ("collapse")
 			Paralyse(2)
 			message = "<B>[src]</B> collapses!"
-			m_type = 2
+			m_type = HEARABLE
 			if(miming)
-				m_type = 1
+				m_type = VISIBLE
 
 		if("hug")
-			m_type = 1
+			m_type = VISIBLE
 			if (!src.restrained())
 				var/M = null
 				if (param)
@@ -510,7 +510,7 @@
 					message = "<B>[src]</B> hugs \himself."
 
 		if ("handshake")
-			m_type = 1
+			m_type = VISIBLE
 			if (!src.restrained() && !src.r_hand)
 				var/mob/M = null
 				if (param)
@@ -528,7 +528,7 @@
 						message = "<B>[src]</B> holds out \his hand to [M]."
 
 		if("dap")
-			m_type = 1
+			m_type = VISIBLE
 			if (!src.restrained())
 				var/M = null
 				if (param)
@@ -544,25 +544,26 @@
 		if ("scream")
 			if (miming)
 				message = "<B>[src]</B> acts out a scream!"
-				m_type = 1
+				m_type = VISIBLE
 			else
-				if (!muzzled)
-					if (auto == 1)
-						if(world.time-lastScream >= 30)//prevent scream spam with things like poly spray
-							message = "<B>[src]</B> screams in agony!"
-							var/list/screamSound = list('sound/misc/malescream1.ogg', 'sound/misc/malescream2.ogg', 'sound/misc/malescream3.ogg', 'sound/misc/malescream4.ogg', 'sound/misc/malescream5.ogg', 'sound/misc/wilhelm.ogg', 'sound/misc/goofy.ogg')
-							if (src.gender == FEMALE) //Females have their own screams. Trannys be damned.
-								screamSound = list('sound/misc/femalescream1.ogg', 'sound/misc/femalescream2.ogg', 'sound/misc/femalescream3.ogg', 'sound/misc/femalescream4.ogg', 'sound/misc/femalescream5.ogg')
-							var/scream = pick(screamSound)//AUUUUHHHHHHHHOOOHOOHOOHOOOOIIIIEEEEEE
-							playsound(get_turf(src), scream, 50, 0)
-							m_type = 2
-							lastScream = world.time
+				if(!stat)
+					if (!muzzled)
+						if (auto == 1)
+							if(world.time-lastScream >= 30)//prevent scream spam with things like poly spray
+								message = "<B>[src]</B> screams in agony!"
+								var/list/screamSound = list('sound/misc/malescream1.ogg', 'sound/misc/malescream2.ogg', 'sound/misc/malescream3.ogg', 'sound/misc/malescream4.ogg', 'sound/misc/malescream5.ogg', 'sound/misc/wilhelm.ogg', 'sound/misc/goofy.ogg')
+								if (src.gender == FEMALE) //Females have their own screams. Trannys be damned.
+									screamSound = list('sound/misc/femalescream1.ogg', 'sound/misc/femalescream2.ogg', 'sound/misc/femalescream3.ogg', 'sound/misc/femalescream4.ogg', 'sound/misc/femalescream5.ogg')
+								var/scream = pick(screamSound)//AUUUUHHHHHHHHOOOHOOHOOHOOOOIIIIEEEEEE
+								playsound(get_turf(src), scream, 50, 0)
+								m_type = HEARABLE
+								lastScream = world.time
+						else
+							message = "<B>[src]</B> screams!"
+							m_type = HEARABLE
 					else
-						message = "<B>[src]</B> screams!"
-						m_type = 2
-				else
-					message = "<B>[src]</B> makes a very loud noise."
-					m_type = 2
+						message = "<B>[src]</B> makes a very loud noise."
+						m_type = HEARABLE
 
 		// Needed for M_TOXIC_FART
 		if("fart")
@@ -573,7 +574,7 @@
 				src << "\blue You don't have a butt!"
 				return
 			if (src.nutrition >= 250)
-				m_type = 2
+				m_type = HEARABLE
 				if(src.reagents)
 					var/obj/effect/decal/D = new/obj/effect/decal(get_turf(src))
 					D.name = "chemicals"
@@ -765,7 +766,7 @@
 										M.emote("giggle")
 									if(3)
 										M.emote("clap")
-				m_type = 2
+				m_type = HEARABLE
 
 				var/turf/location = get_turf(src)
 				var/aoe_range=2 // Default
@@ -789,6 +790,7 @@
 							src << "<span class='warning'>You gas yourself!</span>"
 							reagents.add_reagent("space_drugs", rand(10,50))
 					else
+<<<<<<< HEAD
 						// Was /turf/, now /mob/
 						for(var/mob/M in view(location,aoe_range))
 							if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
@@ -834,7 +836,7 @@
 				lastFart=world.time
 			else
 				message = "<b>[src]</b> strains, and nothing happens."
-				m_type = 1
+				m_type = VISIBLE
 
 
 		if("superfart")
@@ -857,7 +859,7 @@
 
 			if (src.nutrition <= 300)
 				src.emote("fart")
-				m_type = 2
+				m_type = HEARABLE
 			else if(toilet)
 				message = "<B>[src]</B> poos in [toilet]."
 				playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
@@ -866,7 +868,7 @@
 				if(src.reagents)
 					src.reagents.trans_to(V, 10)
 				src.nutrition -= 80
-				m_type = 2
+				m_type = HEARABLE
 			else
 				if (src.w_uniform)
 					message = "<B>[src]</B> poos in their uniform."
@@ -874,7 +876,7 @@
 					playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
 					src.nutrition -= 80
-					m_type = 2
+					m_type = HEARABLE
 				else
 					message = "<B>[src]</B> poos on the floor."
 					playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
@@ -890,7 +892,7 @@
 						src.reagents.trans_to(V, 10)
 
 					src.nutrition -= 80
-					m_type = 2
+					m_type = HEARABLE
 
 					// check for being in sight of a working security camera
 					if(seen_by_camera(src))
@@ -918,14 +920,14 @@
 				if(toilet)
 					message = "<B>[src]</B> urinates in [toilet]."
 					src.hydration -= 80
-					m_type = 1
+					m_type = VISIBLE
 				else
 					var/obj/effect/decal/cleanable/urine/D = new/obj/effect/decal/cleanable/urine(src.loc)
 					if(src.reagents)
 						src.reagents.trans_to(D, 10)
 					message = "<B>[src]</B> urinates on the floor."
 					src.hydration -= 80
-					m_type = 1
+					m_type = VISIBLE
 				// check for being in sight of a working security camera
 					if(seen_by_camera(src))
 						// determine the name of the perp (goes by ID if wearing one)
@@ -994,7 +996,8 @@
 						src.reagents.trans_to(V, 10)
 				spawn(350)	//wait 35 seconds before next volley
 					lastpuke = 0
-			m_type = 1
+			m_type = VISIBLE
+
 
 		if ("help")
 			src << "blink, blink_r, blush, bow-(none)/mob, burp, choke, chuckle, clap, collapse, cough,\ncry, custom, deathgasp, drool, eyebrow, frown, gasp, giggle, groan, grumble, handshake, hug-(none)/mob, glare-(none)/mob,\ngrin, laugh, look-(none)/mob, moan, mumble, nod, pale, point-atom, raise, salute, shake, shiver, shrug,\nsigh, signal-#1-10, smile, sneeze, sniff, snore, stare-(none)/mob, tremble, twitch, twitch_s, whimper,\nwink, yawn"
