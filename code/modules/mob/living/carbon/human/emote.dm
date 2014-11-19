@@ -790,7 +790,6 @@
 							src << "<span class='warning'>You gas yourself!</span>"
 							reagents.add_reagent("space_drugs", rand(10,50))
 					else
-<<<<<<< HEAD
 						// Was /turf/, now /mob/
 						for(var/mob/M in view(location,aoe_range))
 							if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
