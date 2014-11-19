@@ -566,7 +566,7 @@
 
 		// Needed for M_TOXIC_FART
 		if("fart")
-			if (fail_farts >= 15 && src.called_superfart < 1)
+			if (fail_farts >= 15 && !superfart_processing)
 				emote("superfart")
 				return
 			if(src.op_stage.butt == 4)
@@ -736,13 +736,23 @@
 
 						if(48)
 							message = "<B>[src]</B> laughs! His breath smells like a fart."
-				if(world.time-lastFart <  20)//2 seconds
-					usr << "<span class='warning'>You feeling like your ass cracking. Uh-oh..."
+				if(world.time-lastFart <  30)//3 seconds
+					usr << "<span class='warning'>You feeling like your ass cracking. Uh-oh...</span>"
 					fail_farts ++
-				for(var/mob/M in view(1))
+				for(var/mob/M in get_turf(src))
 					if(M != src)
-						visible_message("\red <b>[src]</b> farts in <b>[M]</b>'s face!")
+						visible_message("<span class='alert'> <b>[src]</b> farts in <b>[M]</b>'s face!</span>")
 
+				var/area/A = get_area(src.loc)//MyLittleLoly's feature
+				if(A && A.name == "\improper Chapel")
+					anus_bombanull()
+
+				for(var/obj/item/weapon/storage/bible/B in src.loc)//Goon's feature
+					if(B)
+						message = "<span class='alert'> <B>[src]</B> farts on the bible and then blows up!</span>"
+						src.gib()
+						var/obj/item/clothing/head/butt/Bt = new /obj/item/clothing/head/butt(src.loc)
+						Bt.transfer_buttdentity(src)
 
 				for(var/mob/M in viewers(src, null))
 					if(!M.stat && getBrainLoss() >= 60)
@@ -776,7 +786,7 @@
 					playsound(get_turf(src), 'sound/effects/superfart.ogg', 50, 1)
 					if(wearing_suit)
 						if(!wearing_mask)
-							src << "\red You gas yourself!"
+							src << "<span class='warning'>You gas yourself!</span>"
 							reagents.add_reagent("space_drugs", rand(10,50))
 					else
 						// Was /turf/, now /mob/
@@ -805,22 +815,22 @@
 				if(M_SUPER_FART in mutations)
 					message=""
 					playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
-					visible_message("\red <b>[name]</b> hunches down and grits their teeth!")
+					visible_message("<span class='alert'> <b>[name]</b> hunches down and grits their teeth!</span>")
 					if(do_after(usr,30))
-						visible_message("\red <b>[name]</b> unleashes a [pick("tremendous","gigantic","colossal")] fart!","You hear a [pick("tremendous","gigantic","colossal")] fart.")
+						visible_message("<span class='alert'> <b>[name]</b> unleashes a [pick("tremendous","gigantic","colossal")] fart!","You hear a [pick("tremendous","gigantic","colossal")] fart.</span>")
 						//playsound(L.loc, 'superfart.ogg', 50, 0)
 						if(!wearing_suit)
 							for(var/mob/living/V in view(src,aoe_range))
 								shake_camera(V,10,5)
 								if (V == src)
 									continue
-								V << "\red You are sent flying!"
+								V << "<span class='warning'> You are sent flying!</span>"
 								V.Weaken(5) // why the hell was this set to 12 christ
 								step_away(V,location,15)
 								step_away(V,location,15)
 								step_away(V,location,15)
 					else
-						usr << "\red You were interrupted and couldn't fart! Rude!"
+						usr << "<span class='warning'> You were interrupted and couldn't fart! Rude!</span>"
 				lastFart=world.time
 			else
 				message = "<b>[src]</b> strains, and nothing happens."
@@ -831,50 +841,16 @@
 			if(src.op_stage.butt == 4)
 				src << "\blue You don't have a butt!"
 				return
-			if(src.called_superfart >= 1)
+			if(src.superfart_processing >= 1)
 				return
 			else
 				if(M_SUPER_FART in mutations)
 					emote("fart")
 				else
-					called_superfart = 1
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					emote("fart")
-					sleep(1)
-					new /obj/effect/decal/cleanable/poo(src.loc)
+					superfart_processing = 1
+					for(var/i = 1, i <= 15, i++)
+						emote("fart")
+						sleep(1)
 					anus_bombanull()
 
 		if(("poo") || ("poop") || ("shit") || ("crap"))
@@ -1070,17 +1046,19 @@
 	src.op_stage.butt = 4
 	src.Weaken(12)
 	flick("e_flash", src.flash)
-	new /obj/item/clothing/head/butt(src.loc)
+	var/obj/item/clothing/head/butt/B = new /obj/item/clothing/head/butt(src.loc)
+	B.transfer_buttdentity(src)
+	new /obj/effect/decal/cleanable/poo(src.loc)
 	world << sound('sound/effects/superfart.ogg')
 	loc << "<B>[src]</B>'s butt explodes!"
 	src.Weaken(12)
 	var/datum/organ/external/affecting = src.get_organ("groin")
 	if(affecting)
-		if(affecting.take_damage(25, 20))
+		if(affecting.take_damage(40, 10))
 			src.UpdateDamageIcon()
 		src.updatehealth()
 /mob/living/carbon/human/var/fail_farts = 0
-/mob/living/carbon/human/var/called_superfart = 0
+/mob/living/carbon/human/var/superfart_processing = 0
 
 /mob/living/carbon/human/proc/get_excrement_holder()
 	for(var/obj/O in src.loc)

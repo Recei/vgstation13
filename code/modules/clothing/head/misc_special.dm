@@ -196,7 +196,13 @@
 	var/s_tone = 0.0
 	var/created_name = "Buttbot"
 
-	proc
-		transfer_buttdentity(var/mob/living/carbon/H)
-			name = "[H]'s butt"
-			return
+/obj/item/clothing/head/butt/proc/transfer_buttdentity(var/mob/living/carbon/human/H)
+	name = "[H]'s butt"
+/*	var/icon/new_icon = icon('icons/obj/clothing/hats.dmi', "butt")
+	src.s_tone = H.s_tone
+	if (src.s_tone >= 0)
+		new_icon.Blend(rgb(src.s_tone, src.s_tone, src.s_tone), ICON_ADD)
+	else
+		new_icon.Blend(rgb(-src.s_tone,  -src.s_tone,  -src.s_tone), ICON_SUBTRACT)
+	src.icon = new_icon*/
+	return

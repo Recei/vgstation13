@@ -185,6 +185,13 @@ var/global/list/organ_damage_overlays = list(
 			src << "Successfully handled internal chemicals"
 			last_processed = "Handle Chems"
 
+		//Sims gameplay
+		handle_sims_regular()
+
+		if(client && client.prefs.toggles & CHAT_DEBUGLOGS)
+			src << "Successfully handled sims gameplay"
+			last_processed = "Handle Sims"
+
 		//Disabilities
 		handle_disabilities()
 
@@ -1093,6 +1100,7 @@ var/global/list/organ_damage_overlays = list(
 		if (hydration > 450)
 			if(overdrinkduration < 600)
 				overdrinkduration++
+
 		else
 			if(overeatduration > 1)
 				if(M_OBESITY in mutations)
@@ -1928,6 +1936,66 @@ var/global/list/organ_damage_overlays = list(
 				B.reagents.reaction(loc, TOUCH)
 				visible_message("<span class='warning'>The bucket's content spills on [src]</span>")
 				spawn(5) B.reagents.clear_reagents()
+
+//checks for nutrition and hydration
+/mob/living/carbon/human/proc/handle_sims_regular()
+	var/nutri_message = null
+	var/hydra_message = null
+	var/list/loweat1 = list("<span class='notice'>*Perhaps you should grab a bite to eat*</span>", "<span class='notice'>*Hmm, some pizza would be nice*</span>")
+	var/list/loweat2 = list("<span class='warning'>*You feel a bit peckish*</span>", "<span class='warning'>*Whatever you last ate didn't do much to fill you up...*</span>")
+	var/list/loweat3 = list("<span class='alert'>*You feel hungry*</span>", "<span class='alert'>*Your stomach rumbles*</span>", "<span class='alert'>*You feel empty inside*</span>")
+	var/list/lowdrink1 = list("<span class='notice'>*Perhaps you should have a drink...*", "<span class='notice'>*Hmm, some cola would be nice*</span>")
+	var/list/lowdrink2 = list("<span class='warning'>*You feel a bit thirsty*</span>", "<span class='warning'>*I should have some water...*</span>")
+	var/list/lowdrink3 = list("<span class='alert'>*You feel thirsty*</span>", "<span class='alert'>*Your mouth feels dry*</span>")
+
+
+	if(src.stat != 2)
+		if (nutrition > 350)
+			spawn(60)//6 seconds
+				wanttopoo++
+			if(wanttopoo >=5 && prob(25))
+				emote("poo")
+			else if(wanttopoo >=3)
+				src << "<font color='black'><b>You really want to poop!</b></font>"
+			else
+				src << "<font color='black'><b>You want to poop.</b></font>"
+
+		else
+			if(lastnutritioncomplaint > world.timeofday)
+				lastnutritioncomplaint = 0
+			if(world.timeofday >= lastnutritioncomplaint + 6000)
+				lastnutritioncomplaint  = world.timeofday
+
+				switch(nutrition)
+					if(250 to 350)					nutri_message = pick(loweat1)
+					if(150 to 250)					nutri_message = pick(loweat2)
+					if(0 to 150)					nutri_message = pick(loweat3)
+
+				src << "[nutri_message]"
+
+
+		if (hydration > 350)
+			spawn(60)//6 seconds
+				wanttopee++
+			if(wanttopee >=5 && prob(25))
+				emote("pee")
+			else if(wanttopee >=3)
+				src << "<font color='black'><b>You really want to pee!</b></font>"
+			else
+				src << "<font color='black'><b>You want to pee.</b></font>"
+
+		else
+			if(lasthydrationcomplaint > world.timeofday)
+				lasthydrationcomplaint = 0
+			if(world.timeofday >= lasthydrationcomplaint + 6000)
+				lasthydrationcomplaint  = world.timeofday
+
+				switch(hydration)
+					if(250 to 350)					hydra_message = pick(lowdrink1)
+					if(150 to 250)					hydra_message = pick(lowdrink2)
+					if(0 to 150)					hydra_message = pick(lowdrink3)
+
+				src << "[hydra_message]"
 
 
 

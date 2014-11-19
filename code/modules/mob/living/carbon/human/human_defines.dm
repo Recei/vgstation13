@@ -70,6 +70,12 @@
 	var/lastFart = 0 // Toxic fart cooldown.
 	var/lastScream = 0 // Prevent scream spam in some situations
 
+	//Sims vars
+	var/lastnutritioncomplaint = 0
+	var/lasthydrationcomplaint = 0
+	var/wanttopoo = 0
+	var/wanttopee = 0
+
 
 	fire_dmi = 'icons/mob/OnFire.dmi'
 	fire_sprite = "Standing"
