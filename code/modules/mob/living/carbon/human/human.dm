@@ -216,6 +216,10 @@
 		stat("Spacepod Integrity", "[!S.health ? "0" : "[(S.health / initial(S.health)) * 100]"]%")
 
 /mob/living/carbon/human/ex_act(severity)
+	if(flags & INVULNERABLE)
+		src << "The bus' robustness protects you from the explosion."
+		return
+
 	if(!blinded)
 		flick("flash", flash)
 
@@ -299,6 +303,8 @@
 
 
 /mob/living/carbon/human/blob_act()
+	if(flags & INVULNERABLE)
+		return
 	if(stat == DEAD)
 		return
 
@@ -309,6 +315,8 @@
 	return
 
 /mob/living/carbon/human/meteorhit(O as obj)
+	if(flags & INVULNERABLE)
+		return
 	for(var/mob/M in viewers(src, null))
 		if ((M.client && !( M.blinded )))
 			M.show_message("\red [src] has been hit by [O]", 1)
@@ -1331,6 +1339,14 @@
 	check_dna()
 
 	visible_message("\blue \The [src] morphs and changes [get_visible_gender() == MALE ? "his" : get_visible_gender() == FEMALE ? "her" : "their"] appearance!", "\blue You change your appearance!", "\red Oh, god!  What the hell was that?  It sounded like flesh getting squished and bone ground into a different shape!")
+/mob/living/carbon/human/proc/can_mind_interact(mob/M)
+	if(!ishuman(M)) return 0 //Can't see non humans with your fancy human mind.
+	var/turf/temp_turf = get_turf(M)
+	if((temp_turf.z != 1 && temp_turf.z != 5) || M.stat!=CONSCIOUS) //Not on mining or the station. Or dead
+		return 0
+	if(M_PSY_RESIST in M.mutations)
+		return 0
+	return 1
 
 /mob/living/carbon/human/proc/remotesay()
 	set name = "Project mind"
@@ -1346,6 +1362,7 @@
 		return
 	var/list/creatures = list()
 	for(var/mob/living/carbon/h in world)
+		if(!can_mind_interact(h)) continue
 		creatures += h
 	var/mob/target = input ("Who do you want to project your mind to ?") as null|anything in creatures
 	if (isnull(target))
@@ -1389,12 +1406,7 @@
 	var/list/mob/creatures = list()
 
 	for(var/mob/living/carbon/h in world)
-		if(!ishuman(h)) continue //Can't see non humans with your fancy human mind.
-		var/turf/temp_turf = get_turf(h)
-		if((temp_turf.z != 1 && temp_turf.z != 5) || h.stat!=CONSCIOUS) //Not on mining or the station. Or dead
-			continue
-		if(M_PSY_RESIST in h.mutations)
-			continue
+		if(!can_mind_interact(h)) continue
 		creatures += h
 
 	var/mob/target = input ("Who do you want to project your mind to ?") as mob in creatures

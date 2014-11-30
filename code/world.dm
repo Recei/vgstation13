@@ -38,8 +38,7 @@
 	if(byond_version < RECOMMENDED_VERSION)
 		world.log << "Your server's byond version does not meet the recommended requirements for this code. Please update BYOND"
 
-	if(config && config.log_runtimes)
-		log = file("data/logs/runtime/[time2text(world.realtime,"YYYY-MM-DD-(hh-mm-ss)")]-runtime.log")
+
 
 	make_datum_references_lists()	//initialises global lists for referencing frequently used datums (so that we only ever do it once)
 
@@ -56,12 +55,12 @@
 	jobban_loadbanfile()
 	jobban_updatelegacybans()
 	appearance_loadbanfile()
-	if(config.usebwhitelist)
-		load_bwhitelist()
 	LoadBans()
 	SetupHooks() // /vg/
 
-
+	copy_logs() // Just copy the logs.
+	if(config && config.log_runtimes)
+		log = file("data/logs/runtime/[time2text(world.realtime,"YYYY-MM-DD")]-runtime.log")
 	if(config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
@@ -83,6 +82,11 @@
 	else
 		world.log << "Feedback database connection established."
 
+	if(!setup_old_database_connection())
+		world.log << "Your server failed to establish a connection with the tgstation database."
+	else
+		world.log << "Tgstation database connection established."
+
 	plmaster = new /obj/effect/overlay()
 	plmaster.icon = 'icons/effects/tile_effects.dmi'
 	plmaster.icon_state = "plasma"
@@ -99,6 +103,8 @@
 
 	sleep_offline = 1
 
+	send2mainirc("Server starting up on [config.server? "byond://[config.server]" : "byond://[world.address]:[world.port]"]")
+
 	master_controller = new /datum/controller/game_controller()
 	spawn(1)
 		master_controller.setup()
@@ -107,6 +113,7 @@
 
 	process_teleport_locs()			//Sets up the wizard teleport locations
 	process_ghost_teleport_locs()	//Sets up ghost teleport locations.
+	process_adminbus_teleport_locs()	//Sets up adminbus teleport locations.
 
 	spawn(3000)		//so we aren't adding to the round-start lag
 		if(config.ToRban)
@@ -167,6 +174,7 @@
 			n++
 		s["players"] = n
 
+		if(revdata)	s["revision"] = revdata.revision
 		s["admins"] = admins
 
 		return list2params(s)
@@ -193,6 +201,7 @@
 				//testing("Fcopy failed, deleting and copying")
 				fdel(filename)
 				fcopy(vote.chosen_map, filename)
+			sleep(60)
 	spawn(0)
 		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg','sound/misc/slugmissioncomplete.ogg')) // random end sounds!! - LastyBatsy
 
@@ -238,7 +247,9 @@
 /world/proc/load_configuration()
 	config = new /datum/configuration()
 	config.load("config/config.txt")
+	config.load("config/game_options.txt","game_options")
 	config.loadsql("config/dbconfig.txt")
+	config.loadforumsql("config/forumdbconfig.txt")
 	// apply some settings from config..
 	abandon_allowed = config.respawn
 
@@ -324,6 +335,7 @@
 
 #define FAILED_DB_CONNECTION_CUTOFF 5
 var/failed_db_connections = 0
+var/failed_old_db_connections = 0
 
 proc/setup_database_connection()
 
@@ -333,9 +345,9 @@ proc/setup_database_connection()
 	if(!dbcon)
 		dbcon = new()
 
-	var/user = sqllogin
-	var/pass = sqlpass
-	var/db = sqldb
+	var/user = sqlfdbklogin
+	var/pass = sqlfdbkpass
+	var/db = sqlfdbkdb
 	var/address = sqladdress
 	var/port = sqlport
 
@@ -362,6 +374,44 @@ proc/establish_db_connection()
 		dbcon.Disconnect()
 	if(!dbcon || !dbcon.IsConnected())
 		return setup_database_connection()
+	else
+		return 1
+
+
+
+
+//These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
+proc/setup_old_database_connection()
+
+	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+		return 0
+
+	if(!dbcon_old)
+		dbcon_old = new()
+
+	var/user = sqllogin
+	var/pass = sqlpass
+	var/db = sqldb
+	var/address = sqladdress
+	var/port = sqlport
+
+	dbcon_old.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
+	. = dbcon_old.IsConnected()
+	if ( . )
+		failed_old_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
+	else
+		failed_old_db_connections++		//If it failed, increase the failed connections counter.
+		world.log << dbcon.ErrorMsg()
+
+	return .
+
+//This proc ensures that the connection to the feedback database (global variable dbcon) is established
+proc/establish_old_db_connection()
+	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
+		return 0
+
+	if(!dbcon_old || !dbcon_old.IsConnected())
+		return setup_old_database_connection()
 	else
 		return 1
 

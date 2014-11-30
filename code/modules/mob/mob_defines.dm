@@ -29,7 +29,6 @@
 	var/obj/screen/healths = null
 	var/obj/screen/throw_icon = null
 	var/obj/screen/nutrition_icon = null
-	var/obj/screen/hydration_icon = null
 	var/obj/screen/pressure = null
 	var/obj/screen/damageoverlay = null
 	var/obj/screen/pain = null
@@ -37,7 +36,6 @@
 	var/obj/screen/gun/move/gun_move_icon = null
 	var/obj/screen/gun/run/gun_run_icon = null
 	var/obj/screen/gun/mode/gun_setting_icon = null
-	var/obj/screen/rest = null
 
 	//monkey inventory icons
 	var/obj/screen/m_suitclothes = null
@@ -130,10 +128,8 @@
 	var/jitteriness = 0//Carbon
 	var/charges = 0.0
 	var/nutrition = 400.0//Carbon
-	var/hydration = 400.0//Carbon
 
 	var/overeatduration = 0		// How long this guy is overeating //Carbon
-	var/overdrinkduration = 0		// How long this guy is overdrinking //Carbon
 	var/paralysis = 0.0
 	var/stunned = 0.0
 	var/weakened = 0.0
@@ -155,6 +151,7 @@
 	var/seer = 0 //for cult//Carbon, probably Human
 
 	var/datum/hud/hud_used = null
+	var/datum/ui_icons/gui_icons = null
 
 	var/list/grabbed_by = list(  )
 	var/list/requests = list(  )
@@ -164,8 +161,6 @@
 	var/in_throw_mode = 0
 
 	var/coughedtime = null
-
-	var/footstep = 1
 
 	var/inertia_dir = 0
 
@@ -258,3 +253,8 @@
 	// /vg/ - Prevent mobs from being moved by a client.
 	var/deny_client_move = 0
 	var/incorporeal_move = 0
+
+	//Keeps track of where the mob was spawned. Mostly for teleportation purposes. and no, using initial() doesn't work.
+	var/origin_x = 0
+	var/origin_y = 0
+	var/origin_z = 0
