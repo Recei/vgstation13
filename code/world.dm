@@ -52,6 +52,8 @@
 		load_whitelist()
 	if(config.usealienwhitelist)
 		load_alienwhitelist()
+	if(config.usebwhitelist)
+		load_bwhitelist()
 	jobban_loadbanfile()
 	jobban_updatelegacybans()
 	appearance_loadbanfile()
@@ -107,6 +109,7 @@
 
 	master_controller = new /datum/controller/game_controller()
 	spawn(1)
+
 		master_controller.setup()
 
 		setup_species()
@@ -249,7 +252,6 @@
 	config.load("config/config.txt")
 	config.load("config/game_options.txt","game_options")
 	config.loadsql("config/dbconfig.txt")
-	config.loadforumsql("config/forumdbconfig.txt")
 	// apply some settings from config..
 	abandon_allowed = config.respawn
 

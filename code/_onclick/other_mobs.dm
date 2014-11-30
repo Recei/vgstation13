@@ -128,6 +128,3 @@
 */
 /mob/new_player/ClickOn()
 	return
-
-/atom/proc/attack_metroid(mob/user as mob)
-	return attack_slime(user)

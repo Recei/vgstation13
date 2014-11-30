@@ -29,6 +29,7 @@
 	var/obj/screen/healths = null
 	var/obj/screen/throw_icon = null
 	var/obj/screen/nutrition_icon = null
+	var/obj/screen/hydration_icon = null
 	var/obj/screen/pressure = null
 	var/obj/screen/damageoverlay = null
 	var/obj/screen/pain = null
@@ -128,8 +129,10 @@
 	var/jitteriness = 0//Carbon
 	var/charges = 0.0
 	var/nutrition = 400.0//Carbon
+	var/hydration = 400.0//Carbon
 
 	var/overeatduration = 0		// How long this guy is overeating //Carbon
+	var/overdrinkduration = 0		// How long this guy is overdrinking //Carbon
 	var/paralysis = 0.0
 	var/stunned = 0.0
 	var/weakened = 0.0
@@ -161,6 +164,8 @@
 	var/in_throw_mode = 0
 
 	var/coughedtime = null
+
+	var/footstep = 1
 
 	var/inertia_dir = 0
 

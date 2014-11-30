@@ -84,19 +84,6 @@ var/datum/global_hud/global_hud = new()
 	Used to show and hide huds for all the different mob types,
 	including inventories and item quick actions.
 */
-/datum/hud_special
-	var/datum/hud/myhud
-	var/list/locations = list()
-	var/list/hideable = list()
-
-	New(var/datum/hud/owner)
-		myhud = owner
-
-	proc/hidden_inventory_update()
-		return 0
-
-	proc/persistant_inventory_update()
-		return 0
 
 /datum/hud
 	var/mob/mymob
@@ -114,10 +101,6 @@ var/datum/global_hud/global_hud = new()
 	var/obj/screen/l_hand_hud_object
 	var/obj/screen/action_intent
 	var/obj/screen/move_intent
-	var/obj/screen/rest_hud_object
-	var/obj/screen/swaphands_hud_object
-
-	var/datum/hud_special/special
 
 	var/list/adding
 	var/list/other
@@ -126,73 +109,17 @@ var/datum/global_hud/global_hud = new()
 	var/list/obj/screen/item_action/item_action_list = list()	//Used for the item action ui buttons.
 
 
-/datum/hud/New(mob/owner)
+datum/hud/New(mob/owner)
 	mymob = owner
 	instantiate()
 	..()
-	return
 
-/datum/hud/proc/get_slot_loc(var/slot)
-	if(special && special.locations[slot])
-		return special.locations[slot]
-
-	switch(slot)
-		if("mask") return ui_mask
-		if("oclothing") return ui_oclothing
-		if("iclothing") return ui_iclothing
-
-		if("sstore1") return ui_sstore1
-		if("id") return ui_id
-		if("belt") return ui_belt
-		if("back") return ui_back
-
-		if("rhand") return ui_rhand
-		if("lhand") return ui_lhand
-
-		if("storage1") return ui_storage1
-		if("storage2") return ui_storage2
-
-		if("shoes") return ui_shoes
-		if("head") return ui_head
-		if("gloves") return ui_gloves
-		if("ears") return ui_ears
-		if("glasses") return ui_glasses
-
-		if("acti") return ui_acti
-
-/mob/living/carbon/human/proc/get_slot_loc(var/slot)
-	if(hud_used)
-		return hud_used.get_slot_loc(slot)
-
-	switch(slot)
-		if("mask") return ui_mask
-		if("oclothing") return ui_oclothing
-		if("iclothing") return ui_iclothing
-
-		if("sstore1") return ui_sstore1
-		if("id") return ui_id
-		if("belt") return ui_belt
-		if("back") return ui_back
-
-		if("rhand") return ui_rhand
-		if("lhand") return ui_lhand
-
-		if("storage1") return ui_storage1
-		if("storage2") return ui_storage2
-
-		if("shoes") return ui_shoes
-		if("head") return ui_head
-		if("gloves") return ui_gloves
-		if("ears") return ui_ears
-		if("glasses") return ui_glasses
-
-		if("acti") return ui_acti
 
 /datum/hud/proc/hidden_inventory_update()
-	if(!mymob) return
+	if(!mymob)
+		return
+
 	if(ishuman(mymob))
-		if(special && special.hidden_inventory_update(mymob))
-			return
 		var/mob/living/carbon/human/H = mymob
 		if(inventory_shown && hud_shown)
 			if(H.shoes)		H.shoes.screen_loc = ui_shoes
@@ -213,11 +140,12 @@ var/datum/global_hud/global_hud = new()
 			if(H.wear_mask)	H.wear_mask.screen_loc = null
 			if(H.head)		H.head.screen_loc = null
 
+
 /datum/hud/proc/persistant_inventory_update()
-	if(!mymob) return
+	if(!mymob)
+		return
+
 	if(ishuman(mymob))
-		if(special && special.persistant_inventory_update(mymob))
-			return
 		var/mob/living/carbon/human/H = mymob
 		if(hud_shown)
 			if(H.s_store)	H.s_store.screen_loc = ui_sstore1
@@ -244,14 +172,9 @@ var/datum/global_hud/global_hud = new()
 	var/ui_style = ui_style2icon(mymob.client.prefs.UI_style)
 	var/ui_color = mymob.client.prefs.UI_style_color
 	var/ui_alpha = mymob.client.prefs.UI_style_alpha
-	var/ui_special = get_special_ui_style(mymob.client.prefs.UI_style)
 
 	if(ishuman(mymob))
-		if(ui_special)
-			custom_hud(ui_style, ui_special) // No color change cuz i can
-		else
-			human_hud(ui_style, ui_color, ui_alpha) // Pass the player the UI style chosen in preferences
-
+		human_hud(ui_style, ui_color, ui_alpha) // Pass the player the UI style chosen in preferences
 	else if(ismonkey(mymob))
 		monkey_hud(ui_style)
 	else if(iscorgi(mymob))
@@ -320,7 +243,7 @@ var/datum/global_hud/global_hud = new()
 					src.client.screen += src.hud_used.hotkeybuttons
 
 
-				src.hud_used.action_intent.screen_loc = src.hud_used.get_slot_loc("acti") //Restore intent selection to the original position
+				src.hud_used.action_intent.screen_loc = ui_acti //Restore intent selection to the original position
 				src.client.screen += src.zone_sel				//This one is a special snowflake
 
 			hud_used.hidden_inventory_update()

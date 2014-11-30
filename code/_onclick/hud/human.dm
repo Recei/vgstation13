@@ -388,12 +388,6 @@
 	mymob.nutrition_icon.name = "nutrition"
 	mymob.nutrition_icon.screen_loc = ui_nutrition
 
-	mymob.hydration_icon = new /obj/screen()
-	mymob.hydration_icon.icon = ui_style
-	mymob.hydration_icon.icon_state = "hydration0"
-	mymob.hydration_icon.name = "hydration"
-	mymob.hydration_icon.screen_loc = ui_hydration
-
 	mymob.pullin = new /obj/screen()
 	mymob.pullin.icon = ui_style
 	mymob.pullin.icon_state = "pull0"
@@ -458,7 +452,7 @@
 
 	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.pressure, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.healths, mymob.nutrition_icon, mymob.pullin, mymob.blind, mymob.flash, mymob.damageoverlay, mymob.gun_setting_icon) //, mymob.hands, mymob.rest, mymob.sleep) //, mymob.mach )
 	mymob.client.screen += src.adding + src.hotkeybuttons
-	inventory_shown = 0
+	inventory_shown = 0;
 
 	return
 
@@ -521,6 +515,3 @@
 					A.screen_loc = ui_action_slot5
 					break //5 slots available, so no more can be added.
 			num++
-
-
-

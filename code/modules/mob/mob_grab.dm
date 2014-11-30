@@ -48,17 +48,9 @@
 /obj/item/weapon/grab/proc/synch()
 	if(affecting)
 		if(assailant.r_hand == src)
-			if(ishuman(assailant))
-				var/mob/living/carbon/human/H = assailant
-				hud.screen_loc = H.get_slot_loc("rhand")
-			else
-				hud.screen_loc = ui_rhand
+			hud.screen_loc = ui_rhand
 		else
-			if(ishuman(assailant))
-				var/mob/living/carbon/human/H = assailant
-				hud.screen_loc = H.get_slot_loc("lhand")
-			else
-				hud.screen_loc = ui_lhand
+			hud.screen_loc = ui_lhand
 
 
 /obj/item/weapon/grab/process()
@@ -135,7 +127,7 @@
 		icon_state = "grabbed1"
 	else
 		if(state < GRAB_NECK)
-			if(isslime(affecting) || ismetroid(affecting))
+			if(isslime(affecting))
 				assailant << "<span class='notice'>You squeeze [affecting], but nothing interesting happens.</span>"
 				return
 			assailant.visible_message("<span class='warning'>[assailant] has reinforced \his grip on [affecting] (now neck)!</span>")
