@@ -942,4 +942,3 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 
 // /vg/ - Pipeline processing (enables exploding pipes and whatnot)
 #define ATMOS_PIPELINE_PROCESSING 1
->>>>>>> upstream/bleeding-edge

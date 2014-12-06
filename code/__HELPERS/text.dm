@@ -382,11 +382,7 @@ proc/rhtml_encode(var/msg)
 		out += html_decode(text)
 	return out
 
-/proc/reverse_text(var/text = "")
-	var/new_text = ""
-	for(var/i = length(text); i > 0; i--)
-		new_text += copytext(text, i, i+1)
-	return new_text
+
 /**
  * Format number with thousands seperators.
  * @param number Number to format.
