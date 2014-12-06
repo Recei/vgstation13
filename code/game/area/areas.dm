@@ -386,8 +386,7 @@
 		return
 
 	if (M.client.prefs.toggles & SOUND_AMBIENCE)
-		if (!M.client.ambience_playing)
-			M.client.ambience_playing = 1
+		if (isnull(M.areaMaster.media_source) && !M.client.ambience_playing)
 			var/sound = 'sound/ambience/shipambience.ogg'
 
 			if (prob(35))

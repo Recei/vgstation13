@@ -84,6 +84,7 @@
 			APC.queue_icon_update()
 			APC.update()
 
+	ticker.StartThematic("endgame")
 	for(var/datum/mind/M in player_list)
 		if(!istype(M.current,/mob/living))
 			continue

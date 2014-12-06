@@ -24,7 +24,7 @@
 	using.dir = SOUTHWEST
 	using.icon = 'icons/mob/screen1_robot.dmi'
 	using.icon_state = "inv1"
-	using.screen_loc = ui_id
+	using.screen_loc = ui_inv2
 	using.layer = 20
 	src.adding += using			// Place using in our adding list
 	M.inv_tool = using			// Save this using as our MoMMI's inv_sight
@@ -34,7 +34,7 @@
 	using.dir = SOUTHWEST
 	using.icon = 'icons/mob/screen1_robot.dmi'
 	using.icon_state = "sight"
-	using.screen_loc = ui_iclothing
+	using.screen_loc = ui_inv1
 	using.layer = 20
 	src.adding += using
 	M.inv_sight = using*/

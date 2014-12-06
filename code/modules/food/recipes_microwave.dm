@@ -24,10 +24,6 @@
 	reagents = list("slimejelly" = 5, "flour" = 5)
 	result = /obj/item/weapon/reagent_containers/food/snacks/donut/slimejelly
 
-/datum/recipe/jellydonut/metroid
-	reagents = list("metroidjelly" = 5, "flour" = 5)
-	result = /obj/item/weapon/reagent_containers/food/snacks/donut/metroidjelly
-
 /datum/recipe/jellydonut/cherry
 	reagents = list("cherryjelly" = 5, "flour" = 5)
 	result = /obj/item/weapon/reagent_containers/food/snacks/donut/cherryjelly
@@ -922,12 +918,6 @@
 	items = list()
 	result = /obj/item/weapon/reagent_containers/food/snacks/slimesoup
 
-/datum/recipe/metroidsoup
-	reagents = list("water" = 10, "metroidjelly" = 5)
-	items = list(
-	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/metroidsoup
-
 /datum/recipe/clownstears
 	reagents = list("water" = 10)
 	items = list(
@@ -987,12 +977,6 @@
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/breadslice)
 	result = /obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/slime
 
-/datum/recipe/metroidtoast
-	reagents = list("metroidjelly" = 5)
-	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/metroid
-
 /datum/recipe/jelliedtoast
 	reagents = list("cherryjelly" = 5)
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/breadslice)
@@ -1021,20 +1005,6 @@
 		/obj/item/weapon/reagent_containers/food/snacks/breadslice,
 		)
 	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/slime
-
-/datum/recipe/metroidburger
-	reagents = list("metroidjelly" = 5, "flour" = 15)
-	items = list()
-	result = /obj/item/weapon/reagent_containers/food/snacks/jellyburger/metroid
-
-/datum/recipe/metroidsandwich
-	reagents = list("metroidjelly" = 5)
-	items = list(
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice,
-		/obj/item/weapon/reagent_containers/food/snacks/breadslice,
-	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/metroid
-
 
 /datum/recipe/cherrysandwich
 	reagents = list("cherryjelly" = 5)

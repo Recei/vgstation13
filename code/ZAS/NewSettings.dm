@@ -43,7 +43,7 @@ var/global/ZAS_Settings/zas_settings = new
 	name = "Fire - Air Consumption Ratio"
 	desc = "Ratio of air removed and combusted per tick."
 	valtype=ZAS_TYPE_NUMERIC
-	value = 0.60
+	value = 0.75
 
 /datum/ZAS_Setting/fire_firelevel_multiplier
 	value = 25
@@ -52,49 +52,49 @@ var/global/ZAS_Settings/zas_settings = new
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/fire_fuel_energy_release
-	value = 850000
+	value = 550000
 	name = "Fire - Fuel energy release"
 	desc = "The energy in joule released when burning one mol of a burnable substance"
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_lightest_pressure
-	value = 5
+	value = 20
 	name = "Airflow - Small Movement Threshold %"
 	desc = "Percent of 1 Atm. at which items with the small weight classes will move."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_light_pressure
-	value = 10
+	value = 35
 	name = "Airflow - Medium Movement Threshold %"
 	desc = "Percent of 1 Atm. at which items with the medium weight classes will move."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_medium_pressure
-	value = 15
+	value = 50
 	name = "Airflow - Heavy Movement Threshold %"
 	desc = "Percent of 1 Atm. at which items with the largest weight classes will move."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_heavy_pressure
-	value = 25
+	value = 65
 	name = "Airflow - Mob Movement Threshold %"
 	desc = "Percent of 1 Atm. at which mobs will move."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_dense_pressure
-	value = 40
+	value = 85
 	name = "Airflow - Dense Movement Threshold %"
 	desc = "Percent of 1 Atm. at which items with canisters and closets will move."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_stun_pressure
-	value = 30
+	value = 60
 	name = "Airflow - Mob Stunning Threshold %"
 	desc = "Percent of 1 Atm. at which mobs will be stunned by airflow."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_stun_cooldown
-	value = 15
+	value = 60
 	name = "Aiflow Stunning - Cooldown"
 	desc = "How long, in tenths of a second, to wait before stunning them again."
 	valtype=ZAS_TYPE_NUMERIC
@@ -112,13 +112,13 @@ var/global/ZAS_Settings/zas_settings = new
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_speed_decay
-	value = 0.7
+	value = 1.5
 	name = "Airflow Speed Decay"
 	desc = "How rapidly the speed gained from airflow decays."
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/airflow_delay
-	value = 25
+	value = 30
 	name = "Airflow Retrigger Delay"
 	desc = "Time in deciseconds before things can be moved by airflow again."
 	valtype=ZAS_TYPE_NUMERIC
@@ -132,12 +132,12 @@ var/global/ZAS_Settings/zas_settings = new
 // N3X15 - Added back in so we can tweak performance.
 /datum/ZAS_Setting/airflow_push
 	name="Airflow - Push"
-	value = 1
+	value = 0
 	desc="1=yes please rape my server, 0=no"
 	valtype=ZAS_TYPE_BOOLEAN
 
 /datum/ZAS_Setting/connection_insulation
-	value = 0.2
+	value = 0.4
 	name = "Connections - Insulation"
 	desc = "How insulative a connection is, in terms of heat transfer.  1 is perfectly insulative, and 0 is perfectly conductive."
 	valtype=ZAS_TYPE_NUMERIC
@@ -151,7 +151,7 @@ var/global/ZAS_Settings/zas_settings = new
 // N3X15 - Ice is disabled by default, per Pomf's request.
 /datum/ZAS_Setting/ice_formation
 	name="Airflow - Enable Ice Formation"
-	value = 1
+	value = 0
 	desc="1=yes, 0=no - Slippin' and slidin' when pressure &gt; 10kPa and temperature &lt; 273K"
 	valtype=ZAS_TYPE_BOOLEAN
 
@@ -171,7 +171,7 @@ var/global/ZAS_Settings/zas_settings = new
 /datum/ZAS_Setting/PLASMA_DMG
 	name = "Plasma Damage Amount"
 	desc = "Self Descriptive"
-	value = 8
+	value = 3
 	valtype=ZAS_TYPE_NUMERIC
 
 /datum/ZAS_Setting/CLOTH_CONTAMINATION
@@ -183,19 +183,19 @@ var/global/ZAS_Settings/zas_settings = new
 /datum/ZAS_Setting/PLASMAGUARD_ONLY
 	name = "PlasmaGuard Only"
 	desc = "If this is on, only biosuits and spacesuits protect against contamination and ill effects."
-	value = 1
+	value = 0
 	valtype=ZAS_TYPE_BOOLEAN
 
 /datum/ZAS_Setting/GENETIC_CORRUPTION
 	name = "Genetic Corruption Chance"
 	desc = "Chance of genetic corruption as well as toxic damage, X in 10,000."
-	value = 100
+	value = 0
 	valtype=ZAS_TYPE_BOOLEAN
 
 /datum/ZAS_Setting/SKIN_BURNS
 	name = "Skin Burns"
 	desc = "Plasma has an effect similar to mustard gas on the un-suited."
-	value = 1
+	value = 0
 	valtype=ZAS_TYPE_BOOLEAN
 
 /datum/ZAS_Setting/EYE_BURNS
@@ -213,7 +213,7 @@ var/global/ZAS_Settings/zas_settings = new
 /datum/ZAS_Setting/PLASMA_HALLUCINATION
 	name = "Plasma Hallucination"
 	desc = "Does being in plasma cause you to hallucinate?"
-	value = 1
+	value = 0
 	valtype=ZAS_TYPE_BOOLEAN
 
 /datum/ZAS_Setting/N2O_HALLUCINATION
@@ -266,7 +266,7 @@ var/global/ZAS_Settings/zas_settings = new
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtextEx(t, " ")
+		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
 

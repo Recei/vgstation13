@@ -1186,12 +1186,8 @@ NOTE:  The change will take effect AFTER any current recruiting periods."}
 					if("ui")
 						switch(UI_style)
 							if("Midnight")
-								UI_style = "Midnight_new"
-							if("Midnight_new")
 								UI_style = "Orange"
 							if("Orange")
-								UI_style = "Luna"
-							if("Luna")
 								UI_style = "old"
 							if("old")
 								UI_style = "White"

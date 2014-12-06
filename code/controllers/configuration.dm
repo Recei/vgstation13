@@ -512,6 +512,15 @@
 					vgws_base_url = value
 				if("map_voting")
 					map_voting = 1
+				else
+					diary << "Unknown setting in configuration: '[name]'"
+
+		else if(type == "game_options")
+			if(!value)
+				diary << "Unknown value for setting [name] in [filename]."
+			value = text2num(value)
+
+			switch(name)
 				if("max_explosion_range")
 					MAX_EXPLOSION_RANGE = text2num(value)
 				if("health_threshold_crit")
@@ -598,11 +607,58 @@
 				sqllogin = value
 			if ("password")
 				sqlpass = value
+			if ("feedback_database")
+				sqlfdbkdb = value
+			if ("feedback_login")
+				sqlfdbklogin = value
+			if ("feedback_password")
+				sqlfdbkpass = value
 			if ("enable_stat_tracking")
 				sqllogging = 1
 			else
 				diary << "Unknown setting in configuration: '[name]'"
 
+/datum/configuration/proc/loadforumsql(filename)  // -- TLE
+	var/list/Lines = file2list(filename)
+	for(var/t in Lines)
+		if(!t)	continue
+
+		t = trim(t)
+		if (length(t) == 0)
+			continue
+		else if (copytext(t, 1, 2) == "#")
+			continue
+
+		var/pos = findtext(t, " ")
+		var/name = null
+		var/value = null
+
+		if (pos)
+			name = lowertext(copytext(t, 1, pos))
+			value = copytext(t, pos + 1)
+		else
+			name = lowertext(t)
+
+		if (!name)
+			continue
+
+		switch (name)
+			if ("address")
+				forumsqladdress = value
+			if ("port")
+				forumsqlport = value
+			if ("database")
+				forumsqldb = value
+			if ("login")
+				forumsqllogin = value
+			if ("password")
+				forumsqlpass = value
+			if ("activatedgroup")
+				forum_activated_group = value
+			if ("authenticatedgroup")
+				forum_authenticated_group = value
+			else
+				diary << "Unknown setting in configuration: '[name]'"
 
 /datum/configuration/proc/pick_mode(mode_name)
 	// I wish I didn't have to instance the game modes in order to look up
@@ -612,7 +668,7 @@
 		if (M.config_tag && M.config_tag == mode_name)
 			return M
 		del(M)
-	return new /datum/game_mode/()
+	return new /datum/game_mode/extended()
 
 /datum/configuration/proc/get_runnable_modes()
 	var/list/datum/game_mode/runnable_modes = new
