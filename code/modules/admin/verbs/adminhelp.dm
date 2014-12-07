@@ -32,6 +32,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 	var/original_msg = msg
 
 	//explode the input msg into a list
+	var/list/msglist = text2list(msg, " ")
 
 	//generate keywords lookup
 	var/list/surnames = list()
