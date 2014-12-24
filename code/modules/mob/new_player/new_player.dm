@@ -21,49 +21,36 @@
 
 
 /mob/new_player/proc/new_player_panel_proc()
-	var/output = "<div align='center'><B>New Player Options</B>"
-
+	var/output = "<body  bgcolor=#f0f0f0><div align='center'>"
 	// AUTOFIXED BY fix_string_idiocy.py
 	// C:\Users\Rob\Documents\Projects\vgstation13\code\modules\mob\new_player\new_player.dm:28: output +="<hr>"
-	output += {"<hr>
-		<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"}
+	output += {"<p><button onclick="location.href='byond://?src=\ref[src];show_preferences=1'" style="background-color:#f0f0f0;width:200;height:40"">
+		<img src=assistant.png style="vertical-align: middle">
+		<b>Setup Character</b></button></A>"}
 	// END AUTOFIX
 	if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
-		if(!ready)	output += "<p><a href='byond://?src=\ref[src];ready=1'>Declare Ready</A></p>"
-		else	output += "<p><b>You are ready</b> (<a href='byond://?src=\ref[src];ready=2'>Cancel</A>)</p>"
-
+		if(!ready)	output += {"<p><button onclick="location.href='byond://?src=\ref[src];ready=1'" style="background-color:#f0f0f0;width:200;height:40"">
+		<img src=ready.png style="vertical-align: middle">
+		<b>Declare Ready</b></button></p>"}
+		else	output += {"<p><button onclick="location.href='byond://?src=\ref[src];ready=2'" style="background-color:#f0f0f0;width:200;height:40">
+		<img src=cancel.png style="vertical-align: middle">
+		<b>You are ready</b>(Cancel)</button></p>"}
 	else
-
 		// AUTOFIXED BY fix_string_idiocy.py
 		// C:\Users\Rob\Documents\Projects\vgstation13\code\modules\mob\new_player\new_player.dm:36: output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>"
-		output += {"<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>
-			<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"}
+		output += {"<p><button onclick="location.href='byond://?src=\ref[src];manifest=1'" style="background-color:#f0f0f0;width:200;height:40"">
+			<img src=manifest.png style="vertical-align: middle">
+			<b>View Crew Manifest</b></button></p>
+			<p><button onclick="location.href='byond://?src=\ref[src];late_join=1'" style="background-color:#f0f0f0;width:200;height:40"">
+			<img src=join_late.png style="vertical-align: middle">
+			<b>Join Game!</b></button></p>"}
 		// END AUTOFIX
-
-	output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
-
-	if(!IsGuestKey(src.key))
-		establish_db_connection()
-
-		if(dbcon.IsConnected())
-			var/isadmin = 0
-			if(src.client && src.client.holder)
-				isadmin = 1
-			var/DBQuery/query = dbcon.NewQuery("SELECT id FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM erro_poll_vote WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM erro_poll_textreply WHERE ckey = \"[ckey]\")")
-			query.Execute()
-			var/newpoll = 0
-			while(query.NextRow())
-				newpoll = 1
-				break
-
-			if(newpoll)
-				output += "<p><b><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A> (NEW!)</b></p>"
-			else
-				output += "<p><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A></p>"
+	output += {"<p><button onclick="location.href='byond://?src=\ref[src];observe=1'" style="background-color:#f0f0f0;width:200;height:40">
+			<img src=ghost.png style="vertical-align: middle">
+			<b>Observe Round</b></button></p>"}
 
 	output += "</div>"
-
-	src << browse(output,"window=playersetup;size=210x240;can_close=0")
+	src << browse(output,"window=playersetup;size=222x250;can_close=0")
 	return
 
 /mob/new_player/Stat()

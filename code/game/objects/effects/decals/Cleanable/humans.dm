@@ -40,6 +40,7 @@ var/global/list/image/splatter_cache=list()
 			for(var/obj/effect/decal/cleanable/blood/B in src.loc)
 				if(B != src)
 					if (B.blood_DNA)
+						src.amount += B.amount
 						blood_DNA |= B.blood_DNA.Copy()
 					del(B)
 

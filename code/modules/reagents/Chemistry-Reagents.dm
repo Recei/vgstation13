@@ -301,19 +301,6 @@ datum
 				..()
 				return
 
-			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
-				src = null
-				if(istype(M, /mob/living/carbon/human) && method==TOUCH)
-					if(M:wear_suit) M:wear_suit.add_egg()
-					if(M:w_uniform) M:w_uniform.add_egg()
-					if(M:shoes) M:shoes.add_egg()
-					if(M:gloves) M:gloves.add_egg()
-					if(M:head) M:head.add_egg()
-				if(method==INGEST)
-					M.adjustToxLoss(0.1)
-					if(prob(20))
-						holder.remove_reagent(src.id, 0.2)
-
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				if(!istype(T, /turf/space))

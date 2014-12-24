@@ -721,6 +721,7 @@
 	. = ..()
 	if(blood_overlay)
 		overlays.Remove(blood_overlay)
+	clean_poo()
 	if(istype(src, /obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = src
 		G.transfer_blood = 0
@@ -763,12 +764,28 @@
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
 
-/obj/item/proc/add_poo()
-	if(!poo_overlay)
+/obj/item/add_poo(mob/living/carbon/human/M as mob)
+	if (!..())
+		return 0
+	if(!M)
+		return
+	if(istype(src, /obj/item/weapon/melee/energy))
+		return
+
+	//if we haven't made our blood_overlay already
+	if( !poo_overlay )
 		generate_poo_overlay()
 
+	//apply the blood-splatter overlay if it isn't already in there
+	if(!blood_DNA.len)
+		overlays += poo_overlay
+
+	if(blood_DNA[M.dna.unique_enzymes])
+		return 0 //already bloodied with this blood. Cannot add more.
+	blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
+	return 1 //we applied blood to the item
+
 /obj/item/proc/clean_poo()
-	. = ..()
 	if(poo_overlay)
 		overlays.Remove(poo_overlay)
 
@@ -784,26 +801,6 @@
 		if(A.type == type && !A.poo_overlay)
 			A.poo_overlay = image(I)
 
-/obj/item/proc/add_egg()
-	if(!egg_overlay)
-		generate_egg_overlay()
-
-/obj/item/proc/clean_egg()
-	. = ..()
-	if(egg_overlay)
-		overlays.Remove(egg_overlay)
-
-/obj/item/proc/generate_egg_overlay()
-	if(egg_overlay)
-		return
-
-	var/icon/I = new /icon(icon, icon_state)
-	I.Blend(new /icon('icons/effects/eggeffect.dmi', rgb(255,255,255)),ICON_ADD) //fills the icon_state with white (except where it's transparent)
-	I.Blend(new /icon('icons/effects/eggeffect.dmi', "itemegg"),ICON_MULTIPLY) //adds egg and the remaining white areas become transparant
-
-	for(var/obj/item/A in world)
-		if(A.type == type && !A.egg_overlay)
-			A.egg_overlay = image(I)
 
 
 /obj/item/proc/showoff(mob/user)
