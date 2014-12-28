@@ -161,13 +161,12 @@
 
 	if (allowed(user))
 		if (!density)
-			close()
+			return close()
 		else
-			open()
-
-		return
+			return open()
 
 	door_animate("deny")
+	return
 
 /obj/machinery/door/blob_act()
 	if(prob(BLOB_PROBABILITY))
@@ -233,7 +232,6 @@
 	if(!operating)		operating = 1
 
 	door_animate("opening")
-	icon_state = "door0"
 	src.SetOpacity(0)
 	sleep(10)
 	src.layer = 2.7
@@ -269,6 +267,10 @@
 
 	if (!glass)
 		src.SetOpacity(1)
+		// Copypasta!!!
+		var/obj/effect/beam/B = locate() in loc
+		if(B)
+			qdel(B)
 
 	// TODO: rework how fire works on doors
 	var/obj/fire/F = locate() in loc

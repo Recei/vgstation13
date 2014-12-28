@@ -65,6 +65,9 @@
 		else
 			S << "<b>Your laws are null.</b> Contact a coder immediately."
 		S << "____________________________________"
+		if(isAI(S))
+			var/mob/living/silicon/ai/AI=S
+			AI.notify_slaved(force_sync=1)
 
 	else if("add_law" in href_list)
 		var/mob/living/silicon/S = locate(href_list["mob"])
@@ -89,6 +92,28 @@
 
 		log_admin("[key_name(usr)] has added a law to [key_name(S)]: \"[newlaw]\"")
 		message_admins("[usr.key] has added a law to [key_name(S)]: \"[newlaw]\"")
+
+	else if("reset_laws" in href_list)
+		var/mob/living/silicon/S = locate(href_list["mob"])
+		var/lawtypes = typesof(/datum/ai_laws) - /datum/ai_laws
+		var/lawtype = input("Select a lawset.","Law Type",1) as null|anything in lawtypes
+		if(lawtype == null)
+			return
+		testing("Lawtype: [lawtype]")
+
+		var/law_zeroth=null
+		var/law_zeroth_borg=null
+		if(S.laws.zeroth || S.laws.zeroth_borg)
+			if(alert(src,"Do you also wish to clear law zero?","Yes","No") == "No")
+				law_zeroth=S.laws.zeroth
+				law_zeroth_borg=S.laws.zeroth
+
+		S.laws = new lawtype
+		S.laws.zeroth=law_zeroth
+		S.laws.zeroth_borg=law_zeroth_borg
+
+		log_admin("[key_name(usr)] has reset [key_name(S)]: [lawtype]")
+		message_admins("[usr.key] has reset [key_name(S)]: [lawtype]")
 
 	else if("clear_laws" in href_list)
 		var/mob/living/silicon/S = locate(href_list["mob"])
@@ -1232,13 +1257,13 @@
 		switch(team)
 			if("Green")
 				pack = new /obj/item/packobelongings/green(M.loc)
-				pack.x = 130
+				pack.x = map.tDomeX+2
 			if("Red")
 				pack = new /obj/item/packobelongings/red(M.loc)
-				pack.x = 126
+				pack.x = map.tDomeX-2
 
-		pack.z = 2			//the players' belongings are stored there, in the Thunderdome Admin lodge.
-		pack.y = 69
+		pack.z = map.tDomeZ //the players' belongings are stored there, in the Thunderdome Admin lodge.
+		pack.y = map.tDomeY
 
 		pack.name = "[M.real_name]'s belongings"
 
@@ -1924,7 +1949,7 @@
 		var/Z = offset.len > 2 ? text2num(offset[3]) : 0
 		var/tmp_dir = href_list["object_dir"]
 		var/obj_dir = tmp_dir ? text2num(tmp_dir) : 2
-		if(!obj_dir || !(obj_dir in list(1,2,4,8,5,6,9,10)))
+		if(!obj_dir || !(obj_dir in alldirs))
 			obj_dir = 2
 		var/obj_name = sanitize(href_list["object_name"])
 		var/where = href_list["object_where"]
@@ -2374,6 +2399,12 @@
 				else
 					communications_blackout(1)
 				message_admins("[key_name_admin(usr)] triggered a communications blackout.", 1)
+
+			if("pda_spam")
+				feedback_inc("admin_secrets_fun_used",1)
+				feedback_add_details("admin_secrets_fun_used","PDA")
+				new /datum/event/pda_spam
+
 			if("spaceninja")
 				feedback_inc("admin_secrets_fun_used",1)
 				feedback_add_details("admin_secrets_fun_used","SN")
@@ -2572,7 +2603,6 @@
 				var/choice = input("You sure you want to end the round and summon narsie at your location? Misuse of this could result in removal of flags or halarity.") in list("PRAISE SATAN", "Cancel")
 				if(choice == "PRAISE SATAN")
 					new /obj/machinery/singularity/narsie/large(get_turf(usr))
-					SetUniversalState(/datum/universal_state/hell)
 					message_admins("[key_name_admin(usr)] has summoned narsie and brought about a new realm of suffering.")
 			if("supermattercascade")
 				feedback_inc("admin_secrets_fun_used",1)

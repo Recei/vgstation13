@@ -1,7 +1,9 @@
-
 /area/research_outpost
 	name = "Research Outpost"
 	icon_state = "anomaly"
+
+	general_area = /area/research_outpost
+	general_area_name = "Research Outpost"
 
 /area/research_outpost/hallway
 	name = "Research Outpost Hallway"

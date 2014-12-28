@@ -261,8 +261,6 @@ turf/simulated/floor/proc/update_icon()
 
 /turf/simulated/floor/proc/break_tile()
 	if(istype(src,/turf/simulated/floor/engine)) return
-	if(istype(src,/turf/simulated/floor/mech_bay_recharge_floor))
-		src.ChangeTurf(/turf/simulated/floor/plating)
 	if(broken) return
 	if(is_plasteel_floor())
 		src.icon_state = "damaged[pick(1,2,3,4,5)]"
@@ -319,7 +317,7 @@ turf/simulated/floor/proc/update_icon()
 	else if(is_carpet_floor())
 		spawn(5)
 			if(src)
-				for(var/direction in list(1,2,4,8,5,6,9,10))
+				for(var/direction in alldirs)
 					if(istype(get_step(src,direction),/turf/simulated/floor))
 						var/turf/simulated/floor/FF = get_step(src,direction)
 						FF.update_icon() //so siding get updated properly
@@ -523,7 +521,7 @@ turf/simulated/floor/proc/update_icon()
 							var/turf/simulated/floor/FF = get_step(src,direction)
 							FF.update_icon() //so siding gets updated properly
 				else if(istype(T,/obj/item/stack/tile/carpet))
-					for(var/direction in list(1,2,4,8,5,6,9,10))
+					for(var/direction in alldirs)
 						if(istype(get_step(src,direction),/turf/simulated/floor))
 							var/turf/simulated/floor/FF = get_step(src,direction)
 							FF.update_icon() //so siding gets updated properly
@@ -542,7 +540,7 @@ turf/simulated/floor/proc/update_icon()
 		else
 			user << "\red You must remove the plating first."
 
-	if(istype(C, /obj/item/weapon/shovel))
+	if(istype(C, /obj/item/weapon/pickaxe/shovel))
 		if(is_grass_floor())
 			new /obj/item/weapon/ore/glass(src)
 			new /obj/item/weapon/ore/glass(src) //Make some sand if you shovel grass

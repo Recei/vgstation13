@@ -211,8 +211,8 @@ Turf and target are seperate in case you want to teleport some distance from a t
 //Ensure the frequency is within bounds of what it should be sending/recieving at
 /proc/sanitize_frequency(var/f)
 	f = round(f)
-	f = max(1441, f) // 144.1
-	f = min(1489, f) // 148.9
+	f = max(1201, f) // 120.1
+	f = min(1599, f) // 159.9
 	if ((f % 2) == 0) //Ensure the last digit is an odd number
 		f += 1
 	return f
@@ -1343,7 +1343,7 @@ proc/is_hot(obj/item/W as obj)
 		istype(W, /obj/item/weapon/circular_saw)                  || \
 		istype(W, /obj/item/weapon/melee/energy/sword)            || \
 		istype(W, /obj/item/weapon/melee/energy/blade)            || \
-		istype(W, /obj/item/weapon/shovel)                        || \
+		istype(W, /obj/item/weapon/pickaxe/shovel)				  || \
 		istype(W, /obj/item/weapon/kitchenknife)                  || \
 		istype(W, /obj/item/weapon/butch)						  || \
 		istype(W, /obj/item/weapon/scalpel)                       || \

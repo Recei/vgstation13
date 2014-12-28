@@ -193,7 +193,7 @@
 	force_wielded = 40
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 
-	suicide_act(mob/user)
+/obj/item/weapon/twohanded/fireaxe/suicide_act(mob/user)
 		viewers(user) << "\red <b>[user] is smashing \himself in the head with the [src.name]! It looks like \he's commit suicide!</b>"
 		return (BRUTELOSS)
 
@@ -244,7 +244,7 @@
 		return
 	if((wielded) && prob(50))
 		spawn(0)
-			for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2))
+			for(var/i in alldirs)
 				user.dir = i
 				sleep(1)
 

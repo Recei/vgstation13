@@ -199,6 +199,8 @@
 	if(!mob)
 		return // Moved here to avoid nullrefs below. - N3X
 
+	call(/datum/pda_app/station_map/proc/minimap_update)(mob)
+
 	// /vg/ - Deny clients from moving certain mobs. (Like cluwnes :^)
 	if(mob.deny_client_move)
 		src << "<span class='warning'>You cannot move this mob.</span>"
@@ -278,10 +280,6 @@
 			move_delay -= 1.3
 			var/tickcomp = ((1/(world.tick_lag))*1.3)
 			move_delay = move_delay + tickcomp
-
-		if(mob.pulledby || mob.buckled) // Wheelchair driving!
-			if(istype(mob.loc, /turf/space))
-				return // No wheelchair driving in space
 
 		//We are now going to move
 		moving = 1
@@ -368,11 +366,15 @@
 	switch(mob.incorporeal_move)
 		if(1)
 			var/turf/T = get_step(mob, direct)
-			if(T.holy && isobserver(mob) && ((mob.invisibility == 0) || (ticker.mode && (mob.mind in ticker.mode.cult))))
-				mob << "<span class='warning'>You cannot get past holy grounds while you are in this plane of existence!</span>"
+			var/area/A = get_area(T)
+			if(A.anti_ethereal)
+				mob << "<span class='warning'>A strong force repels you from this area!</span>"
 			else
-				mob.loc = get_step(mob, direct)
-				mob.dir = direct
+				if(T.holy && isobserver(mob) && ((mob.invisibility == 0) || (ticker.mode && (mob.mind in ticker.mode.cult))))
+					mob << "<span class='warning'>You cannot get past holy grounds while you are in this plane of existence!</span>"
+				else
+					mob.loc = get_step(mob, direct)
+					mob.dir = direct
 		if(2)
 			if(prob(50))
 				var/locx
@@ -413,8 +415,10 @@
 					anim(mobloc,mob,'icons/mob/mob.dmi',,"shadow",,mob.dir)
 				mob.loc = get_step(mob, direct)
 			mob.dir = direct
-	for(var/obj/effect/step_trigger/S in mob.loc)
-		S.Crossed(src)
+	// Crossed is always a bit iffy
+	for(var/obj/S in mob.loc)
+		if(istype(S,/obj/effect/step_trigger) || istype(S,/obj/effect/beam))
+			S.Crossed(mob)
 
 	var/area/A = get_area_master(mob)
 	if(A)
