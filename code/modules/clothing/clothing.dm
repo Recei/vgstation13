@@ -191,6 +191,36 @@ BLIND     // can't see anything
 	slowdown = SHOES_SLOWDOWN
 	species_restricted = list("exclude","Unathi","Tajaran","Muton")
 
+/obj/item/clothing/shoes/proc/get_step_sound(var/mob/living/carbon/human/H)
+	if(istype(get_turf(H), /turf/simulated/floor/grass || /turf/simulated/floor/holofloor/grass))
+		return "grassfootsteps"
+	else if(istype(get_turf(H), /turf/simulated/floor/beach/sand))
+		return "sandfootsteps"
+	else if(istype(get_turf(H), /turf/simulated/floor/beach/water))
+		return "waterfootsteps"
+//	else if(istype(get_turf(H), /turf/simulated/floor/spacedome/concrete))
+//		return "concretefootsteps"
+	else if(istype(get_turf(H), /turf/simulated/floor/wood))
+		return "woodfootsteps"
+	else if(istype(get_turf(H), /turf/simulated/floor/carpet))
+		return "carpetfootsteps"
+	else
+		return "erikafootsteps"
+
+
+/obj/item/clothing/shoes/proc/step_action() //this was made to rewrite clown shoes squeaking
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+
+		if(H.m_intent == "run")
+			if(H.footstep >= 2)
+				H.footstep = 0
+				playsound(H, get_step_sound(H), 100, 1) // this will get annoying very fast.
+			else
+				H.footstep++
+		else
+			playsound(H, get_step_sound(H), 20, 1)
+
 //Suit
 /obj/item/clothing/suit
 	icon = 'icons/obj/clothing/suits.dmi'

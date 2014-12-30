@@ -22,9 +22,8 @@
 	tracks.AddTracks(bloodDNA,comingdir,goingdir,bloodcolor)
 
 /turf/simulated/Entered(atom/A, atom/OL)
-	var/footstepsound
 	if(movement_disabled && usr.ckey != movement_disabled_exception)
-		usr << "\red Movement is admin-disabled." //This is to identify lag problems
+		usr << "<span class='warning'>Movement is admin-disabled.</span>" //This is to identify lag problems
 		return
 
 	if (istype(A,/mob/living/carbon))
@@ -32,43 +31,7 @@
 		if(M.lying)	return
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			//clown shoes
-			if(istype(H.shoes, /obj/item/clothing/shoes/clown_shoes))
-				if(H.m_intent == "run")
-					if(M.footstep >= 2)
-						M.footstep = 0
-						playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
-					else
-						M.footstep++
-				else
-					playsound(src, "clownstep", 20, 1)
 
-			//shoes
-			if(istype(src, /turf/simulated/floor/grass || /turf/simulated/floor/holofloor/grass))
-				footstepsound = "grassfootsteps"
-			else if(istype(src, /turf/simulated/floor/beach/sand))
-				footstepsound = "sandfootsteps"
-			else if(istype(src, /turf/simulated/floor/beach/water))
-				footstepsound = "waterfootsteps"
-//			else if(istype(src, /turf/simulated/floor/spacedome/concrete))
-//				footstepsound = "concretefootsteps"
-			else if(istype(src, /turf/simulated/floor/wood))
-				footstepsound = "woodfootsteps"
-			else if(istype(src, /turf/simulated/floor/carpet))
-				footstepsound = "carpetfootsteps"
-			else
-				footstepsound = "erikafootsteps"
-
-
-			if(istype(H.shoes, /obj/item/clothing/shoes))
-				if(M.m_intent == "run")
-					if(M.footstep >= 2)
-						M.footstep = 0
-						playsound(src, footstepsound, 100, 1) // this will get annoying very fast.
-					else
-						M.footstep++
-				else
-					playsound(src, footstepsound, 20, 1)
 			//butt
 			if(istype(H.head, /obj/item/clothing/head/butt))
 				if(H.m_intent == "run")
@@ -117,20 +80,10 @@
 					if(H.m_intent == "run" && prob(5))
 						H.stop_pulling()
 						step(H, H.dir)
-						H << "\blue You tripped over your hair!"
+						H << "<span class='notice'>You tripped over your hair!</span>"
 						playsound(get_turf(src), 'sound/misc/slip.ogg', 50, 1, -3)
 						H.Stun(4)
 						H.Weaken(5)
-		else if(iscluwne(M))
-			var/mob/living/simple_animal/hostile/retaliate/cluwne/C=M
-			if(C.m_intent == "run")
-				if(C.footstep >= 2)
-					C.footstep = 0
-					playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
-				else
-					C.footstep++
-			else
-				playsound(src, "clownstep", 20, 1)
 
 		switch (src.wet)
 			if(1)
@@ -138,7 +91,7 @@
 					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 						M.stop_pulling()
 						step(M, M.dir)
-						M << "\blue You slipped on the wet floor!"
+						M << "<span class='notice'>You slipped on the wet floor!</span>"
 						playsound(get_turf(src), 'sound/misc/slip.ogg', 50, 1, -3)
 						M.Stun(5)
 						M.Weaken(3)
@@ -149,7 +102,7 @@
 					if (M.m_intent == "run")
 						M.stop_pulling()
 						step(M, M.dir)
-						M << "\blue You slipped on the wet floor!"
+						M << "<span class='notice'>You slipped on the wet floor!</span>"
 						playsound(get_turf(src), 'sound/misc/slip.ogg', 50, 1, -3)
 						M.Stun(5)
 						M.Weaken(3)
@@ -166,7 +119,7 @@
 					spawn(3) step(M, M.dir)
 					spawn(4) step(M, M.dir)
 					M.take_organ_damage(2) // Was 5 -- TLE
-					M << "\blue You slipped on the floor!"
+					M << "<span class='notice'>You slipped on the floor!</span>"
 					playsound(get_turf(src), 'sound/misc/slip.ogg', 50, 1, -3)
 					M.Weaken(10)
 			if(3) // Ice
@@ -174,7 +127,7 @@
 					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP) && prob(30))
 						M.stop_pulling()
 						step(M, M.dir)
-						M << "\blue You slipped on the icy floor!"
+						M << "<span class='notice'>You slipped on the icy floor!</span>"
 						playsound(get_turf(src), 'sound/misc/slip.ogg', 50, 1, -3)
 						M.Stun(4)
 						M.Weaken(3)
@@ -185,7 +138,7 @@
 					if (M.m_intent == "run" && prob(30))
 						M.stop_pulling()
 						step(M, M.dir)
-						M << "\blue You slipped on the icy floor!"
+						M << "<span class='notice'>You slipped on the icy floor!</span>"
 						playsound(get_turf(src), 'sound/misc/slip.ogg', 50, 1, -3)
 						M.Stun(4)
 						M.Weaken(3)

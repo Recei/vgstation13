@@ -1,3 +1,4 @@
+
 /obj/item/clothing/shoes/syndigaloshes
 	desc = "A pair of brown shoes. They seem to have extra grip."
 	name = "brown shoes"
@@ -81,6 +82,10 @@
 	slowdown = SHOES_SLOWDOWN+1
 	_color = "clown"
 	var/footstep = 1	//used for squeeks whilst walking
+
+/obj/item/clothing/shoes/clown_shoes/get_step_sound(var/mob/living/carbon/human/H)
+	return "clownstep"
+
 
 /obj/item/clothing/shoes/jackboots
 	name = "jackboots"
