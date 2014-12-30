@@ -52,26 +52,17 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/perp = M
-		var/datum/organ/external/l_foot = perp.get_organ("l_foot")
-		var/datum/organ/external/r_foot = perp.get_organ("r_foot")
-		var/hasfeet = 1
-		if((!l_foot || l_foot.status & ORGAN_DESTROYED) && (!r_foot || r_foot.status & ORGAN_DESTROYED))
-			hasfeet = 0
 		if(perp.shoes)
 			perp.shoes:track_poo = max(amount,perp.shoes:track_poo)                //Adding poo shoes
 			if(!perp.shoes.poo_overlay)
 				perp.shoes.generate_poo_overlay()
 			if(!perp.shoes.blood_DNA)
 				perp.shoes.blood_DNA = list()
-				perp.shoes.overlays += perp.shoes.poo_overlay
-				perp.update_inv_shoes(1)
+			perp.shoes.overlays += perp.shoes.poo_overlay
 			perp.shoes.blood_DNA |= blood_DNA.Copy()
-
-		else if (hasfeet)//Or feet
-			perp.track_poo = max(amount,perp.track_poo)
-			if(!perp.feet_blood_DNA)
-				perp.feet_blood_DNA = list()
-			perp.feet_blood_DNA |= blood_DNA.Copy()
+			perp.update_inv_shoes(1)
+			if(istype(perp.shoes, /obj/item/clothing/shoes/galoshes))
+				return
 		else
 			perp.track_poo = max(amount,perp.track_poo)                                //Or feet
 			if(!perp.feet_blood_DNA)
@@ -80,7 +71,7 @@
 
 		amount--
 
-	if(istype(M:shoes, /obj/item/clothing/shoes/galoshes) || M.m_intent == "walk")
+	if(M.m_intent == "walk")
 		return
 
 	M.pulling = null
@@ -176,19 +167,12 @@
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/perp = M
-		var/datum/organ/external/l_foot = perp.get_organ("l_foot")
-		var/datum/organ/external/r_foot = perp.get_organ("r_foot")
-		var/hasfeet = 1
-		if((!l_foot || l_foot.status & ORGAN_DESTROYED) && (!r_foot || r_foot.status & ORGAN_DESTROYED))
-			hasfeet = 0
 		if(perp.shoes)
 			if(!perp.shoes.blood_DNA)
 				perp.shoes.blood_DNA = list()
 			perp.shoes.blood_DNA |= blood_DNA.Copy()
-		else if (hasfeet)//Or feet
-			if(!perp.feet_blood_DNA)
-				perp.feet_blood_DNA = list()
-			perp.feet_blood_DNA |= blood_DNA.Copy()
+			if(istype(perp.shoes, /obj/item/clothing/shoes/galoshes))
+				return
 		else
 			if(!perp.feet_blood_DNA)
 				perp.feet_blood_DNA = list()
@@ -196,7 +180,7 @@
 
 		amount--
 
-	if(istype(M:shoes, /obj/item/clothing/shoes/galoshes) || M.m_intent == "walk")
+	if(M.m_intent == "walk")
 		return
 
 	M.pulling = null

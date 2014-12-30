@@ -38,5 +38,6 @@ data/whitelist.txt
 
 #SQLite
 *.sqlite
+players2.sqlite
 icons/turf/floors_helpers.dmi
 icons/turf/floors_helpers2.dmi
