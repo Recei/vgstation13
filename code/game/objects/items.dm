@@ -3,7 +3,6 @@
 	icon = 'icons/obj/items.dmi'
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
 	var/image/poo_overlay = null
-	var/image/egg_overlay = null
 	var/abstract = 0
 	var/item_state = null
 	var/r_speed = 1.0
@@ -721,7 +720,12 @@
 	. = ..()
 	if(blood_overlay)
 		overlays.Remove(blood_overlay)
-	clean_poo()
+	if(poo_overlay)
+		overlays.Remove(poo_overlay)
+		if (istype(src, /obj/item/clothing))
+			var/obj/item/clothing/C = src
+			if(C.poop_covering)
+				C.poop_covering = 0
 	if(istype(src, /obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = src
 		G.transfer_blood = 0
@@ -765,30 +769,16 @@
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
 
-/obj/item/add_poo(mob/living/carbon/human/M as mob)
-	if (!..())
-		return 0
-	if(!M)
-		return
+/obj/item/proc/add_poo()
 	if(istype(src, /obj/item/weapon/melee/energy))
 		return
-
-	//if we haven't made our blood_overlay already
+	//if we haven't made our poo_overlay already
 	if( !poo_overlay )
 		generate_poo_overlay()
-
-	//apply the blood-splatter overlay if it isn't already in there
-	if(!blood_DNA.len)
-		overlays += poo_overlay
-
-	if(blood_DNA[M.dna.unique_enzymes])
-		return 0 //already bloodied with this blood. Cannot add more.
-	blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-	return 1 //we applied blood to the item
-
-/obj/item/proc/clean_poo()
-	if(poo_overlay)
-		overlays.Remove(poo_overlay)
+	if (istype(src, /obj/item/clothing))
+		var/obj/item/clothing/C = src
+		if (!(C.poop_covering))
+			C.poop_covering = 1
 
 /obj/item/proc/generate_poo_overlay()
 	if(poo_overlay)
@@ -801,7 +791,6 @@
 	for(var/obj/item/A in world)
 		if(A.type == type && !A.poo_overlay)
 			A.poo_overlay = image(I)
-
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))

@@ -1951,16 +1951,20 @@ var/global/list/organ_damage_overlays = list(
 
 
 	if(src.stat != 2)
+		if(lastpoocomplaint > world.timeofday)
+			lastpoocomplaint = 0
 		if (nutrition > 400)
-			spawn(600)//60 seconds
+			spawn(300)//30 seconds
 				if(prob(25))
 					wanttopoo++
 			if(wanttopoo >=5 && prob(25))
 				emote("poo")
 				wanttopoo = 0
-			else if(wanttopoo >=3)
+			else if(wanttopoo >=3 && world.timeofday >= lastpoocomplaint + 3000)
+				lastpoocomplaint = world.timeofday
 				src << "<font color='black'><b>You really want to poo!</b></font>"
-			else
+			else if(lastpoocomplaint + 3000)
+				lastpoocomplaint = world.timeofday
 				src << "<font color='black'><b>You want to poo.</b></font>"
 
 		else
@@ -1976,17 +1980,19 @@ var/global/list/organ_damage_overlays = list(
 
 				src << "[nutri_message]"
 
-
+		if(lastpeecomplaint > world.timeofday)
+			lastpeecomplaint = 0
 		if (hydration > 400)
-			spawn(600)//60 seconds
+			spawn(300)//30 seconds
 				if(prob(25))
 					wanttopee++
 			if(wanttopee >=5 && prob(25))
 				emote("pee")
 				wanttopee = 0
-			else if(wanttopee >=3)
+			else if(wanttopee >=3 && world.timeofday >= lastpeecomplaint + 3000)
+				lastpeecomplaint = world.timeofday
 				src << "<font color='black'><b>You really want to pee!</b></font>"
-			else
+			else if(world.timeofday >= lastpeecomplaint + 3000)
 				src << "<font color='black'><b>You want to pee.</b></font>"
 
 		else

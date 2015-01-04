@@ -537,32 +537,6 @@ its easier to just keep the beam vertical.
 		return 1 //we applied blood to the item
 	return
 
-// I hate copypaste but i can't do something else
-/atom/proc/add_poo(mob/living/carbon/human/M as mob)
-	.=1
-	if(!M)
-		if(!blood_DNA || !istype(blood_DNA, /list))
-			blood_DNA = list()
-		return 1
-	if (!( istype(M, /mob/living/carbon/human) ))
-		return 0
-	if (!istype(M.dna, /datum/dna))
-		M.dna = new /datum/dna(null)
-		M.dna.real_name = M.real_name
-	M.check_dna()
-	if (!( src.flags ) & FPRINT)
-		return 0
-	if(!blood_DNA || !istype(blood_DNA, /list))
-		blood_DNA = list()
-	else if (istype(src, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = src
-		if(blood_DNA[H.dna.unique_enzymes])
-			return 0
-		blood_DNA[H.dna.unique_enzymes] = H.dna.b_type
-		H.update_inv_gloves()
-		return 1
-	return
-
 /atom/proc/add_vomit_floor(mob/living/carbon/M as mob, var/toxvomit = 0)
 	if( istype(src, /turf/simulated) )
 		var/obj/effect/decal/cleanable/vomit/this = new /obj/effect/decal/cleanable/vomit(src)

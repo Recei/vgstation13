@@ -72,7 +72,10 @@
 
 	//Sims vars
 	var/lastnutritioncomplaint = 0
+	var/lastpoocomplaint = 0
 	var/lasthydrationcomplaint = 0
+	var/lastpeecomplaint = 0
+
 	var/wanttopoo = 0
 	var/wanttopee = 0
 

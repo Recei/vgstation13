@@ -502,12 +502,12 @@ var/global/list/damage_icon_parts = list()
 		if(w_uniform.icon_override)
 			standing.icon	= w_uniform.icon_override
 
-		if(w_uniform.blood_overlay )
+		if(w_uniform.blood_DNA)
 			var/image/bloodsies	= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "uniformblood")
 			bloodsies.color		= w_uniform.blood_color
 			standing.overlays	+= bloodsies
 
-		if(w_uniform.poo_overlay)
+		if(w_uniform:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "uniformpoo")
 			standing.overlays	+= poosies
 
@@ -562,12 +562,12 @@ var/global/list/damage_icon_parts = list()
 			if(species.gloves_icons)
 				standing.icon = species.gloves_icons
 
-		if(gloves.blood_overlay)
+		if(gloves.blood_DNA)
 			var/image/bloodsies	= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "bloodyhands")
 			bloodsies.color = gloves.blood_color
 			standing.overlays	+= bloodsies
 
-		if(gloves.poo_overlay)
+		if(gloves:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "poohands")
 			standing.overlays	+= poosies
 
@@ -633,12 +633,12 @@ var/global/list/damage_icon_parts = list()
 			if(species.shoes_icons)
 				standing.icon = species.shoes_icons
 
-		if(shoes.blood_overlay)
+		if(shoes.blood_DNA)
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "shoeblood")
 			bloodsies.color = shoes.blood_color
 			standing.overlays	+= bloodsies
 
-		if(shoes.poo_overlay)
+		if(shoes:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "shoepoo")
 			standing.overlays	+= poosies
 
@@ -672,11 +672,11 @@ var/global/list/damage_icon_parts = list()
 			if(species.head_icons)
 				standing.icon = species.head_icons
 
-		if(head.blood_overlay)
+		if(head.blood_DNA)
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "helmetblood")
 			bloodsies.color = head.blood_color
 			standing.overlays	+= bloodsies
-		if(head.poo_overlay)
+		if(head:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "helmetpoo")
 			standing.overlays	+= poosies
 
@@ -727,13 +727,13 @@ var/global/list/damage_icon_parts = list()
 			if(species.wear_suit_icons)
 				standing.icon = species.wear_suit_icons
 
-		if(wear_suit.blood_overlay)
+		if(wear_suit.blood_DNA)
 			var/obj/item/clothing/suit/S = wear_suit
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "[S.blood_overlay_type]blood")
 			bloodsies.color = wear_suit.blood_color
 			standing.overlays	+= bloodsies
 
-		if(wear_suit.poo_overlay)
+		if(wear_suit:poop_covering)
 			var/obj/item/clothing/suit/S = wear_suit
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "[S.blood_overlay_type]poo")
 			standing.overlays	+= poosies
@@ -769,11 +769,11 @@ var/global/list/damage_icon_parts = list()
 			if(species.wear_mask_icons)   //This REQUIRES the species to be listed in species_fit and also to have an appropriate dmi allocated in their species datum
 				standing.icon = species.wear_mask_icons
 
-		if( !istype(wear_mask, /obj/item/clothing/mask/cigarette) && wear_mask.blood_overlay )
+		if( !istype(wear_mask, /obj/item/clothing/mask/cigarette) && wear_mask.blood_DNA )
 			var/image/bloodsies = image("icon" = 'icons/effects/blood.dmi', "icon_state" = "maskblood")
 			bloodsies.color = wear_mask.blood_color
 			standing.overlays	+= bloodsies
-		if( !istype(wear_mask, /obj/item/clothing/mask/cigarette) && wear_mask.poo_overlay)
+		if( !istype(wear_mask, /obj/item/clothing/mask/cigarette) && wear_mask:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "maskpoo")
 			standing.overlays	+= poosies
 

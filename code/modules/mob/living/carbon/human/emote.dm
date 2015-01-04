@@ -871,7 +871,7 @@
 			else
 				if (src.w_uniform)
 					message = "<B>[src]</B> poos in their uniform."
-					src.w_uniform.add_poo()
+					src.w_uniform.add_poo(src)
 					playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
 					src.nutrition -= 80
