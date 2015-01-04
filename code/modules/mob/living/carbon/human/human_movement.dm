@@ -1,3 +1,9 @@
+/mob/living/carbon/human/Move(NewLoc, direct)
+	. = ..()
+	if(.)
+		if(istype(wear_suit, /obj/item/clothing/suit/powered))
+			wear_suit.on_mob_move()
+
 /mob/living/carbon/human/movement_delay()
 	var/tally = 0
 
@@ -100,7 +106,7 @@
 
 	//Do we have magboots or such on if so no slip
 	if(istype(shoes, /obj/item/clothing/shoes/magboots) && (shoes.flags & NOSLIP))
-		prob_slip = 0
+ 		prob_slip = 0
 
 	//Check hands and mod slip
 	if(!l_hand)	prob_slip -= 2
