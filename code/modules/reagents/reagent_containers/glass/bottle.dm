@@ -170,6 +170,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/epiglottis_virion
 	name = "Epiglottis virion culture bottle"
 	desc = "A small bottle. Contains Epiglottis virion culture in synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/advance/voice_change(0)
@@ -179,6 +180,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/liver_enhance_virion
 	name = "Liver enhancement virion culture bottle"
 	desc = "A small bottle. Contains liver enhancement virion culture in synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/advance/heal(0)
@@ -188,6 +190,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/hullucigen_virion
 	name = "Hullucigen virion culture bottle"
 	desc = "A small bottle. Contains hullucigen virion culture in synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/advance/hullucigen(0)
@@ -197,6 +200,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/pierrot_throat
 	name = "Pierrot's Throat culture bottle"
 	desc = "A small bottle. Contains H0NI<42 virion culture in synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/pierrot_throat(0)
@@ -206,6 +210,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/cold
 	name = "Rhinovirus culture bottle"
 	desc = "A small bottle. Contains XY-rhinovirus culture in synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/advance/F = new /datum/disease/advance/cold(0)
@@ -215,6 +220,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/random
 	name = "Random culture bottle"
 	desc = "A small bottle. Contains a random disease."
+
 	New()
 		..()
 		var/datum/disease/advance/F = new(0)
@@ -224,6 +230,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/retrovirus
 	name = "Retrovirus culture bottle"
 	desc = "A small bottle. Contains a retrovirus culture in a synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/dna_retrovirus(0)
@@ -247,6 +254,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/fake_gbs
 	name = "GBS culture bottle"
 	desc = "A small bottle. Contains Gravitokinetic Bipotential SADS- culture in synthblood medium."//Or simply - General BullShit
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/fake_gbs(0)
@@ -272,6 +280,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/brainrot
 	name = "Brainrot culture bottle"
 	desc = "A small bottle. Contains Cryptococcus Cosmosis culture in synthblood medium."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/brainrot(0)
@@ -281,6 +290,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/magnitis
 	name = "Magnitis culture bottle"
 	desc = "A small bottle. Contains a small dosage of Fukkos Miracos."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/magnitis(0)
@@ -291,6 +301,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/wizarditis
 	name = "Wizarditis culture bottle"
 	desc = "A small bottle. Contains a sample of Rincewindus Vulgaris."
+
 	New()
 		..()
 		var/datum/disease/F = new /datum/disease/wizarditis(0)
@@ -300,6 +311,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/pacid
 	name = "Polytrinic Acid Bottle"
 	desc = "A small bottle. Contains a small amount of Polytrinic Acid"
+
 	New()
 		..()
 		reagents.add_reagent("pacid", 30)
@@ -309,6 +321,7 @@
 	desc = "A small bottle. Contains the liquid essence of the gods."
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "holyflask"
+
 	New()
 		..()
 		reagents.add_reagent("adminordrazine", 30)
@@ -316,6 +329,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/capsaicin
 	name = "Capsaicin Bottle"
 	desc = "A small bottle. Contains hot sauce."
+
 	New()
 		..()
 		reagents.add_reagent("capsaicin", 30)
@@ -323,6 +337,25 @@
 /obj/item/weapon/reagent_containers/glass/bottle/frostoil
 	name = "Frost Oil Bottle"
 	desc = "A small bottle. Contains cold sauce."
+
 	New()
 		..()
 		reagents.add_reagent("frostoil", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/morphine
+	name = "morphine bottle"
+	desc = "A small bottle of morphine."
+
+	New()
+		..()
+		reagents.add_reagent("morphine", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/traitor
+	name = "syndicate bottle"
+	desc = "A small bottle. Contains a random nasty chemical."
+
+
+/obj/item/weapon/reagent_containers/glass/bottle/traitor/New()
+	..()
+	var/new_reagent = pick("polonium", "histamine", "formaldehyde", "venom", "neurotoxin2", "cyanide")
+	reagents.add_reagent(new_reagent, 50)

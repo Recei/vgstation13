@@ -6,15 +6,21 @@ datum
 		var/result = null
 		var/list/required_reagents = new/list()
 		var/list/required_catalysts = new/list()
+		var/list/required_stabilizers = new/list()
 
 		// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
 		var/atom/required_container = null // the container required for the reaction to happen
 		var/required_other = 0 // an integer required for the reaction to happen
+		var/volatility = 0 // KEEP THIS BELOW 10 FFS! 1 is 10% chance per mixing it will explode / 10 is a 100% chance, tho there is a random explosion size based on this.
+						//how unstable and how much of a chance the substance has to explode + influences explosion size
 
 		var/result_amount = 0
 		var/secondary = 0 // set to nonzero if secondary reaction
 		var/list/secondary_results = list()		//additional reagents produced by the reaction
-		var/requires_heating = 0
+		//var/requires_heating = 0  Replaced by required_temp
+
+		var/required_temp = 0
+		var/mix_message = "The solution begins to bubble."
 
 		// /vg/: Send admin alerts with standardized code.
 		proc/send_admin_alert(var/datum/reagents/holder, var/reaction_name=src.name)

@@ -234,41 +234,6 @@ datum
 					M.resistances += self.data
 				return
 
-		poo
-			name = "poo"
-			id = "poo"
-			description = "It's poo."
-			reagent_state = LIQUID
-			color = "#402000" //rgb: 64, 32 , 0
-
-			on_mob_life(var/mob/living/M)
-				if(!M) M = holder.my_atom
-				M.adjustToxLoss(0.1*REM)
-				holder.remove_reagent(src.id, 0.2)
-				..()
-				return
-
-			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
-				src = null
-				if(istype(M, /mob/living/carbon/human) && method==TOUCH)
-					if(M:wear_suit) M:wear_suit.add_poo(M)
-					if(M:w_uniform) M:w_uniform.add_poo(M)
-					if(M:shoes) M:shoes.add_poo(M)
-					if(M:gloves) M:gloves.add_poo(M)
-					if(M:head) M:head.add_poo(M)
-				if(method==INGEST)
-					if(prob(20))
-						if(ishuman(M))
-							var/mob/living/carbon/human/H = M
-							H.vomit()
-						M:toxloss += 0.1
-						holder.remove_reagent(src.id, 0.2)
-
-			reaction_turf(var/turf/T, var/volume)
-				src = null
-				if(!istype(T, /turf/space))
-					new /obj/effect/decal/cleanable/poo(T)
-
 		vomit
 			name = "vomit"
 			id = "vomit"
@@ -310,66 +275,6 @@ datum
 				src = null
 				if(!istype(T, /turf/space))
 					new	/obj/effect/decal/cleanable/egg_smudge
-		urine
-			name = "urine"
-			id = "urine"
-			description = "It's pee."
-			reagent_state = LIQUID
-			hydration_factor = 10 * REAGENTS_METABOLISM
-			color = "#ffff00" //rgb 255, 255, 0
-
-			on_mob_life(var/mob/living/M)
-				if(!M) M = holder.my_atom
-				M.hydration += hydration_factor*REM
-				M.adjustToxLoss(0.1)
-				..()
-				return
-
-			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
-				src = null
-				if(method==INGEST)
-					if(prob(20) && ishuman(M))
-						var/mob/living/carbon/human/H = M
-						H.vomit()
-					M.adjustToxLoss(0.1)
-					M.hydration += hydration_factor*REM
-					if(prob(20))
-						if(ishuman(M))
-							var/mob/living/carbon/human/H = M
-							H.vomit()
-						holder.remove_reagent(src.id, 0.2)
-
-			reaction_turf(var/turf/T, var/volume)
-				src = null
-				if(!istype(T, /turf/space))
-					new /obj/effect/decal/cleanable/urine(T)
-
-
-		jenkem
-			name = "jenkem"
-			id = "jenkem"
-			description = "A bathtub drug made from human excrement."
-			reagent_state = LIQUID
-
-			on_mob_life(var/mob/living/M)
-				if(!M) M = holder.my_atom
-				M.adjustBrainLoss(2)
-				M.druggy = max(M.druggy, 10)
-				if(M.canmove) step(M, pick(cardinal))
-				if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
-				..()
-				return
-
-			reaction_turf(var/turf/T, var/volume)
-				src = null
-				if(!istype(T, /turf/space))
-					new /obj/effect/decal/cleanable/poo(T)
-
-			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
-				if(method==INGEST)
-					if(prob(20) && ishuman(M))
-						var/mob/living/carbon/human/H = M
-						H.vomit()
 
 		water
 			name = "Water"
@@ -588,6 +493,8 @@ datum
 				..()
 				return
 
+/* //See code\modules\reagents\Goon\Toxins.dm 120
+
 		cyanide
 			// Fast and lethal
 			name = "Cyanide"
@@ -604,6 +511,9 @@ datum
 				M.sleeping += 1
 				..()
 				return
+
+
+*/
 
 		chefspecial
 			// Quiet and lethal, needs atleast 4 units in the person before they'll die
@@ -2398,14 +2308,15 @@ datum
 			description = "A agent that yields metallic foam when mixed with light metal and a strong acid."
 			reagent_state = SOLID
 			color = "#664B63" // rgb: 102, 75, 99
-
-		nicotine
+/*
+		nicotine // code/modules/reagents/goon/drugs.dm 7
 			name = "Nicotine"
 			id = "nicotine"
 			description = "A highly addictive stimulant extracted from the tobacco plant."
 			reagent_state = LIQUID
 			color = "#181818" // rgb: 24, 24, 24
-/*
+
+
 		ethanol
 			name = "Ethanol"
 			id = "ethanol"

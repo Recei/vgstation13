@@ -5,7 +5,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "bunsen0"
 	var/heating = 0		//whether the bunsen is turned on
-	var/heated = 0		//whether the bunsen has been on long enough to let stuff react
+//	var/heated = 0		//whether the bunsen has been on long enough to let stuff react
 	var/obj/item/weapon/reagent_containers/held_container
 	var/heat_time = 50
 
@@ -39,9 +39,8 @@
 /obj/machinery/bunsen_burner/proc/try_heating()
 	src.visible_message("\blue \icon[src] [src] hisses.")
 	if(held_container && heating)
-		heated = 1
+		held_container.reagents.chem_temp += 100
 		held_container.reagents.handle_reactions()
-		heated = 0
 		spawn(heat_time)
 			try_heating()
 

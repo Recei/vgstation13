@@ -322,6 +322,12 @@ var/list/uplink_items = list()
 	item = /obj/item/device/chameleon
 	cost = 3
 
+/datum/uplink_item/stealthy_weapons/traitor_chem_bottle
+	name = "Poison Bottle"
+	desc = "A small bottle. Contains a random nasty chemical."
+	item = /obj/item/weapon/reagent_containers/glass/bottle/traitor
+	cost = 2
+
 
 // DEVICE AND TOOLS
 

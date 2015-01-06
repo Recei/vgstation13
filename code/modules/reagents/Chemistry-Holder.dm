@@ -12,6 +12,7 @@ datum
 		var/total_volume = 0
 		var/maximum_volume = 100
 		var/atom/my_atom = null
+		var/chem_temp = 100
 
 		New(maximum=100)
 			maximum_volume = maximum
@@ -343,21 +344,24 @@ datum
 
 							var/datum/chemical_reaction/C = reaction
 
-							//check if this recipe needs to be heated to mix
-							if(C.requires_heating)
-								if(istype(my_atom.loc, /obj/machinery/bunsen_burner))
-									if(!my_atom.loc:heated)
-										continue
-								else
-									continue
+						//	//check if this recipe needs to be heated to mix
+						//	if(C.required_temp)
+						//		if(istype(my_atom.loc, /obj/machinery/bunsen_burner))
+						//			if(my_atom.loc:required_temp)
+						//				continue
+						//		else
+						//			continue
 
 							var/total_required_reagents = C.required_reagents.len
 							var/total_matching_reagents = 0
 							var/total_required_catalysts = C.required_catalysts.len
 							var/total_matching_catalysts= 0
+							var/total_required_stabilizers = C.required_stabilizers.len //Thank goes to D2K5 and ErikaT
+							var/total_matching_stabilizers = 0
 							var/matching_container = 0
 							var/matching_other = 0
 							var/list/multipliers = new/list()
+							var/required_temp = C.required_temp
 
 							for(var/B in C.required_reagents)
 								if(!has_reagent(B, C.required_reagents[B]))	break
@@ -366,6 +370,9 @@ datum
 							for(var/B in C.required_catalysts)
 								if(!has_reagent(B, C.required_catalysts[B]))	break
 								total_matching_catalysts++
+							for(var/B in C.required_stabilizers)
+								if(!has_reagent(B, C.required_stabilizers[B]))	break
+								total_matching_stabilizers++
 
 							if(!C.required_container)
 								matching_container = 1
@@ -389,7 +396,10 @@ datum
 									if(M.Uses > 0) // added a limit to slime cores -- Muskets requested this
 										matching_other = 1
 
-							if(total_matching_reagents == total_required_reagents && total_matching_catalysts == total_required_catalysts && matching_container && matching_other)
+							if(required_temp == 0)
+								required_temp = chem_temp
+
+							if(total_matching_reagents == total_required_reagents && total_matching_catalysts == total_required_catalysts && matching_container && matching_other && chem_temp >= required_temp)
 								var/multiplier = min(multipliers)
 								var/preserved_data = null
 								for(var/B in C.required_reagents)
@@ -413,7 +423,7 @@ datum
 								else if	(istype(my_atom, /mob/living/carbon/human))
 									my_atom.visible_message("<span class='notice'>[my_atom] shudders a little.</span>","<span class='notice'>You shudder a little.</span>")
 								else
-									my_atom.visible_message("<span class='notice'>\icon[my_atom] The solution begins to bubble.</span>")
+									my_atom.visible_message("<span class='notice'>\icon[my_atom] [C.mix_message] </span>")
 
 								if(istype(my_atom, /obj/item/slime_extract))
 									var/obj/item/slime_extract/ME2 = my_atom
@@ -428,6 +438,16 @@ datum
 
 								C.on_reaction(src, created_volume)
 								reaction_occured = 1
+
+								if(!total_required_stabilizers == total_matching_stabilizers && (prob(C.volatility * 15))) // If there is no stabilizer - explode
+									sleep(10)
+									my_atom.visible_message("<span class='caution'>\icon[my_atom] Something goes wrong.</span>")
+									var/location = get_turf(my_atom)
+									var/datum/effect/effect/system/reagents_explosion/e = new()
+									e.set_up(round (created_volume/10, 1), location, 0, 0)
+									e.start()
+									del created_volume
+
 								break
 
 				while(reaction_occured)

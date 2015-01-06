@@ -4,7 +4,6 @@ var/global/list/charcoal_doesnt_remove=list(
 )
 
 /datum/reagent/charcoal
-	//data must contain virus type
 	name = "Activated Charcoal"
 	id = "charcoal"
 	reagent_state = LIQUID
