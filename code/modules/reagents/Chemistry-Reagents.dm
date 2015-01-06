@@ -3693,6 +3693,11 @@ datum
 				M:hydration += hydration_factor
 				if(!holder)
 					holder = M.reagents
+				if(!holder)
+					if(!M.loc || M.timeDestroyed)
+						del(src) //panic
+					M.create_reagents(1000)
+					holder = M.reagents
 				if(holder)
 					holder.remove_reagent(src.id, FOOD_METABOLISM)
 				if(!src.data) data = 1
