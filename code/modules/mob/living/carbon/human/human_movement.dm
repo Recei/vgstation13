@@ -1,9 +1,3 @@
-/mob/living/carbon/human/Move(NewLoc, direct)
-	. = ..()
-	if(.)
-		if(istype(wear_suit, /obj/item/clothing/suit/powered))
-			wear_suit.on_mob_move()
-
 /mob/living/carbon/human/movement_delay()
 	var/tally = 0
 
