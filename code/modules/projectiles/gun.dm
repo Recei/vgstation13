@@ -25,6 +25,7 @@
 	var/recoil = 0
 	var/ejectshell = 1
 	var/clumsy_check = 1
+	var/trigger_guard = 1 // If 0 - disable mutation check
 	var/tmp/list/mob/living/target //List of who yer targeting.
 	var/tmp/lock_time = -100
 	var/tmp/mouthshoot = 0 ///To stop people from suiciding twice... >.>
@@ -79,16 +80,18 @@
 	if (!user.IsAdvancedToolUser() || isMoMMI(user) || istype(user, /mob/living/carbon/monkey/diona))
 		user << "\red You don't have the dexterity to do this!"
 		return
-	if(istype(user, /mob/living))
-		var/mob/living/M = user
-		if (M_HULK in M.mutations)
-			M << "\red Your meaty finger is much too large for the trigger guard!"
-			return
+	if(trigger_guard)
+		if(istype(user, /mob/living))
+			var/mob/living/M = user
+			if (M_HULK in M.mutations)
+				M << "\red Your meaty finger is much too large for the trigger guard!"
+				return
 	if(ishuman(user))
 		var/mob/living/carbon/human/H=user
-		if(user.dna && user.dna.mutantrace == "adamantine")
-			user << "\red Your metal fingers don't fit in the trigger guard!"
-			return
+		if(trigger_guard)
+			if(user.dna && user.dna.mutantrace == "adamantine")
+				user << "\red Your metal fingers don't fit in the trigger guard!"
+				return
 		var/datum/organ/external/a_hand = H.get_active_hand_organ()
 		if(!a_hand.can_use_advanced_tools())
 			user << "\red Your [a_hand] doesn't have the dexterity to do this!"
@@ -98,6 +101,7 @@
 
 	var/turf/curloc = get_turf(user)
 	var/turf/targloc = get_turf(target)
+
 	if (!istype(targloc) || !istype(curloc))
 		return
 
@@ -123,6 +127,7 @@
 		del(in_chamber)
 		update_icon()
 		return
+
 
 	if(recoil)
 		spawn()

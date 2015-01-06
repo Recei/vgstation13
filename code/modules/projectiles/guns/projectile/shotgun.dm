@@ -65,6 +65,38 @@
 	origin_tech = "combat=5;materials=2"
 	ammo_type = "/obj/item/ammo_casing/shotgun"
 
+
+/obj/item/weapon/gun/projectile/automatic/shotgun/bulldog
+	name = "syndicate shotgun"
+	desc = "A compact, mag-fed burst-fire shotgun for combat in narrow corridors, nicknamed 'Bulldog' by boarding parties. Compatible only with specialized 8-round drum magazines."
+	icon_state = "bulldog"
+	item_state = "bulldog"
+	origin_tech = "combat=5;materials=4;syndicate=6"
+	mag_type = "/obj/item/ammo_box/magazine/m12g"
+	caliber = list("shotgun" = 1, "flare" = 1)
+	max_shells = 8
+	burstfire = 0
+	burst_count = 2
+	fire_delay = 1
+
+/obj/item/weapon/gun/projectile/automatic/shotgun/bulldog/New()
+	..()
+	update_icon()
+	return
+
+/obj/item/weapon/gun/projectile/automatic/shotgun/bulldog/proc/update_magazine()
+	if(stored_magazine)
+		src.overlays = 0
+		overlays += "[stored_magazine.icon_state]"
+		return
+
+/obj/item/weapon/gun/projectile/automatic/shotgun/bulldog/update_icon()
+	src.overlays = 0
+	update_magazine()
+	icon_state = "bulldog[chambered ? "" : "-e"]"
+	return
+
+
 //this is largely hacky and bad :(	-Pete
 /obj/item/weapon/gun/projectile/shotgun/doublebarrel
 	name = "double-barreled shotgun"

@@ -11,20 +11,21 @@
 	var/caliber = ""							//Which kind of guns it can be loaded into
 	var/projectile_type = ""//The bullet type to create when New() is called
 	var/obj/item/projectile/BB = null 			//The loaded bullet
+	var/pellets = 1 // Ammount of projectiles
 
 
-	New()
-		..()
-		if(projectile_type)
-			BB = new projectile_type(src)
-		update_icon()
-
+/obj/item/ammo_casing/New()
+	..()
+	if(projectile_type)
+		BB = new projectile_type(src)
 	update_icon()
-		pixel_x = rand(-10.0, 10)
-		pixel_y = rand(-10.0, 10)
-		dir = pick(cardinal)
-		icon_state = "[initial(icon_state)][BB ? "-live" : ""]"
-		desc = "[initial(desc)][BB ? "" : " This one is spent"]"
+
+/obj/item/ammo_casing/update_icon()
+	pixel_x = rand(-10.0, 10)
+	pixel_y = rand(-10.0, 10)
+	dir = pick(cardinal)
+	icon_state = "[initial(icon_state)][BB ? "-live" : ""]"
+	desc = "[initial(desc)][BB ? "" : " This one is spent"]"
 
 
 //Boxes of ammo

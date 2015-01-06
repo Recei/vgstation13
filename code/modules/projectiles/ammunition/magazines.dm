@@ -91,3 +91,20 @@
 	max_ammo = 16
 	multiple_sprites = 1
 	sprite_modulo = 2
+
+/obj/item/ammo_storage/magazine/m12g // Bulldog Mag
+	name = "shotgun magazine (12g taser slugs)"
+	icon_state = "m12gs"
+	origin_tech = "combat=3;syndicate=1"
+	ammo_type = "/obj/item/ammo_casing/shotgun/stunshell"
+	max_ammo = 8
+
+/obj/item/ammo_storage/magazine/m12g/update_icon()
+	..()
+	icon_state = "[initial(icon_state)]-[Ceiling(ammo_count(0)/8)*8]"
+
+
+/obj/item/ammo_storage/magazine/m12g/buckshot
+	name = "shotgun magazine (12g buckshot)"
+	icon_state = "m12gb"
+	ammo_type = "/obj/item/ammo_casing/shotgun"
