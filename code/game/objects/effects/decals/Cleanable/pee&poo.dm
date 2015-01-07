@@ -18,8 +18,6 @@
 
 /obj/effect/decal/cleanable/poo/New()
 	..()
-	if(istype(src, /obj/effect/decal/cleanable/poo/tracks))
-		return
 	if(src.type == /obj/effect/decal/cleanable/poo)
 		if(src.loc && isturf(src.loc))
 			for(var/obj/effect/decal/cleanable/poo/P in src.loc)
@@ -97,9 +95,7 @@
 			if (step_to(src, get_step(src, direction), 0))
 				break
 
-/obj/effect/decal/cleanable/poo/tracks
-	icon_state = "tracks"
-	random_icon_states = null
+
 
 /obj/effect/decal/cleanable/poo/drip
 	name = "drips of poo"
@@ -132,6 +128,10 @@
 	spawn(5) src.reagents.clear_reagents()
 	playsound(src.loc, "squish.ogg", 40, 1)
 	del(src)
+
+/obj/item/weapon/reagent_containers/food/snacks/poo/throw_impact(atom/hit_atom)
+	..()
+	poo_splat(hit_atom)
 
 /obj/effect/decal/cleanable/urine
 	name = "Urine puddle"

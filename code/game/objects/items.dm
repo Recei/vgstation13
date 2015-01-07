@@ -741,6 +741,11 @@
 	if( !blood_overlay )
 		generate_blood_overlay()
 
+	if (istype(src, /obj/item/clothing))
+		var/obj/item/clothing/C = src
+		if (!(C.blood_covering))
+			C.blood_covering = 1
+
 	//apply the blood-splatter overlay if it isn't already in there, else it updates it.
 	overlays -= blood_overlay
 	blood_overlay.color = blood_color
@@ -769,7 +774,9 @@
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
 
-/obj/item/proc/add_poo(mob/living/carbon/human/M as mob)
+/obj/item/add_poo(mob/living/carbon/human/M as mob)
+	if (!..())
+		return 0
 	if(istype(src, /obj/item/weapon/melee/energy))
 		return
 	//if we haven't made our poo_overlay already
@@ -779,9 +786,16 @@
 		var/obj/item/clothing/C = src
 		if (!(C.poop_covering))
 			C.poop_covering = 1
+		if(M)
+			if(C.loc == M)
+				M.update_icons()
 	if(!M)
 		return
-	M.update_icons()
+	if(blood_DNA[M.dna.unique_enzymes])
+		return 0 //already covered  with this poo Cannot add more.
+	blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
+	return 1 //we applied poo to the item
+
 
 /obj/item/proc/generate_poo_overlay()
 	if(poo_overlay)

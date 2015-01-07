@@ -44,7 +44,7 @@
 				else
 					playsound(src, "buttstep", 30, 1)
 
-			// Tracking blood
+			// Tracking blood and poo
 			var/list/bloodDNA = null
 			var/bloodcolor=""
 			if(H.shoes)
@@ -53,23 +53,42 @@
 					bloodDNA = S.blood_DNA
 					bloodcolor=S.blood_color
 					S.track_blood--
+				if(S.track_poo && S.blood_DNA)
+					bloodDNA = S.blood_DNA
+					S.track_poo--
 			else
 				if(H.track_blood && H.feet_blood_DNA)
 					bloodDNA = H.feet_blood_DNA
 					bloodcolor=H.feet_blood_color
 					H.track_blood--
+				if(H.track_poo && H.feet_blood_DNA)
+					bloodDNA = H.feet_blood_DNA
+					H.track_poo--
 
 			if (bloodDNA)
 				if(istype(M,/mob/living/carbon/human/vox))
-					src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,H.dir,0,bloodcolor) // Coming
+					if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,H.dir,0,bloodcolor) // Coming
+					if(H.shoes && H.shoes:poop_covering)
+						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,H.dir,0,"#402000")
+
 				else
-					src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,H.dir,0,bloodcolor) // Coming
+					if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,H.dir,0,bloodcolor) // Coming
+					if(H.shoes && H.shoes:poop_covering)
+						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,H.dir,0,"#402000")
 				var/turf/simulated/from = get_step(H,reverse_direction(H.dir))
 				if(istype(from) && from)
 					if(istype(M,/mob/living/carbon/human/vox))
-						from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,0,H.dir,bloodcolor) // Going
+						if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,0,H.dir,bloodcolor) // Going
+						if(H.shoes && H.shoes:poop_covering)
+							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,0,H.dir,0,"#402000")
 					else
-						from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,0,H.dir,bloodcolor) // Going
+						if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,0,H.dir,bloodcolor) // Going
+						if(H.shoes && H.shoes:poop_covering)
+							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,0,H.dir,"#402000")
 
 			bloodDNA = null
 
@@ -172,3 +191,6 @@
 		this.blood_DNA["UNKNOWN BLOOD"] = "X*"
 	else if( istype(M, /mob/living/silicon/robot ))
 		new /obj/effect/decal/cleanable/blood/oil(src)
+
+
+
