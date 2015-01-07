@@ -461,8 +461,6 @@ var/global/list/damage_icon_parts = list()
 			update_overlays = 1
 	if(update_icons)		update_icons()
 
-<<<<<<< HEAD
-=======
 /mob/living/carbon/human/update_fire(var/update_icons=1)
 	var/old_fire_state = overlays_standing[FIRE_LAYER]
 	if(on_fire)
@@ -475,8 +473,6 @@ var/global/list/damage_icon_parts = list()
 			update_overlays = 1
 	if(update_icons)		update_icons()
 
-
->>>>>>> upstream/bleeding-edge
 /* --------------------------------------- */
 //For legacy support.
 /mob/living/carbon/human/regenerate_icons()

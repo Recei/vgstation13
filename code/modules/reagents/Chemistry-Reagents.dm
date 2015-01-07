@@ -3679,8 +3679,9 @@ datum
 			var/confused_adj = 4
 			var/slur_start = 60			//amount absorbed after which mob starts slurring
 			var/confused_start = 130	//amount absorbed after which mob starts confusing directions
-			var/blur_start = 160	//amount absorbed after which mob starts getting blurred vision
-			var/pass_out = 200	//amount absorbed after which mob starts passing out
+			var/blur_start = 260	//amount absorbed after which mob starts getting blurred vision
+			var/pass_out = 400	//amount absorbed after which mob starts passing out
+
 
 			on_mob_life(var/mob/living/M as mob)
 
@@ -3704,7 +3705,8 @@ datum
 				src.data++
 
 				var/d = data
-
+				if(!holder)
+					del(src)
 				// make all the beverages work together
 				for(var/datum/reagent/ethanol/A in holder.reagent_list)
 					if(isnum(A.data)) d += A.data
@@ -3730,7 +3732,7 @@ datum
 						if (!L)
 							H.adjustToxLoss(5)
 						else if(istype(L))
-							L.take_damage(0.1, 1)
+							L.take_damage(0.05, 1)
 						H.adjustToxLoss(0.1)
 				if(!holder)
 					holder = M.reagents

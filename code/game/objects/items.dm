@@ -769,7 +769,7 @@
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
 
-/obj/item/proc/add_poo()
+/obj/item/proc/add_poo(mob/living/carbon/human/M as mob)
 	if(istype(src, /obj/item/weapon/melee/energy))
 		return
 	//if we haven't made our poo_overlay already
@@ -779,6 +779,9 @@
 		var/obj/item/clothing/C = src
 		if (!(C.poop_covering))
 			C.poop_covering = 1
+	if(!M)
+		return
+	M.update_icons()
 
 /obj/item/proc/generate_poo_overlay()
 	if(poo_overlay)
