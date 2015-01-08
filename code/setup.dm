@@ -743,6 +743,7 @@ var/list/TAGGERLOCATIONS = list(
 #define ROLE_VAMPIRE    "vampire"
 #define ROLE_VOXRAIDER  "vox raider"
 #define ROLE_WIZARD     "wizard"
+#define ROLE_GANG     	"gangster"	// New!
 
 
 #define AGE_MIN 17			//youngest a character can be

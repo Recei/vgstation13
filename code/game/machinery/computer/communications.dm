@@ -457,7 +457,7 @@ var/shuttle_call/shuttle_calls[0]
 		emergency_shuttle.recall()
 		log_game("[key_name(user)] has recalled the shuttle.")
 		message_admins("[key_name_admin(user)] has recalled the shuttle - [formatJumpTo(user)].", 1)
-	return
+	return 1
 
 /obj/machinery/computer/communications/proc/post_status(var/command, var/data1, var/data2)
 

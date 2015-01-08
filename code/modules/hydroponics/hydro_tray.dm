@@ -66,6 +66,8 @@
 		"adminordrazine" =  1,
 		"eznutrient" =      1,
 		"robustharvest" =   1,
+		"poo" =				1,
+		"urine" =			1,
 		"left4zed" =        1
 		)
 	var/global/list/weedkiller_reagents = list(
@@ -86,6 +88,7 @@
 	var/global/list/water_reagents = list(
 		"water" =           1,
 		"adminordrazine" =  1,
+		"urine" =			0.9,
 		"milk" =            0.9,
 		"beer" =            0.7,
 		"flourine" =       -0.5,

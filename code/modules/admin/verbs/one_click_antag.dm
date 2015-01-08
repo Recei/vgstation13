@@ -18,6 +18,7 @@ client/proc/one_click_antag()
 		<a href='?src=\ref[src];makeAntag=5'>Make Malf AI</a><br>
 		<a href='?src=\ref[src];makeAntag=6'>Make Wizard (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=11'>Make Vox Raiders (Requires Ghosts)</a><br>
+		<a href='?src=\ref[src];makeAntag=12'>Make Gangsters</a><br>
 		<a href='?src=\ref[src];makeAntag=7'>Make Nuke Team (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=8'>Make Space Ninja (Requires Ghosts)</a><br>
 		<a href='?src=\ref[src];makeAntag=9'>Make Aliens (Requires Ghosts)</a><br>
@@ -136,6 +137,35 @@ client/proc/one_click_antag()
 			H = pick(candidates)
 			H.mind.make_Rev()
 			candidates.Remove(H)
+		return 1
+
+	return 0
+
+/datum/admins/proc/makeGangsters()
+
+	var/datum/game_mode/gang/temp = new
+	if(config.protect_roles_from_antagonist)
+		temp.restricted_jobs += temp.protected_jobs
+
+	var/list/mob/living/carbon/human/candidates = list()
+	var/mob/living/carbon/human/H = null
+
+	for(var/mob/living/carbon/human/applicant in player_list)
+		if(applicant.client.desires_role(ROLE_GANG))
+			if(applicant.stat == CONSCIOUS)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(!jobban_isbanned(applicant, "gangster") && !jobban_isbanned(applicant, "Syndicate"))
+							if(!(applicant.job in temp.restricted_jobs))
+								candidates += applicant
+
+	if(candidates.len >= 2)
+		H = pick(candidates)
+		H.mind.make_Gang("A")
+		candidates.Remove(H)
+		H = pick(candidates)
+		H.mind.make_Gang("B")
+		candidates.Remove(H)
 		return 1
 
 	return 0

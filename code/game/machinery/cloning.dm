@@ -234,6 +234,8 @@
 		ticker.mode.update_all_cult_icons() //So the icon actually appears
 	if(H.mind in ticker.mode.wizards)
 		ticker.mode.update_all_wizard_icons()
+	if((H.mind in ticker.mode.A_bosses) || ((H.mind in ticker.mode.A_gangsters) || (H.mind in ticker.mode.B_bosses)) || (H.mind in ticker.mode.B_gangsters))
+		ticker.mode.update_all_gang_icons()
 	if(("\ref[H.mind]" in ticker.mode.necromancer) || (H.mind in ticker.mode.risen))
 		ticker.mode.update_all_necro_icons()
 	if(("\ref[H.mind]" in ticker.mode.implanter) || (H.mind in ticker.mode.implanted))

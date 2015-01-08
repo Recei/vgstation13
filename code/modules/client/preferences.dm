@@ -20,6 +20,7 @@ var/global/list/special_roles = list(
 	ROLE_VAMPIRE      = IS_MODE_COMPILED("vampire"),
 	ROLE_VOXRAIDER    = IS_MODE_COMPILED("heist"),
 	ROLE_WIZARD       = 1,
+	ROLE_GANG         = IS_MODE_COMPILED("gang"),
 )
 
 var/const/MAX_SAVE_SLOTS = 8
