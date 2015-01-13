@@ -10,7 +10,7 @@ datum/reagent/polonium
 	description = "A toxic chemical."
 	reagent_state = LIQUID
 	color = "#CF3600" // rgb: 207, 54, 0
-	metabolize_rate = 0.1
+	custom_metabolism = 0.1
 
 datum/reagent/polonium/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
@@ -25,7 +25,7 @@ datum/reagent/histamine
 	description = "A toxic chemical."
 	reagent_state = LIQUID
 	color = "#CF3600" // rgb: 207, 54, 0
-	metabolize_rate = 0.2
+	custom_metabolism = 0.2
 
 datum/reagent/histamine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
@@ -37,7 +37,7 @@ datum/reagent/histamine/on_mob_life(var/mob/living/M as mob)
 		switch(pick(1, 2, 3))
 			if(1)
 				M << "<span class='notice'>You are unable to look straight!</span>"
-				M.Dizzy(10)
+				M.make_dizzy(10)
 			if(2)
 				M.emote("cough")
 				var/obj/item/I = M.get_active_hand()
@@ -78,7 +78,7 @@ datum/reagent/venom
 	description = "A toxic chemical."
 	reagent_state = LIQUID
 	color = "#CF3600" // rgb: 207, 54, 0
-	metabolize_rate = 0.2
+	custom_metabolism = 0.2
 datum/reagent/venom/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	M.adjustToxLoss((0.1*volume)*REM)
@@ -96,7 +96,7 @@ datum/reagent/neurotoxin2
 	reagent_state = LIQUID
 	color = "#CF3600" // rgb: 207, 54, 0
 	var/cycle_count = 0
-	metabolize_rate = 1
+	custom_metabolism = 1
 
 datum/reagent/neurotoxin2/on_mob_life(var/mob/living/M as mob)
 	cycle_count++
@@ -123,7 +123,7 @@ datum/reagent/cyanide
 	description = "A highly toxic chemical."
 	reagent_state = LIQUID
 	color = "#CF3600" // rgb: 207, 54, 0
-	metabolize_rate = 0.1
+	custom_metabolism = 0.1
 
 datum/reagent/cyanide/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
@@ -150,7 +150,7 @@ datum/reagent/cyanide/on_mob_life(var/mob/living/M as mob)
 	description = "????"
 	reagent_state = LIQUID
 	color = "#CF3600" // rgb: 207, 54, 0
-	metabolize_rate = 0.2
+	custom_metabolism = 0.2
 
 datum/reagent/questionmark/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom

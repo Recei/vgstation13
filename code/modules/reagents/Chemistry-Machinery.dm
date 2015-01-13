@@ -474,6 +474,23 @@ USE THIS CHEMISTRY DISPENSER FOR MAPS SO THEY START AT 100 ENERGY
 			else
 				var/obj/item/weapon/reagent_containers/food/condiment/P = new/obj/item/weapon/reagent_containers/food/condiment(src.loc)
 				reagents.trans_to(P,50)
+		else if(href_list["createpatch"])
+			if(reagents.total_volume == 0) return
+			var/amount = 1
+			var/vol_each = min(reagents.total_volume, 50)
+			if(text2num(href_list["many"]))
+				amount = min(max(round(input(usr, "Amount:", "How many patches?") as num), 1), 10)
+				vol_each = min(reagents.total_volume/amount, 50)
+			var/name = reject_bad_text(input(usr,"Name:","Name your patch!", "[reagents.get_master_reagent_name()] ([vol_each]u)"))
+			var/obj/item/weapon/reagent_containers/pill/P
+
+			for(var/i = 0; i < amount; i++)
+				P = new/obj/item/weapon/reagent_containers/pill/patch(src.loc)
+				if(!name) name = reagents.get_master_reagent_name()
+				P.name = "[name] patch"
+				P.pixel_x = rand(-7, 7) //random position
+				P.pixel_y = rand(-7, 7)
+				reagents.trans_to(P,vol_each)
 		else if(href_list["change_pill"])
 			#define MAX_PILL_SPRITE 20 //max icon state of the pill sprites
 			var/dat = "<table>"
@@ -585,6 +602,7 @@ USE THIS CHEMISTRY DISPENSER FOR MAPS SO THEY START AT 100 ENERGY
 			// C:\Users\Rob\Documents\Projects\vgstation13\code\modules\reagents\Chemistry-Machinery.dm:539: dat += "<HR><BR><A href='?src=\ref[src];createpill=1'>Create pill (50 units max)</A><a href=\"?src=\ref[src]&change_pill=1\"><img src=\"pill[pillsprite].png\" /></a><BR>"
 			dat += {"<a href=\"?src=\ref[src]&change_pill=1\"><img src=\"pill[pillsprite].png\" /></a><a href=\"?src=\ref[src]&change_bottle=1\"><img src=\"bottle[bottlesprite].png\" /></a><BR>"}
 			dat += {"<HR><BR><A href='?src=\ref[src];createpill=1'>Create single pill (50 units max)</A><BR><A href='?src=\ref[src];createpill_multiple=1'>Create multiple pills (50 units max each; 20 max)</A><BR>
+				<HR><BR><A href='?src=\ref[src];createpatch=1;many=0'>Create single patch (50 units max)</A><BR><A href='?src=\ref[src];createpatch=1;many=1'>Create multiple patches (10 patches max)</A><BR><BR>
 				<A href='?src=\ref[src];createbottle=1'>Create bottle (30 units max)</A><BR><A href='?src=\ref[src];createbottle_multiple=1'>Create multiple bottles (30 units max each; 4 max)</A><BR>"}
 			// END AUTOFIX
 		else
@@ -1350,9 +1368,24 @@ USE THIS CHEMISTRY DISPENSER FOR MAPS SO THEY START AT 100 ENERGY
 	var/energy = 50
 	var/max_energy = 50
 	var/amount = 30
-	var/beaker = null
+	var/obj/item/weapon/reagent_containers/beaker = null
 	var/set_temp
-
+	var/temperature
+	var/on = FALSE
+/obj/machinery/chem_heater/process()
+	..()
+	if(on)
+		if(beaker)
+			if(beaker.reagents.chem_temp > temperature)
+				beaker.reagents.chem_temp -= 2
+			if(beaker.reagents.chem_temp < temperature)
+				beaker.reagents.chem_temp += 2
+			if(beaker.reagents.chem_temp == temperature)
+				beaker.loc = get_turf(src)
+				beaker.reagents.handle_reactions()
+				beaker = null
+				icon_state = "mixer0b"
+				on = FALSE
 /obj/machinery/chem_heater/attackby(var/obj/item/weapon/reagent_containers/glass/B as obj, var/mob/user as mob)
 	if(isrobot(user))
 		return
@@ -1366,21 +1399,13 @@ USE THIS CHEMISTRY DISPENSER FOR MAPS SO THEY START AT 100 ENERGY
 	B.loc = src
 	user << "You add the beaker to the machine!"
 	icon_state = "mixer1b"
-
 /obj/machinery/chem_heater/attack_hand(var/mob/user as mob)
 	if(!beaker)
 		user << "Please insert a beaker."
 		return
-	var/temperature = input("Please input desired temperature between 1 and 1000.", name, set_temp) as num
-	if(temperature > 1000 || temperature < 1)
+	temperature = input("Please input desired temperature between 1 and 3000.", name, set_temp) as num
+	if(temperature > 3000 || temperature < 1)
 		user << "Invalid temperature."
 		return
 	user << "Adjusting chemical temperature..."
-	sleep(50)
-	var/obj/item/weapon/reagent_containers/B = beaker
-	B.reagents.chem_temp = temperature
-	user << "Chemical adjusted to [temperature]K."
-	B.loc = get_turf(src)
-	beaker = null
-	icon_state = "mixer0b"
-	B.reagents.handle_reactions()
+	on = TRUE

@@ -28,6 +28,13 @@ datum/reagent/sewage
 
 */
 
+datum/reagent/stable_plasma
+	name = "Stable Plasma"
+	id = "stable_plasma"
+	description = "Non-flammable plasma locked into a liquid form that cannot ignite or become gaseous/solid."
+	reagent_state = LIQUID
+	color = "#E71B00"
+
 datum/reagent/poo
 	name = "poo"
 	id = "poo"
@@ -45,7 +52,7 @@ datum/reagent/poo/on_mob_life(var/mob/living/M)
 datum/reagent/poo/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 	src = null
 	if(ishuman(M))
-	var/mob/living/carbon/human/H = M
+		var/mob/living/carbon/human/H = M
 		if(method==TOUCH)
 			if(H.wear_suit)	H.wear_suit.add_poo()
 			if(H.w_uniform)	H.w_uniform.add_poo()

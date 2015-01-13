@@ -359,3 +359,51 @@
 	..()
 	var/new_reagent = pick("polonium", "histamine", "formaldehyde", "venom", "neurotoxin2", "cyanide")
 	reagents.add_reagent(new_reagent, 50)
+
+/obj/item/weapon/reagent_containers/glass/bottle/polonium
+	name = "polonium bottle"
+	desc = "A small bottle. Contains Polonium."
+
+	New()
+		..()
+		reagents.add_reagent("polonium", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/venom
+	name = "venom bottle"
+	desc = "A small bottle. Contains Venom."
+
+	New()
+		..()
+		reagents.add_reagent("venom", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/neurotoxin2
+	name = "neurotoxin bottle"
+	desc = "A small bottle. Contains Neurotoxin."
+
+	New()
+		..()
+		reagents.add_reagent("neurotoxin2", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/formaldehyde
+	name = "formaldehyde bottle"
+	desc = "A small bottle. Contains Formaldehyde."
+
+	New()
+		..()
+		reagents.add_reagent("formaldehyde", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/cyanide
+	name = "cyanide bottle"
+	desc = "A small bottle. Contains Cyanide."
+
+	New()
+		..()
+		reagents.add_reagent("cyanide", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/histamine
+	name = "histamine bottle"
+	desc = "A small bottle. Contains Histamine."
+
+	New()
+		..()
+		reagents.add_reagent("histamine", 30)

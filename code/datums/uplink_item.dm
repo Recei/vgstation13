@@ -280,6 +280,11 @@ var/list/uplink_items = list()
 	item = /obj/item/weapon/cartridge/syndicate
 	cost = 3
 
+/datum/uplink_item/stealthy_weapons/traitor_chem_bottle
+	name = "Poison Kit"
+	desc = "An assortment of nasty chemicals."
+	item = /obj/item/weapon/storage/box/syndie_kit/chemical
+	cost = 2
 
 // STEALTHY TOOLS
 
@@ -322,11 +327,6 @@ var/list/uplink_items = list()
 	item = /obj/item/device/chameleon
 	cost = 3
 
-/datum/uplink_item/stealthy_weapons/traitor_chem_bottle
-	name = "Poison Bottle"
-	desc = "A small bottle. Contains a random nasty chemical."
-	item = /obj/item/weapon/reagent_containers/glass/bottle/traitor
-	cost = 2
 
 
 // DEVICE AND TOOLS

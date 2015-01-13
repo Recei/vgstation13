@@ -14,13 +14,14 @@ datum/reagent/nicotine
 datum/reagent/nicotine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	var/smoke_message = pick("You can just feel your lungs dying!", "You feel relaxed.", "You feel calmed.", "You feel the lung cancer forming.", "You feel the money you wasted.", "You feel like a space cowboy.", "You feel rugged.")
-	if(prob(30))
+	if(prob(5))
 		M << smoke_message
 	M.AdjustStunned(-1)
-	M.adjustStaminaLoss(-1*REM)
+	M.adjustHalLoss(-1)
 	if(volume > 35)
 		M << "You feel like you smoked too much."
 		M.adjustToxLoss(1*REM)
+	..()
 	return
 
 datum/reagent/jenkem
@@ -36,7 +37,7 @@ datum/reagent/jenkem/on_mob_life(var/mob/living/carbon/M as mob)
 	if(M.canmove) step(M, pick(cardinal))
 	if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
 	var/high_message = pick("You wonder why the hell you just ingested that.", "You realize you are high as fuck.", "You feel the color blue.", "You ponder the meaning of red.", "You think deeply on the color green.", "You taste a horrible mixture, and you want to throw up, but you hold it back.")
-	if(prob(30))
+	if(prob(5))
 		M << high_message
 	if(prob(25))
 		M.adjustToxLoss(1*REM)
@@ -73,7 +74,7 @@ datum/reagent/crank
 datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	var/high_message = pick("You feel jittery.", "You feel like you gotta go fast.", "You feel like you need to step it up.")
-	if(prob(30))
+	if(prob(5))
 		M << high_message
 	M.AdjustParalysis(-2)
 	M.AdjustStunned(-2)
@@ -82,6 +83,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 		M.adjustBrainLoss(rand(1,10)*REM)
 		M.adjustToxLoss(rand(1,10)*REM)
 		M.adjustBruteLoss(rand(1,10)*REM)
+	..()
 	return
 
 /datum/chemical_reaction/crank
@@ -107,7 +109,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	M.druggy = max(M.druggy, 15)
-	if(prob(30))
+	if(prob(5))
 		M << high_message
 	if(prob(10))
 		M.adjustBrainLoss(rand(1,5)*REM)
@@ -127,6 +129,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 		overdosed = 1
 	if(overdosed)
 		cycle_count++
+	..()
 	return
 
 /datum/chemical_reaction/krokodil
