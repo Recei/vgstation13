@@ -28,6 +28,7 @@ info.json
 /code-indented
 *.new.dmi
 
+*.sqlite
 .metadata
 /bot/config.yml
 /bot/data
@@ -36,8 +37,4 @@ data/investigate/singulo.html
 data/ban_unban_log.txt
 data/whitelist.txt
 
-#SQLite
-*.sqlite
-players2.sqlite
-icons/turf/floors_helpers.dmi
-icons/turf/floors_helpers2.dmi
+
