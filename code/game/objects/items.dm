@@ -722,6 +722,10 @@
 	. = ..()
 	if(blood_overlay)
 		overlays.Remove(blood_overlay)
+		if (istype(src, /obj/item/clothing))
+			var/obj/item/clothing/C = src
+			if(C.blood_covering)
+				C.blood_covering = 0
 	if(poo_overlay)
 		overlays.Remove(poo_overlay)
 		if (istype(src, /obj/item/clothing))

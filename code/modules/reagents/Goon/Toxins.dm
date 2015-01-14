@@ -59,7 +59,7 @@ datum/reagent/formaldehyde/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	M.adjustToxLoss(1*REM)
 	if(prob(10))
-		M.reagents.add_reagent("histamine",pick(5,10))
+		M.reagents.add_reagent("histamine",pick(5,15))
 		M.reagents.remove_reagent("formaldehyde",1)
 	..()
 	return

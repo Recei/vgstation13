@@ -15,11 +15,18 @@ datum/reagent/silver_sulfadiazine
 datum/reagent/silver_sulfadiazine/reaction_mob(var/mob/living/M as mob, var/method=TOUCH, var/volume)
 	if(method == TOUCH)
 		M.adjustFireLoss((volume-(volume*2))*REM)
-		M << "You feel your burns healing!"
+		M << "<span class='notice'>You feel your burns healing!</span>"
 		M.emote("scream")
 	if(method == INGEST)
 		M.adjustToxLoss(0.5*volume)
-		M << "You probably shouldn't of eaten that. Maybe you should of splashed it on, or used a patch?"
+		M << "<span class='notice'>You probably shouldn't of eaten that. Maybe you should of splashed it on, or used a patch?</span>"
+	..()
+	return
+
+datum/reagent/silver_sulfadiazine/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	if(prob(55))
+		M.adjustFireLoss(-2*REM)
 	..()
 	return
 
@@ -41,11 +48,18 @@ datum/reagent/styptic_powder
 datum/reagent/styptic_powder/reaction_mob(var/mob/living/M as mob, var/method=TOUCH, var/volume)
 	if(method == TOUCH)
 		M.heal_organ_damage(volume*REM,0)
-		M << "You feel your wounds knitting back together!"
+		M << "<span class='notice'>You feel your wounds knitting back together</span>!"
 		M.emote("scream")
 	if(method == INGEST)
 		M.adjustToxLoss(0.5*volume)
-		M << "You probably shouldn't of eaten that. Maybe you should of splashed it on, or used a patch?"
+		M << "<span class='notice'>You probably shouldn't of eaten that. Maybe you should of splashed it on, or used a patch?</span>"
+	..()
+	return
+
+datum/reagent/styptic_powder/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	if(prob(55))
+		M.adjustBruteLoss(-2*REM)
 	..()
 	return
 
@@ -92,7 +106,7 @@ datum/reagent/synthflesh/reaction_mob(var/mob/living/M, var/method=TOUCH, var/vo
 	if(method == TOUCH)
 		M.heal_organ_damage(volume*REM,0)
 		M.adjustFireLoss((volume-(volume*2)*REM))
-		M << "You feel your burns healing and your flesh knitting together!"
+		M << "<span class='notice'>You feel your burns healing and your flesh knitting together!</span>"
 	..()
 	return
 
@@ -145,13 +159,12 @@ datum/reagent/calomel
 
 datum/reagent/calomel/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	if(M.getTotalLoss() < 80)
+	if(M.health > 20)
 		M.adjustToxLoss(5*REM)
 	for(var/A in M.reagents.reagent_list)
 		var/datum/reagent/R = A
 		if (R.id != src.id)
 			M.reagents.remove_reagent(R.id,5)
-			M.reagents.update_total()
 	..()
 	return
 
@@ -162,16 +175,8 @@ datum/reagent/calomel/on_mob_life(var/mob/living/M as mob)
 	required_reagents = list("mercury" = 1, "chlorine" = 1)
 	result_amount = 2
 	mix_message = "Stinging vapors rise from the solution."
-	required_temp = 380
+	required_temp = 374
 
-/datum/chemical_reaction/charcoal
-	name = "Charcoal"
-	id = "charcoal"
-	result = "charcoal"
-	required_reagents = list("ash" = 1, "sodiumchloride" = 1)
-	result_amount = 2
-	mix_message = "The mixture yields a fine black powder."
-	required_temp = 380
 
 
 datum/reagent/omnizine
@@ -218,7 +223,7 @@ datum/reagent/potass_iodide/on_mob_life(var/mob/living/M as mob)
 datum/reagent/pen_acid
 	name = "Pentetic Acid"
 	id = "pen_acid"
-	description = "80% chance of removing 1 RAD. Radiation is cumulative and causes tox+burn."
+	description = "Reduces 7 RAD, heals 4 TOX damage, increases all depletion rates by 4. 33% chance of taking 1 unit brute damage."
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
 
@@ -231,6 +236,9 @@ datum/reagent/pen_acid/on_mob_life(var/mob/living/M as mob)
 		M.adjustBruteLoss(1*REM)
 	if(M.radiation < 0)
 		M.radiation = 0
+	for(var/datum/reagent/R in M.reagents)
+		if(M != src)
+			M.reagents.remove_reagent(R.id,4)
 	..()
 	return
 
@@ -355,8 +363,9 @@ datum/reagent/diphenhydramine
 
 datum/reagent/diphenhydramine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	M.drowsyness -= 1
+	M.drowsyness += 1
 	M.jitteriness -= 1
+	M.reagents.remove_reagent("histamine",3)
 	..()
 	return
 

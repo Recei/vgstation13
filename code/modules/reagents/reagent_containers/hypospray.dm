@@ -13,6 +13,8 @@
 	possible_transfer_amounts = null
 	flags = FPRINT  | OPENCONTAINER
 	slot_flags = SLOT_BELT
+	var/starting_reagent = "doctorsdelight"
+	var/starting_amount = 30
 
 /obj/item/weapon/reagent_containers/hypospray/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
@@ -20,13 +22,11 @@
 
 /obj/item/weapon/reagent_containers/hypospray/New() //comment this to make hypos start off empty
 	..()
-	reagents.add_reagent("doctorsdelight", 30)
+	reagents.add_reagent(starting_reagent, starting_amount)
 	return
 
-/obj/item/weapon/reagent_containers/hypospray/creatine/New() // TESTING!
-	..()
-	reagents.add_reagent("creatine", 30)
-	return
+/obj/item/weapon/reagent_containers/hypospray/creatine // TESTING!
+	starting_reagent = "creatine"
 
 /obj/item/weapon/reagent_containers/hypospray/attack(mob/M as mob, mob/user as mob)
 	if(!reagents.total_volume)
@@ -65,15 +65,11 @@
 	desc = "A rapid and safe way to administer small amounts of drugs by untrained or trained personnel."
 	icon_state = "autoinjector"
 	item_state = "autoinjector"
-	amount_per_transfer_from_this = 5
-	volume = 5
+	amount_per_transfer_from_this = 10
+	volume = 10
+	starting_reagent = "inaprovaline"
+	starting_amount = 10
 
-/obj/item/weapon/reagent_containers/hypospray/autoinjector/New()
-	..()
-	reagents.remove_reagent("tricordrazine", 30)
-	reagents.add_reagent("inaprovaline", 5)
-	update_icon()
-	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
 	..()
@@ -94,3 +90,13 @@
 		user << "<span class='info'>It ready for injection.</span>"
 	else
 		user << "<span class='info'>The autoinjector has been spent.</span>"
+
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/morphine
+	name = "morphine medipen"
+	desc = "A rapid way to get you out of a tight situation and fast! You'll feel rather drowsy, though."
+	starting_reagent = "morphine"
+
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/ephedrine
+	name = "ephedrine medipen"
+	desc = "A rapid way to get you up and out of a tight situation and fast!"
+	starting_reagent = "ephedrine"

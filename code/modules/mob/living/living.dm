@@ -242,10 +242,6 @@
 /mob/living/proc/setMaxHealth(var/newMaxHealth)
 	maxHealth = newMaxHealth
 
-/mob/living/proc/getTotalLoss(var/amount)
-	amount = getBruteLoss() + getOxyLoss() + getToxLoss() + getFireLoss() + getCloneLoss() + getBrainLoss()
-	return amount
-
 // ++++ROCKDTBEN++++ MOB PROCS //END
 
 

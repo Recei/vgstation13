@@ -15,12 +15,13 @@ datum/reagent/nicotine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	var/smoke_message = pick("You can just feel your lungs dying!", "You feel relaxed.", "You feel calmed.", "You feel the lung cancer forming.", "You feel the money you wasted.", "You feel like a space cowboy.", "You feel rugged.")
 	if(prob(5))
-		M << smoke_message
+		M << "<span class='notice'>[smoke_message]</span>"
 	M.AdjustStunned(-1)
 	M.adjustHalLoss(-1)
 	if(volume > 35)
-		M << "You feel like you smoked too much."
-		M.adjustToxLoss(1*REM)
+		M << "<span class='danger'>You feel like you smoked too much.</span>"
+		M.adjustToxLoss(2*REM)
+		M.adjustOxyLoss(2*REM)
 	..()
 	return
 
@@ -38,7 +39,7 @@ datum/reagent/jenkem/on_mob_life(var/mob/living/carbon/M as mob)
 	if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
 	var/high_message = pick("You wonder why the hell you just ingested that.", "You realize you are high as fuck.", "You feel the color blue.", "You ponder the meaning of red.", "You think deeply on the color green.", "You taste a horrible mixture, and you want to throw up, but you hold it back.")
 	if(prob(5))
-		M << high_message
+		M << "<span class='notice'>[high_message]</span>"
 	if(prob(25))
 		M.adjustToxLoss(1*REM)
 		M.adjustBrainLoss(1*REM)
@@ -67,7 +68,7 @@ datum/reagent/jenkem/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume
 datum/reagent/crank
 	name = "Crank"
 	id = "crank"
-	description = "A legal chemical compound used as a drug."
+	description = "A legal chemical compound used as a drug.Gotta go fast, huh?"
 	reagent_state = LIQUID
 	color = "#71D8EB" // rgb: 113, 216, 235  BrBa meth color
 
@@ -75,7 +76,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	var/high_message = pick("You feel jittery.", "You feel like you gotta go fast.", "You feel like you need to step it up.")
 	if(prob(5))
-		M << high_message
+		M << "<span class='notice'>[high_message]</span>"
 	M.AdjustParalysis(-2)
 	M.AdjustStunned(-2)
 	M.AdjustWeakened(-2)
@@ -98,7 +99,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 /datum/reagent/krokodil
 	name = "Krokodil"
 	id = "krokodil"
-	description = "A legal chemical compound used as a drug."
+	description = "A legal chemical compound used as a drug.Hail to the kotowasiy."
 	reagent_state = LIQUID
 	color = "#60A584" // rgb: 96, 165, 132
 	var/cycle_count = 0
@@ -110,7 +111,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	M.druggy = max(M.druggy, 15)
 	if(prob(5))
-		M << high_message
+		M << "<span class='notice'>[high_message]</span>"
 	if(prob(10))
 		M.adjustBrainLoss(rand(1,5)*REM)
 		M.adjustToxLoss(rand(1,5)*REM)
@@ -118,9 +119,9 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 		M.adjustBrainLoss(rand(1,10)*REM)
 		M.adjustToxLoss(rand(1,10)*REM)
 	if(cycle_count == 20)
-		M << "Your skin feels loose..."
+		M << "<span class='danger'>Your skin feels loose...</span>"
 	if(cycle_count == 50)
-		M << "Your skin falls off!"
+		M << "<span class='danger'>Your skin falls off!</span>"
 		M.adjustBruteLoss(rand(10,30)*REM)
 		if(ishuman(M))
 			var/mob/living/carbon/human/junkie = M

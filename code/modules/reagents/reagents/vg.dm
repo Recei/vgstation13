@@ -26,3 +26,12 @@ var/global/list/charcoal_doesnt_remove=list(
 	M.adjustToxLoss(-2*REM)
 	..()
 	return
+
+/datum/chemical_reaction/charcoal
+	name = "Charcoal"
+	id = "charcoal"
+	result = "charcoal"
+	required_reagents = list("ash" = 1, "sodiumchloride" = 1)
+	result_amount = 2
+	mix_message = "The mixture yields a fine black powder."
+	required_temp = 380
