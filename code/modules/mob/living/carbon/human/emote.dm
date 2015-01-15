@@ -582,13 +582,14 @@
 						Bt.transfer_buttdentity(src)
 				if (src.nutrition >= 250)
 					for(var/mob/M in view(0))
-						if(M != src)
+						if(M != src && M.loc == src.loc)
 							if(!miming)
 								visible_message("<span class = 'warning'><b>[src]</b> farts in <b>[M]</b>'s face!</span>")
 							else
 								visible_message("<span class = 'warning'><b>[src]</b> silently farts in <b>[M]</b>'s face!</span>")
 						else
 							continue
+
 					var/turf/location = get_turf(src)
 					var/aoe_range=2 // Default
 					if(M_SUPER_FART in mutations)
