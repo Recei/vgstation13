@@ -51,7 +51,7 @@
 				var/obj/item/clothing/shoes/S = H.shoes
 				if(S.track_blood && S.blood_DNA)
 					bloodDNA = S.blood_DNA
-					bloodcolor=S.blood_color
+					bloodcolor = S.blood_color
 					S.track_blood--
 				if(S.track_poo && S.blood_DNA)
 					bloodDNA = S.blood_DNA
@@ -67,28 +67,28 @@
 
 			if (bloodDNA)
 				if(istype(M,/mob/living/carbon/human/vox))
-					if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+					if(H.shoes && H.shoes:blood_covering)
 						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,H.dir,0,bloodcolor) // Coming
 					if(H.shoes && H.shoes:poop_covering)
-						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,H.dir,0,"#402000")
+						src.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints/vox,bloodDNA,H.dir,0)
 
 				else
-					if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+					if(H.shoes && H.shoes:blood_covering)
 						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,H.dir,0,bloodcolor) // Coming
 					if(H.shoes && H.shoes:poop_covering)
-						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,H.dir,0,"#402000")
+						src.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints,bloodDNA,H.dir,0)
 				var/turf/simulated/from = get_step(H,reverse_direction(H.dir))
 				if(istype(from) && from)
 					if(istype(M,/mob/living/carbon/human/vox))
-						if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+						if(H.shoes && H.shoes:blood_covering)
 							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,0,H.dir,bloodcolor) // Going
 						if(H.shoes && H.shoes:poop_covering)
-							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,0,H.dir,0,"#402000")
+							from.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints/vox,bloodDNA,0,H.dir,0)
 					else
-						if(H.shoes && H.shoes:blood_covering || H.feet_blood_DNA)
+						if(H.shoes && H.shoes:blood_covering)
 							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,0,H.dir,bloodcolor) // Going
 						if(H.shoes && H.shoes:poop_covering)
-							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,0,H.dir,"#402000")
+							from.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints,bloodDNA,0,H.dir)
 
 			bloodDNA = null
 

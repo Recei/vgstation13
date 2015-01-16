@@ -51,7 +51,8 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/perp = M
 		if(perp.shoes)
-			perp.shoes:track_poo = max(amount,perp.shoes:track_poo)                //Adding poo shoes
+			perp.shoes:track_poo = max(amount,perp.shoes:track_poo)
+			perp.shoes.add_poo()                //Adding poo shoes
 			if(!perp.shoes.poo_overlay)
 				perp.shoes.generate_poo_overlay()
 			if(!perp.shoes.blood_DNA)

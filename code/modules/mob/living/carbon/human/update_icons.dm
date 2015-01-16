@@ -553,7 +553,7 @@ var/global/list/damage_icon_parts = list()
 
 		if(w_uniform:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "uniformpoo")
-			standing.overlays	+= poosies
+			O.overlays += poosies
 
 		if(w_uniform:hastie)	//WE CHECKED THE TYPE ABOVE. THIS REALLY SHOULD BE FINE.
 			var/tie_color = w_uniform:hastie._color
@@ -628,7 +628,7 @@ var/global/list/damage_icon_parts = list()
 
 		if(gloves:poop_covering)
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "poohands")
-			standing.overlays	+= poosies
+			//standing.overlays	+= poosies
 			O.overlays += poosies
 
 		gloves.screen_loc = ui_gloves
