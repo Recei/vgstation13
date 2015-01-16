@@ -53,6 +53,10 @@
 			buckled_mob.buckled = null
 			buckled_mob.anchored = initial(buckled_mob.anchored)
 			buckled_mob.update_canmove()
+			if(buckled_mob.pixel_x && buckled_mob.pixel_x >= src.pixel_x)
+				buckled_mob.pixel_x -= src.pixel_x
+			if(buckled_mob.pixel_y && buckled_mob.pixel_y >= src.pixel_y)
+				buckled_mob.pixel_y -= src.pixel_y
 			buckled_mob = null
 	return
 
@@ -100,6 +104,10 @@
 	M.dir = src.dir
 	M.update_canmove()
 	src.buckled_mob = M
+	if(src.buckled_mob.pixel_x && src.buckled_mob.pixel_x >= src.pixel_x)
+		src.buckled_mob.pixel_x += src.pixel_x
+	if(src.buckled_mob.pixel_y && src.buckled_mob.pixel_y >= src.pixel_y)
+		src.buckled_mob.pixel_y += src.pixel_y
 	src.add_fingerprint(user)
 	return
 
