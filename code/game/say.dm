@@ -34,7 +34,7 @@ var/list/freqtoname = list(
 		return
 	if(message == "" || !message)
 		return
-	send_speech(message)
+	send_speech(sanitize(message))
 
 /atom/movable/proc/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq)
 	return
