@@ -157,7 +157,7 @@
 			affected.sabotaged = 0
 		target.update_body()
 		target.updatehealth()
-		target.UpdateDamageIcon()
+		target.QueueUpdateDamageIcon(1)
 		del(tool)
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -189,7 +189,7 @@
 		affected.peggify()
 		target.update_body()
 		target.updatehealth()
-		target.UpdateDamageIcon()
+		target.QueueUpdateDamageIcon(1)
 		var/obj/item/stack/sheet/wood/peg = tool
 		peg.use(1)
 
