@@ -15,34 +15,37 @@
 	w_type = RECYK_GLASS
 	melt_temperature = MELTPOINT_GLASS
 
-	var/icon/bottlec
-
-	on_reagent_change()
-		if(reagents.total_volume)
-			if (src.icon_state == "bottle0" || src.icon_state == "bottlecolor")
-				src.overlays -= bottlec
-				src.icon_state = "bottlecolor"
-				src.main_reagent = src.reagents.get_master_reagent_reference()
-				bottlec = new/icon("icon" = 'icons/obj/chemical.dmi', "icon_state" = "bottlecolormod")
-				bottlec.Blend(src.main_reagent:color, ICON_ADD)//, src.main_reagent:color_g, src.main_reagent:color_b)
-				src.overlays += bottlec
-				src.main_reagent = ""
-		else
-			src.main_reagent = ""
-			src.overlays = null
-			icon_state = "bottle0"
-	New()
-		..()
-		if(!icon_state)
-			icon_state = "bottle0"
-
+/obj/item/weapon/reagent_containers/glass/bottle/on_reagent_change()
 	update_icon()
-		overlays.Cut()
-		src.overlays += bottlec
 
-		if (!is_open_container())
-			var/image/lid = image(icon, src, "lid_bottle")
-			overlays += lid
+
+/obj/item/weapon/reagent_containers/glass/bottle/New()
+	..()
+	if(!icon_state)
+		icon_state = "bottle0"
+
+/obj/item/weapon/reagent_containers/glass/bottle/update_icon()
+	overlays.Cut()
+	if(reagents.total_volume)
+		if (src.icon_state == "bottle0")
+			var/image/filling = image('icons/obj/reagentfillings.dmi', src, "bottle10")
+
+			var/percent = round((reagents.total_volume / volume) * 100)
+			switch(percent)
+				if(1 to 17.5)		filling.icon_state = "bottle10"
+				if(17.6 to 37.5) 	filling.icon_state = "bottle25"
+				if(37.6 to 67.5) 	filling.icon_state = "bottle50"
+				if(67.6 to 77.5) 	filling.icon_state = "bottle75"
+				if(77.6 to 85)	filling.icon_state = "bottle80"
+				if(86 to INFINITY)	filling.icon_state = "bottle100"
+				else filling.icon_state = null
+
+			filling.icon += mix_color_from_reagents(reagents.reagent_list)
+			overlays += filling
+
+	if (!is_open_container())
+		var/image/lid = image(icon, src, "lid_bottle")
+		overlays += lid
 
 /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline
 	name = "inaprovaline bottle"
@@ -62,6 +65,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/tricordrazine
 	name = "Tricordrazine bottle"
 	desc = "A small bottle. Contains Tricordrazine."
+
 	New()
 		..()
 		reagents.add_reagent("tricordrazine", 30)

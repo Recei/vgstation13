@@ -14,6 +14,7 @@
 
 /datum/reagent/clf3/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
+	M.adjustFireLoss(1*REM)
 	..()
 	return
 
@@ -25,12 +26,13 @@
 	result_amount = 4
 	required_temp = 424
 
+
 /datum/chemical_reaction/clf3/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
-	for(var/turf/simulated/turf in orange(1,T))
-		var/datum/gas_mixture/napalm = new
+	for(var/turf/simulated/turf in range(1,T))
+		var/datum/gas_mixture/napalm = new //Shit
 		var/datum/gas/volatile_fuel/fuel = new
-		fuel.moles = created_volume
+		fuel.moles = created_volume / 9
 		napalm.trace_gases += fuel
 
 		napalm.temperature = 400+T0C
@@ -47,6 +49,12 @@
 			F.make_plating()
 		if(prob(11))
 			F.ChangeTurf(/turf/space)
+		if(istype(F, /turf/simulated/floor/))
+			spawn (0) F.hotspot_expose(700, 400,surfaces=1)
+	if(istype(T, /turf/simulated/wall/))
+		var/turf/simulated/wall/W = T
+		if(prob(11))
+			W.ChangeTurf(/turf/simulated/floor)
 	return
 
 /datum/reagent/clf3/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
@@ -54,6 +62,7 @@
 		return
 	if(method == TOUCH)
 		M.adjust_fire_stacks(20)
+		M.IgniteMob()
 		return
 
 /datum/reagent/sorium

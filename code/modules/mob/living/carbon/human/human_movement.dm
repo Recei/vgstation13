@@ -16,7 +16,7 @@
 
 	if(reagents.has_reagent("nuka_cola")) return -1
 	if(reagents.has_reagent("ephedrine")) return -1
-	if(reagents.has_reagent("morphine")) return -1
+	if(reagents.has_reagent("epinephrine")) return -1
 	if(reagents.has_reagent("crank")) return -1
 
 
