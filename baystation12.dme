@@ -1416,6 +1416,7 @@
 #include "code\modules\reagents\reagent_dispenser.dm"
 #include "code\modules\reagents\syringe_gun.dm"
 #include "code\modules\reagents\Goon\Drugs.dm"
+#include "code\modules\reagents\Goon\Machinery.dm"
 #include "code\modules\reagents\Goon\Medicine.dm"
 #include "code\modules\reagents\Goon\Other.dm"
 #include "code\modules\reagents\Goon\Pyrotechnics.dm"

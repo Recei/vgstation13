@@ -13,6 +13,7 @@ datum
 		var/maximum_volume = 100
 		var/atom/my_atom = null
 		var/chem_temp = 150
+		var/last_tick = 0
 
 		New(maximum=100)
 			maximum_volume = maximum
@@ -306,10 +307,13 @@ datum
 */
 
 			metabolize(var/mob/M)
-				for(var/A in reagent_list)
-					var/datum/reagent/R = A
-					if(M && R)
-						R.on_mob_life(M)
+				if(last_tick == 3)
+					last_tick = 0
+					for(var/A in reagent_list)
+						var/datum/reagent/R = A
+						if(M && R)
+							R.on_mob_life(M)
+				last_tick++
 				update_total()
 
 			update_aerosol(var/mob/M)
