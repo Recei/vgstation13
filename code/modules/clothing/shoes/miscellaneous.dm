@@ -157,3 +157,9 @@
 	desc = "A pair of girly knee-high socks"
 	icon_state = "kneesock"
 	item_state = "kneesock"
+
+/obj/item/clothing/shoes/jestershoes
+	name = "Jester Shoes"
+	desc = "As worn by the clowns of old."
+	icon_state = "jestershoes"
+	item_state = "jestershoes"
