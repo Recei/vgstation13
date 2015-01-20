@@ -7,16 +7,16 @@
 	if(href_list["sex"])
 		var/mob/living/carbon/M = usr.affectedsex
 		if(get_dist(M.loc,usr.loc)>1)
-			usr << "\red —лишком далеко дл&#255 мен&#255."
+			usr << "<span class='warning'>Too far away.</span>"
 			return
 
 		switch(href_list["sex"])
 			if("mouthkiss")
 				switch(rand(1,4))
 					if(1)
-						visible_message("Х <b>[usr]</b> целует <b>[M]</b>.")
+						visible_message("Х <b>[usr]</b> kisses <b>[M]</b>.")
 					if(2)
-						visible_message("Х <b>[usr]</b> со страстью целует <b>[M]</b>.")
+						visible_message("Х <b>[usr]</b> passionately kisses <b>[M]</b>.")
 					if(3)
 						visible_message("Х <b>[usr]</b> впиваетс&#255; в губы <b>[M]</b>.")
 					if(4)
