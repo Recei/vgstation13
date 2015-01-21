@@ -10,6 +10,8 @@ datum/reagent/nicotine
 	description = "A legal chemical compound used as a drug."
 	reagent_state = LIQUID
 	color = "#60A584" // rgb: 96, 165, 132
+	overdose_threshold = 35
+	addiction_threshold = 30
 
 datum/reagent/nicotine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
@@ -18,11 +20,14 @@ datum/reagent/nicotine/on_mob_life(var/mob/living/M as mob)
 		M << "<span class='notice'>[smoke_message]</span>"
 	M.AdjustStunned(-1)
 	M.adjustHalLoss(-1)
-	if(volume > 35)
-		if(prob(20))
-			M << "You feel like you smoked too much."
-		M.adjustToxLoss(1*REM)
-		M.adjustOxyLoss(1*REM)
+	..()
+	return
+
+datum/reagent/nicotine/overdose_process(var/mob/living/M as mob)
+	if(prob(20))
+		M << "You feel like you smoked too much."
+	M.adjustToxLoss(1*REM)
+	M.adjustOxyLoss(1*REM)
 	..()
 	return
 
@@ -69,9 +74,11 @@ datum/reagent/jenkem/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume
 datum/reagent/crank
 	name = "Crank"
 	id = "crank"
-	description = "A legal chemical compound used as a drug.Gotta go fast, huh?"
+	description = "A legal chemical compound used as a drug. Gotta go fast, huh?"
 	reagent_state = LIQUID
 	color = "#71D8EB" // rgb: 113, 216, 235  BrBa meth color
+	overdose_threshold = 20
+	addiction_threshold = 10
 
 datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
@@ -81,10 +88,32 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	M.AdjustParalysis(-2)
 	M.AdjustStunned(-2)
 	M.AdjustWeakened(-2)
-	if(volume > 20)
-		M.adjustBrainLoss(rand(1,10)*REM)
-		M.adjustToxLoss(rand(1,10)*REM)
-		M.adjustBruteLoss(rand(1,10)*REM)
+	..()
+	return
+
+/datum/reagent/crank/overdose_process(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	M.adjustToxLoss(rand(1,10)*REM)
+	M.adjustBruteLoss(rand(1,10)*REM)
+	..()
+	return
+
+/datum/reagent/crank/addiction_act_stage1(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	..()
+	return
+/datum/reagent/crank/addiction_act_stage2(var/mob/living/M as mob)
+	M.adjustToxLoss(rand(1,10)*REM)
+	..()
+	return
+/datum/reagent/crank/addiction_act_stage3(var/mob/living/M as mob)
+	M.adjustBruteLoss(rand(1,10)*REM)
+	..()
+	return
+/datum/reagent/crank/addiction_act_stage4(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	M.adjustToxLoss(rand(1,10)*REM)
+	M.adjustBruteLoss(rand(1,10)*REM)
 	..()
 	return
 
@@ -97,14 +126,16 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	mix_message = "The mixture violently reacts, leaving behind a few crystalline shards."
 	required_temp = 390
 
+
+
 /datum/reagent/krokodil
 	name = "Krokodil"
 	id = "krokodil"
 	description = "A legal chemical compound used as a drug.Hail to the kotowasiy."
 	reagent_state = LIQUID
 	color = "#60A584" // rgb: 96, 165, 132
-	var/cycle_count = 0
-	var/overdosed
+	overdose_threshold = 20
+	addiction_threshold = 15
 
 
 /datum/reagent/krokodil/on_mob_life(var/mob/living/M as mob)
@@ -113,24 +144,41 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	M.druggy = max(M.druggy, 15)
 	if(prob(5))
 		M << "<span class='notice'>[high_message]</span>"
+	..()
+	return
+
+/datum/reagent/krokodil/overdose_process(var/mob/living/M as mob)
 	if(prob(10))
 		M.adjustBrainLoss(rand(1,5)*REM)
 		M.adjustToxLoss(rand(1,5)*REM)
-	if(cycle_count == 10)
-		M.adjustBrainLoss(rand(1,10)*REM)
-		M.adjustToxLoss(rand(1,10)*REM)
-	if(cycle_count == 20)
+	..()
+	return
+
+/datum/reagent/krokodil/addiction_act_stage1(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,5)*REM)
+	M.adjustToxLoss(rand(1,5)*REM)
+	..()
+	return
+/datum/reagent/krokodil/addiction_act_stage2(var/mob/living/M as mob)
+	if(prob(25))
 		M << "<span class='danger'>Your skin feels loose...</span>"
-	if(cycle_count == 50)
-		M << "<span class='danger'>Your skin falls off!</span>"
+	..()
+	return
+/datum/reagent/krokodil/addiction_act_stage3(var/mob/living/M as mob)
+	if(prob(25))
+		M << "<span class='danger'>Your skin starts to peel away...</span>"
+	M.adjustBruteLoss(3*REM)
+	..()
+	return
+/datum/reagent/krokodil/addiction_act_stage4(var/mob/living/carbon/human/M as mob)
+	if(!(M_HUSK in M.mutations))
+		M << "<span class='userdanger'>Your skin falls off! Holy shit!</span>"
 		M.adjustBruteLoss(rand(50,80)*REM) // holy shit your skin just FELL THE FUCK OFF
 		if(ishuman(M))
 			var/mob/living/carbon/human/junkie = M
 			junkie.ChangeToHusk()
-	if(volume > 20)
-		overdosed = 1
-	if(overdosed)
-		cycle_count++
+	else
+		M.adjustBruteLoss(5*REM)
 	..()
 	return
 
