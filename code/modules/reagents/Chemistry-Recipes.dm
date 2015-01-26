@@ -1,52 +1,72 @@
 ///////////////////////////////////////////////////////////////////////////////////
+datum/chemical_reaction
+	var/name = null
+	var/id = null
+	var/result = null
+	var/list/required_reagents = new/list()
+	var/list/required_catalysts = new/list()
+	var/list/required_stabilizers = new/list()
+
+	// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
+	var/atom/required_container = null // the container required for the reaction to happen
+	var/required_other = 0 // an integer required for the reaction to happen
+	var/volatility = 0 // KEEP THIS BELOW 10 FFS! 1 is 10% chance per mixing it will explode / 10 is a 100% chance, tho there is a random explosion size based on this.
+	//how unstable and how much of a chance the substance has to explode + influences explosion size
+
+	var/result_amount = 0
+	var/secondary = 0 // set to nonzero if secondary reaction
+	var/list/secondary_results = list()		//additional reagents produced by the reaction
+	//var/requires_heating = 0  Replaced by required_temp
+
+	var/required_temp = 0
+	var/mix_message = "The solution begins to bubble."
+	var/unstable_message = "Something goes wrong."
+
+// /vg/: Send admin alerts with standardized code.
+datum/chemical_reaction/proc/send_admin_alert(var/datum/reagents/holder, var/reaction_name=src.name)
+	var/message_prefix = "\A [reaction_name] reaction has occured"
+	var/message="[message_prefix]"
+	var/atom/A = holder.my_atom
+	if(A)
+		var/turf/T = get_turf(A)
+		var/area/my_area = get_area(T)
+
+		message += " in [formatJumpTo(T)]. (<A HREF='?_src_=vars;Vars=\ref[A]'>VV</A>)"
+		var/mob/M = get(A, /mob)
+		if(M)
+			message += " - Carried By: [M.real_name] ([M.key]) (<A HREF='?_src_=holder;adminplayeropts=\ref[M]'>PP</A>) (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>)"
+			log_game("[message_prefix] in [my_area.name] ([T.x],[T.y],[T.z]) - Carried by [M.real_name] ([M.key])")
+		else
+			message += " - Last Fingerprint: [(A.fingerprintslast ? A.fingerprintslast : "N/A")]"
+			log_game("[message_prefix] in [my_area.name] ([T.x],[T.y],[T.z]) - last fingerprint  [(A.fingerprintslast ? A.fingerprintslast : "N/A")]")
+	else
+		message += "."
+	message_admins(message, 0, 1)
+
+datum/chemical_reaction/proc/on_reaction(var/datum/reagents/holder, var/created_volume)
+		return
+
+datum/chemical_reaction/proc/unstable_reaction(var/datum/reagents/holder, var/created_volume)
+	var/atom/A = holder.my_atom
+	sleep(10)
+	if(A)
+		var/turf/T = get_turf(A)
+		A.visible_message("<span class='caution'>\icon[A] [unstable_message]</span>")
+		var/datum/effect/effect/system/reagents_explosion/e = new()
+		e.set_up(round(created_volume/10, 1), T, 0, 0)
+		e.holder_damage(A)
+		if(isliving(A))
+			e.amount *= 0.5
+			var/mob/living/L = holder.my_atom
+			if(L.stat!=DEAD)
+				e.amount *= 0.5
+		e.start()
+		holder.clear_reagents()
+
+//I recommend you set the result amount to the total volume of all components.
+
 datum
-	chemical_reaction
-		var/name = null
-		var/id = null
-		var/result = null
-		var/list/required_reagents = new/list()
-		var/list/required_catalysts = new/list()
-		var/list/required_stabilizers = new/list()
-
-		// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
-		var/atom/required_container = null // the container required for the reaction to happen
-		var/required_other = 0 // an integer required for the reaction to happen
-		var/volatility = 0 // KEEP THIS BELOW 10 FFS! 1 is 10% chance per mixing it will explode / 10 is a 100% chance, tho there is a random explosion size based on this.
-						//how unstable and how much of a chance the substance has to explode + influences explosion size
-
-		var/result_amount = 0
-		var/secondary = 0 // set to nonzero if secondary reaction
-		var/list/secondary_results = list()		//additional reagents produced by the reaction
-		//var/requires_heating = 0  Replaced by required_temp
-
-		var/required_temp = 0
-		var/mix_message = "The solution begins to bubble."
-
-		// /vg/: Send admin alerts with standardized code.
-		proc/send_admin_alert(var/datum/reagents/holder, var/reaction_name=src.name)
-			var/message_prefix = "\A [reaction_name] reaction has occured"
-			var/message="[message_prefix]"
-			var/atom/A = holder.my_atom
-			if(A)
-				var/turf/T = get_turf(A)
-				var/area/my_area = get_area(T)
-
-				message += " in [formatJumpTo(T)]. (<A HREF='?_src_=vars;Vars=\ref[A]'>VV</A>)"
-				var/mob/M = get(A, /mob)
-				if(M)
-					message += " - Carried By: [M.real_name] ([M.key]) (<A HREF='?_src_=holder;adminplayeropts=\ref[M]'>PP</A>) (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>)"
-					log_game("[message_prefix] in [my_area.name] ([T.x],[T.y],[T.z]) - Carried by [M.real_name] ([M.key])")
-				else
-					message += " - Last Fingerprint: [(A.fingerprintslast ? A.fingerprintslast : "N/A")]"
-					log_game("[message_prefix] in [my_area.name] ([T.x],[T.y],[T.z]) - last fingerprint  [(A.fingerprintslast ? A.fingerprintslast : "N/A")]")
-			else
-				message += "."
-			message_admins(message, 0, 1)
-
-		proc/on_reaction(var/datum/reagents/holder, var/created_volume)
-			return
-
-		//I recommend you set the result amount to the total volume of all components.
+	chemical_reaction  //Hacky shit, but rewrite all this stuff will be hard for me. --Smet19
 
 		explosion_potassium
 			name = "Explosion"

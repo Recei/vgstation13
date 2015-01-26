@@ -11,6 +11,7 @@
 	1.7	* src.getCloneLoss() + 		\
 	2	* src.halloss
 
+	/*
 	if(reagents.has_reagent("alkysine"))
 		src.traumatic_shock -= 10
 	if(reagents.has_reagent("inaprovaline"))
@@ -23,6 +24,8 @@
 		src.traumatic_shock -= 80 // make synaptizine function as good painkiller
 	if(reagents.has_reagent("oxycodone"))
 		src.traumatic_shock -= 200 // make synaptizine function as good painkiller
+	*/
+	//HORRIBLE SHIT, MOVED THIS TO CHEMISTRY REAGENTS -- Smet19
 	if(src.slurring)
 		src.traumatic_shock -= 20
 	if(src.analgesic)

@@ -347,7 +347,7 @@ datum/reagents/proc/handle_reactions()
 				var/total_matching_reagents = 0
 				var/total_required_catalysts = C.required_catalysts.len
 				var/total_matching_catalysts= 0
-				var/total_required_stabilizers = C.required_stabilizers.len //Thank goes to D2K5 and ErikaT
+				var/total_required_stabilizers = C.required_stabilizers.len //Thanks goes to D2K5 and ErikaT
 				var/total_matching_stabilizers = 0
 				var/matching_container = 0
 				var/matching_other = 0
@@ -430,14 +430,8 @@ datum/reagents/proc/handle_reactions()
 					C.on_reaction(src, created_volume)
 					reaction_occured = 1
 
-					if(!total_required_stabilizers == total_matching_stabilizers && (prob(C.volatility * 15))) // If there is no stabilizer - explode
-						sleep(10)
-						my_atom.visible_message("<span class='caution'>\icon[my_atom] Something goes wrong.</span>")
-						var/location = get_turf(my_atom)
-						var/datum/effect/effect/system/reagents_explosion/e = new()
-						e.set_up(round (created_volume/10, 1), location, 0, 0)
-						e.start()
-						del created_volume
+					if(!total_required_stabilizers == total_matching_stabilizers/* && (prob(C.volatility * 15))*/) // If there is no stabilizer - calls for unstable_reaction()
+						C.unstable_reaction(src, created_volume)
 
 					break
 

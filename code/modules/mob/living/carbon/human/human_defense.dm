@@ -401,3 +401,136 @@ emp_act
 				QueueUpdateDamageIcon(1)
 		updatehealth()
 	return
+
+/mob/living/carbon/human/acid_act(var/acidpwr, var/toxpwr, var/acid_volume)
+	var/list/damaged = list()
+	var/list/inventory_items_to_kill = list()
+
+	//HEAD//
+	var/obj/item/clothing/head_clothes = null
+	if(glasses)
+		head_clothes = glasses
+	if(wear_mask)
+		head_clothes = wear_mask
+	if(head)
+		head_clothes = head
+	if(head_clothes)
+		if(!head_clothes.unacidable)
+			head_clothes.acid_act(acidpwr)
+			update_inv_glasses()
+			update_inv_wear_mask()
+			update_inv_head()
+		else
+			src << "<span class='warning'>Your [head_clothes.name] protects your head and face from the acid!</span>"
+	else
+		. = get_organ("head")
+		if(.)
+			damaged += .
+		if(ears)
+			inventory_items_to_kill += ears
+
+	//CHEST//
+	var/obj/item/clothing/chest_clothes = null
+	if(w_uniform)
+		chest_clothes = w_uniform
+	if(wear_suit)
+		chest_clothes = wear_suit
+	if(chest_clothes)
+		if(!chest_clothes.unacidable)
+			chest_clothes.acid_act(acidpwr)
+			update_inv_w_uniform()
+			update_inv_wear_suit()
+		else
+			src << "<span class='warning'>Your [chest_clothes.name] protects your body from the acid!</span>"
+	else
+		. = get_organ("chest")
+		if(.)
+			damaged += .
+		if(wear_id)
+			inventory_items_to_kill += wear_id
+		if(r_store)
+			inventory_items_to_kill += r_store
+		if(l_store)
+			inventory_items_to_kill += l_store
+		if(s_store)
+			inventory_items_to_kill += s_store
+
+
+	//ARMS & HANDS//
+	var/obj/item/clothing/arm_clothes = null
+	if(gloves)
+		arm_clothes = gloves
+	if(w_uniform && (w_uniform.body_parts_covered & HANDS) || w_uniform && (w_uniform.body_parts_covered & ARMS))
+		arm_clothes = w_uniform
+	if(wear_suit && (wear_suit.body_parts_covered & HANDS) || wear_suit && (wear_suit.body_parts_covered & ARMS))
+		arm_clothes = wear_suit
+	if(arm_clothes)
+		if(!arm_clothes.unacidable)
+			arm_clothes.acid_act(acidpwr)
+			update_inv_gloves()
+			update_inv_w_uniform()
+			update_inv_wear_suit()
+		else
+			src << "<span class='warning'>Your [arm_clothes.name] protects your arms and hands from the acid!</span>"
+	else
+		. = get_organ("r_arm")
+		if(.)
+			damaged += .
+		. = get_organ("l_arm")
+		if(.)
+			damaged += .
+
+
+	//LEGS & FEET//
+	var/obj/item/clothing/leg_clothes = null
+	if(shoes)
+		leg_clothes = shoes
+	if(w_uniform && (w_uniform.body_parts_covered & FEET) || w_uniform && (w_uniform.body_parts_covered & LEGS))
+		leg_clothes = w_uniform
+	if(wear_suit && (wear_suit.body_parts_covered & FEET) || wear_suit && (wear_suit.body_parts_covered & LEGS))
+		leg_clothes = wear_suit
+	if(leg_clothes)
+		if(!leg_clothes.unacidable)
+			leg_clothes.acid_act(acidpwr)
+			update_inv_shoes()
+			update_inv_w_uniform()
+			update_inv_wear_suit()
+		else
+			src << "<span class='warning'>Your [leg_clothes.name] protects your legs and feet from the acid!</span>"
+	else
+		. = get_organ("r_leg")
+		if(.)
+			damaged += .
+		. = get_organ("l_leg")
+		if(.)
+			damaged += .
+
+
+	//DAMAGE//
+	for(var/datum/organ/external/affecting in damaged)
+		affecting.take_damage(2*toxpwr, toxpwr)
+
+		if(affecting.name == "head")
+			affecting.take_damage(2*toxpwr, toxpwr)
+			if(prob(2*acidpwr)) //Applies disfigurement
+				emote("scream")
+				f_style = "Shaved"
+				h_style = "Bald"
+				update_hair()
+				status_flags |= DISFIGURED
+
+		UpdateDamageIcon(1)
+
+	//MELTING INVENTORY ITEMS//
+	//these items are all outside of armour visually, so melt regardless.
+	if(back)
+		inventory_items_to_kill += back
+	if(belt)
+		inventory_items_to_kill += belt
+	if(r_hand)
+		inventory_items_to_kill += r_hand
+	if(l_hand)
+		inventory_items_to_kill += l_hand
+
+	for(var/obj/item/I in inventory_items_to_kill)
+		I.acid_act(acidpwr)

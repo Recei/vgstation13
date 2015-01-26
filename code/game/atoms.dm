@@ -621,3 +621,6 @@ its easier to just keep the beam vertical.
 
 /atom/proc/checkpass(passflag)
 	return pass_flags&passflag
+
+/atom/proc/acid_act(var/acidpwr, var/toxpwr, var/acid_volume)
+	return
