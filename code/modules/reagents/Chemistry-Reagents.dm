@@ -4405,6 +4405,6 @@ datum/reagent/ethanol/deadrum/driestmartini/on_mob_life(var/mob/living/M as mob)
 	return
 
 /datum/reagent/Destroy()
-	if(holder)
+	if(istype(holder))
 		holder.reagent_list -= src
 		holder = null
