@@ -17,7 +17,7 @@
 			C.radiation += 25 * weakness
 			C.nutrition -= min(50 * weakness, C.nutrition)
 			C.hydration -= min(50 * weakness, C.hydration)
-			C.make_dizzy(6 * weakness)
+			C.Dizzy(6 * weakness)
 			C.weakened += 6 * weakness
 
 /datum/artifact_effect/hurt/DoEffectAura()

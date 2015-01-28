@@ -49,7 +49,7 @@ datum/reagent/jenkem/on_mob_life(var/mob/living/carbon/M as mob)
 	if(prob(25))
 		M.adjustToxLoss(1*REM)
 		M.adjustBrainLoss(1*REM)
-	M.dizziness += 1
+	M.Dizzy(1)
 	return
 
 datum/reagent/jenkem/reaction_turf(var/turf/T, var/volume)

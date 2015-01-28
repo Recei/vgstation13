@@ -409,7 +409,7 @@ datum/reagent/diphenhydramine
 datum/reagent/diphenhydramine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	M.drowsyness += 1
-	M.jitteriness -= 1
+	M.Jitter(1)
 	M.reagents.remove_reagent("histamine",3)
 	..()
 	return
@@ -446,8 +446,8 @@ datum/reagent/morphine/overdose_process(var/mob/living/M as mob)
 		var/obj/item/I = M.get_active_hand()
 		if(I)
 			M.drop_item()
-		M.dizziness += 1
-		M.jitteriness += 1
+		Dizzy(1
+		M.Jitter(1)
 	..()
 	return
 
@@ -456,8 +456,8 @@ datum/reagent/morphine/addiction_act_stage1(var/mob/living/M as mob)
 		var/obj/item/I = M.get_active_hand()
 		if(I)
 			M.drop_item()
-		M.dizziness += 2
-		M.jitteriness += 2
+		Dizzy(2
+		M.Jitter(2)
 	..()
 	return
 datum/reagent/morphine/addiction_act_stage2(var/mob/living/M as mob)
@@ -466,8 +466,8 @@ datum/reagent/morphine/addiction_act_stage2(var/mob/living/M as mob)
 		if(I)
 			M.drop_item()
 		M.adjustToxLoss(1*REM)
-		M.dizziness += 3
-		M.jitteriness += 3
+		Dizzy(3
+		M.Jitter(3)
 	..()
 	return
 datum/reagent/morphine/addiction_act_stage3(var/mob/living/M as mob)
@@ -476,8 +476,8 @@ datum/reagent/morphine/addiction_act_stage3(var/mob/living/M as mob)
 		if(I)
 			M.drop_item()
 		M.adjustToxLoss(2*REM)
-		M.dizziness += 4
-		M.jitteriness += 4
+		Dizzy(4
+		M.Jitter(4
 	..()
 	return
 datum/reagent/morphine/addiction_act_stage4(var/mob/living/M as mob)
@@ -486,8 +486,8 @@ datum/reagent/morphine/addiction_act_stage4(var/mob/living/M as mob)
 		if(I)
 			M.drop_item()
 		M.adjustToxLoss(3*REM)
-		M.dizziness += 5
-		M.jitteriness += 5
+		Dizzy(5
+		M.Jitter(5
 	..()
 	return
 
@@ -545,16 +545,16 @@ datum/reagent/atropine/on_mob_life(var/mob/living/M as mob)
 	if(M.losebreath > 5)
 		M.losebreath = 5
 	if(prob(30))
-		M.dizziness += 5
-		M.jitteriness += 5
+		Dizzy(5
+		M.Jitter(5
 	..()
 	return
 
 datum/reagent/atropine/overdose_process(var/mob/living/M as mob)
 	if(prob(50))
 		M.adjustToxLoss(2*REM)
-		M.dizziness += 1
-		M.jitteriness += 1
+		Dizzy(1
+		M.Jitter(1
 	..()
 	return
 

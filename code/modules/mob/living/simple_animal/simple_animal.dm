@@ -68,7 +68,7 @@
 	var/supernatural = 0
 	var/purge = 0
 
-	languages = UNDERSTANDS_ALL
+	languages = ALL
 
 /mob/living/simple_animal/rejuvenate()
 	var/turf/T = get_turf(src)
@@ -231,7 +231,7 @@
 		adjustBruteLoss(unsuitable_atoms_damage)
 	return 1
 
-/mob/living/simple_animal/Bumped(AM as mob|obj)
+/mob/living/simple_animal/Bump(AM as mob|obj)
 	if(!AM) return
 
 	if(resting || buckled)

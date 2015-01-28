@@ -33,7 +33,7 @@ datum/reagent/histamine/on_mob_life(var/mob/living/M as mob)
 	switch(pick(1, 2, 3))
 		if(1)
 			M << "<span class='danger'>You are unable to look straight!</span>"
-			M.dizziness += 10
+			M.Dizzy(10)
 		if(2)
 			M.emote("cough")
 			var/obj/item/I = M.get_active_hand()
