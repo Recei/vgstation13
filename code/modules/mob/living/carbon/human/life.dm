@@ -1955,30 +1955,29 @@ var/global/list/organ_damage_overlays = list(
 /mob/living/carbon/human/proc/handle_sims_regular()
 	var/nutri_message = null
 	var/hydra_message = null
-	var/list/loweat1 = list("<span class='notice'>*Perhaps you should grab a bite to eat*</span>", "<span class='notice'>*Hmm, some pizza would be nice*</span>")
-	var/list/loweat2 = list("<span class='warning'>*You feel a bit peckish*</span>", "<span class='warning'>*Whatever you last ate didn't do much to fill you up...*</span>")
-	var/list/loweat3 = list("<span class='alert'>*You feel hungry*</span>", "<span class='alert'>*Your stomach rumbles*</span>", "<span class='alert'>*You feel empty inside*</span>")
-	var/list/lowdrink1 = list("<span class='notice'>*Perhaps you should have a drink...*", "<span class='notice'>*Hmm, some cola would be nice*</span>")
-	var/list/lowdrink2 = list("<span class='warning'>*You feel a bit thirsty*</span>", "<span class='warning'>*I should have some water...*</span>")
-	var/list/lowdrink3 = list("<span class='alert'>*You feel thirsty*</span>", "<span class='alert'>*Your mouth feels dry*</span>")
+	var/list/loweat1 = list("*Perhaps you should grab a bite to eat*", "*Hmm, some pizza would be nice*")
+	var/list/loweat2 = list("*You feel a bit peckish*", "*Whatever you last ate didn't do much to fill you up...*")
+	var/list/loweat3 = list("<b>*You feel hungry*</b>", "<b>*Your stomach rumbles*</b>", "<b>*You feel empty inside*</b>")
+	var/list/lowdrink1 = list("*Perhaps you should have a drink...*", "*Hmm, some cola would be nice*")
+	var/list/lowdrink2 = list("*You feel a bit thirsty*", "*I should have some water...*")
+	var/list/lowdrink3 = list("<b>*You feel thirsty*</b>", "<b>*Your mouth feels dry*</b>")
 
 
 	if(src.stat != 2)
-		if(lastpoocomplaint > world.timeofday)
-			lastpoocomplaint = 0
 		if (nutrition > 400)
-			spawn(300)//30 seconds
-				if(prob(25))
-					wanttopoo++
+			if(lastpoocomplaint > world.timeofday)
+				lastpoocomplaint = 0
+			if(prob(10))
+				wanttopoo++
 			if(wanttopoo >=5 && prob(25))
 				emote("poo")
 				wanttopoo = 0
-			else if(wanttopoo >=3 && world.timeofday >= lastpoocomplaint + 3000)
+			else if(wanttopoo >=3 && (world.timeofday >= (lastpoocomplaint + 6000)))
 				lastpoocomplaint = world.timeofday
-				src << "<font color='black'><b>You really want to poo!</b></font>"
-			else if(lastpoocomplaint + 3000)
+				src << "<b><font size=2>You really want to poo!</font></b>"
+			else if(world.timeofday >= lastpoocomplaint + 6000)
 				lastpoocomplaint = world.timeofday
-				src << "<font color='black'><b>You want to poo.</b></font>"
+				src << "><b>You want to poo.</b>"
 
 		else
 			if(lastnutritioncomplaint > world.timeofday)
@@ -1996,17 +1995,16 @@ var/global/list/organ_damage_overlays = list(
 		if(lastpeecomplaint > world.timeofday)
 			lastpeecomplaint = 0
 		if (hydration > 400)
-			spawn(300)//30 seconds
-				if(prob(25))
-					wanttopee++
+			if(prob(10))
+				wanttopee++
 			if(wanttopee >=5 && prob(25))
 				emote("pee")
 				wanttopee = 0
-			else if(wanttopee >=3 && world.timeofday >= lastpeecomplaint + 3000)
+			else if(wanttopee >=3 && world.timeofday >= lastpeecomplaint + 6000)
 				lastpeecomplaint = world.timeofday
-				src << "<font color='black'><b>You really want to pee!</b></font>"
-			else if(world.timeofday >= lastpeecomplaint + 3000)
-				src << "<font color='black'><b>You want to pee.</b></font>"
+				src << "<b><font size=2>You really want to pee!</font></b>"
+			else if(world.timeofday >= lastpeecomplaint + 6000)
+				src << "<b>You want to pee.</b>"
 
 		else
 			if(lasthydrationcomplaint > world.timeofday)
@@ -2019,7 +2017,7 @@ var/global/list/organ_damage_overlays = list(
 					if(150 to 250)					hydra_message = pick(lowdrink2)
 					if(0 to 150)					hydra_message = pick(lowdrink3)
 
-				src << "[hydra_message]"
+				src << "<font color='#654081'>[hydra_message]</font>"
 
 
 

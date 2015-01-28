@@ -17,6 +17,10 @@ var/global/list/del_profiling = list()
 	var/pass_flags = 0
 	var/throwpass = 0
 	var/germ_level = 0 // The higher the germ level, the more germ on the atom.
+	//Now blood checks for blood_covering instead of blood_DNA
+	var/poop_covering = 0 //Is it covered with poo?
+	var/blood_covering = 0 //Is it covered with blood?
+
 
 	///Chemistry.
 	var/datum/reagents/reagents = null
@@ -298,7 +302,13 @@ its easier to just keep the beam vertical.
 			f_name = "some "
 		else
 			f_name = "a "
-		f_name += "<span class='danger'>blood-stained</span> [name]!"
+		if(src.blood_covering && !poop_covering)
+			f_name += "<span class='danger'>blood-stained</span> [name]!"
+		if(src.poop_covering && !blood_covering)
+			f_name += "<span class='danger'>poo-stained</span> [name]!"
+		if(src.blood_covering && poop_covering)
+			f_name += "<span class='danger'>blood and poo stained</span> [name]!"
+
 
 	user << "\icon[src] That's [f_name]" + size
 	if(desc)
@@ -536,6 +546,8 @@ its easier to just keep the beam vertical.
 		if(!blood_DNA || !istype(blood_DNA, /list))
 			blood_DNA = list()
 		blood_color = "#A10808"
+		if(!blood_covering)
+			blood_covering = 1
 		return 1
 	if (!( istype(M, /mob/living/carbon/human) ))
 		return 0
@@ -558,6 +570,8 @@ its easier to just keep the beam vertical.
 			return 0 //already bloodied with this blood. Cannot add more.
 		blood_DNA[H.dna.unique_enzymes] = H.dna.b_type
 		H.update_inv_gloves()	//handles bloody hands overlays and updating
+		if(!blood_covering)
+			blood_covering = 1
 		return 1 //we applied blood to the item
 	return
 
@@ -566,6 +580,8 @@ its easier to just keep the beam vertical.
 	if(!M)
 		if(!blood_DNA || !istype(blood_DNA, /list))
 			blood_DNA = list()
+		if(!poop_covering)
+			poop_covering = 1
 		return 1
 	if (!( istype(M, /mob/living/carbon/human) ))
 		return 0
@@ -583,6 +599,8 @@ its easier to just keep the beam vertical.
 			return 0 //already bloodied with this blood. Cannot add more.
 		blood_DNA[H.dna.unique_enzymes] = H.dna.b_type
 		H.update_inv_gloves()
+		if(!poop_covering)
+			poop_covering = 1
 		return 1 //we applied blood to the item
 	return
 
@@ -600,6 +618,10 @@ its easier to just keep the beam vertical.
 	src.germ_level = 0
 	if(istype(blood_DNA, /list))
 		del(blood_DNA)
+	if(blood_covering)
+		blood_covering = 0
+	if(poop_covering)
+		poop_covering = 0
 		return 1
 
 

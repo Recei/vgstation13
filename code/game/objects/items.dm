@@ -725,16 +725,8 @@
 	. = ..()
 	if(blood_overlay)
 		overlays.Remove(blood_overlay)
-		if (istype(src, /obj/item/clothing))
-			var/obj/item/clothing/C = src
-			if(C.blood_covering)
-				C.blood_covering = 0
 	if(poo_overlay)
 		overlays.Remove(poo_overlay)
-		if (istype(src, /obj/item/clothing))
-			var/obj/item/clothing/C = src
-			if(C.poop_covering)
-				C.poop_covering = 0
 	if(istype(src, /obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = src
 		G.transfer_blood = 0
@@ -749,11 +741,6 @@
 	//if we haven't made our blood_overlay already
 	if( !blood_overlay )
 		generate_blood_overlay()
-
-	if (istype(src, /obj/item/clothing))
-		var/obj/item/clothing/C = src
-		if (!(C.blood_covering))
-			C.blood_covering = 1
 
 	//apply the blood-splatter overlay if it isn't already in there, else it updates it.
 	overlays -= blood_overlay
@@ -791,13 +778,6 @@
 	//if we haven't made our poo_overlay already
 	if( !poo_overlay )
 		generate_poo_overlay()
-	if (istype(src, /obj/item/clothing))
-		var/obj/item/clothing/C = src
-		if (!(C.poop_covering))
-			C.poop_covering = 1
-		if(M)
-			if(C.loc == M)
-				M.update_icons()
 	if(!M)
 		return
 	if(blood_DNA[M.dna.unique_enzymes])
