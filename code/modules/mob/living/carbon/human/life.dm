@@ -1544,12 +1544,12 @@ var/global/list/organ_damage_overlays = list(
 				if(150 to 250)					nutrition_icon.icon_state = "nutrition3"
 				else							nutrition_icon.icon_state = "nutrition4"
 		if(hydration_icon)
-				switch(hydration)
-					if(450 to INFINITY)				hydration_icon.icon_state = "hydration0"
-					if(350 to 450)					hydration_icon.icon_state = "hydration1"
-					if(250 to 350)					hydration_icon.icon_state = "hydration2"
-					if(150 to 250)					hydration_icon.icon_state = "hydration3"
-					else							hydration_icon.icon_state = "hydration4"
+			switch(hydration)
+				if(450 to INFINITY)				hydration_icon.icon_state = "hydration0"
+				if(350 to 450)					hydration_icon.icon_state = "hydration1"
+				if(250 to 350)					hydration_icon.icon_state = "hydration2"
+				if(150 to 250)					hydration_icon.icon_state = "hydration3"
+				else							hydration_icon.icon_state = "hydration4"
 
 		if(pressure)
 			pressure.icon_state = "pressure[pressure_alert]"
@@ -1803,7 +1803,7 @@ var/global/list/organ_damage_overlays = list(
 			temp = PULSE_NONE
 
 		if(R.id in cheartstopper)  //Conditional heart-stoppage
-			if(R.volume >= R.overdose)
+			if(R.volume >= R.overdose_threshold)
 				temp = PULSE_NONE
 
 	return temp

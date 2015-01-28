@@ -92,7 +92,7 @@
 	update_icon()
 
 /obj/item/weapon/reagent_containers/blood/salglu_solution
-	name = "Phalanximine IV kit"
+	name = "Saline-Glucose IV kit"
 	desc = "IV kit with saline and glucose solution in it."
 
 /obj/item/weapon/reagent_containers/blood/salglu_solution/New()

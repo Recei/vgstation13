@@ -446,7 +446,7 @@ datum/reagent/morphine/overdose_process(var/mob/living/M as mob)
 		var/obj/item/I = M.get_active_hand()
 		if(I)
 			M.drop_item()
-		Dizzy(1
+		M.Dizzy(1)
 		M.Jitter(1)
 	..()
 	return
@@ -456,7 +456,7 @@ datum/reagent/morphine/addiction_act_stage1(var/mob/living/M as mob)
 		var/obj/item/I = M.get_active_hand()
 		if(I)
 			M.drop_item()
-		Dizzy(2
+		M.Dizzy(2)
 		M.Jitter(2)
 	..()
 	return
@@ -466,7 +466,7 @@ datum/reagent/morphine/addiction_act_stage2(var/mob/living/M as mob)
 		if(I)
 			M.drop_item()
 		M.adjustToxLoss(1*REM)
-		Dizzy(3
+		M.Dizzy(3)
 		M.Jitter(3)
 	..()
 	return
@@ -476,8 +476,8 @@ datum/reagent/morphine/addiction_act_stage3(var/mob/living/M as mob)
 		if(I)
 			M.drop_item()
 		M.adjustToxLoss(2*REM)
-		Dizzy(4
-		M.Jitter(4
+		M.Dizzy(4)
+		M.Jitter(4)
 	..()
 	return
 datum/reagent/morphine/addiction_act_stage4(var/mob/living/M as mob)
@@ -486,8 +486,8 @@ datum/reagent/morphine/addiction_act_stage4(var/mob/living/M as mob)
 		if(I)
 			M.drop_item()
 		M.adjustToxLoss(3*REM)
-		Dizzy(5
-		M.Jitter(5
+		M.Dizzy(5)
+		M.Jitter(5)
 	..()
 	return
 
@@ -545,16 +545,16 @@ datum/reagent/atropine/on_mob_life(var/mob/living/M as mob)
 	if(M.losebreath > 5)
 		M.losebreath = 5
 	if(prob(30))
-		Dizzy(5
-		M.Jitter(5
+		M.Dizzy(5)
+		M.Jitter(5)
 	..()
 	return
 
 datum/reagent/atropine/overdose_process(var/mob/living/M as mob)
 	if(prob(50))
 		M.adjustToxLoss(2*REM)
-		Dizzy(1
-		M.Jitter(1
+		M.Dizzy(1)
+		M.Jitter(1)
 	..()
 	return
 

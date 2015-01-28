@@ -99,7 +99,7 @@
 		if(prob(2))
 			new /obj/item/stack/sheet/plasteel(loc)
 		if(prob(1))
-			new /obj/item/stack/sheet/rglass(loc)
+			new /obj/item/stack/sheet/glass/rglass(loc)
 		if(sound)
 			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 
