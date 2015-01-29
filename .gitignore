@@ -16,7 +16,7 @@ info.json
 *.pyc
 
 #ignore any files in config/, except those in subdirectories.
-/config/*
+!/config/*
 /scripts/*
 /DLLSocket/*
 /maptools/*
