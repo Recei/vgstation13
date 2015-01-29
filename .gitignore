@@ -28,7 +28,6 @@ info.json
 /code-indented
 *.new.dmi
 
-*.sqlite
 .metadata
 /bot/config.yml
 /bot/data
