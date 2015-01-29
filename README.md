@@ -1,5 +1,9 @@
 # vgstation
 
+Много ненужного для установки на сервак удаленно, что-то восстановленно для удобства выкачки
+
+
+
 [Website](http://ss13.undo.it) - [Code](http://github.com/d3athrow/vgstation13/) - [IRC](irc://irc.rizon.net/vgstation) (irc.rizon.net #vgstation)
 
 ---
