@@ -16,7 +16,7 @@ info.json
 *.pyc
 
 #ignore any files in config/, except those in subdirectories.
-!/config/*
+/config/*
 /scripts/*
 /DLLSocket/*
 /maptools/*
@@ -28,6 +28,7 @@ info.json
 /code-indented
 *.new.dmi
 
+*.sqlite
 .metadata
 /bot/config.yml
 /bot/data
