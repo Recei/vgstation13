@@ -1793,23 +1793,66 @@ datum/reagent/synaptizine
 	reagent_state = LIQUID
 	color = "#f20d9c" // rgb: 200, 165, 220
 	custom_metabolism = 0.01
-	overdose_threshold = REAGENTS_OVERDOSE
 
 datum/reagent/synaptizine/on_mob_life(var/mob/living/M as mob)
 	if(!holder) return
 	if(!M) M = holder.my_atom
 	M.drowsyness = max(M.drowsyness-5, 0)
-	M.AdjustParalysis(-4)
-	M.AdjustStunned(-4)
-	M.AdjustWeakened(-4)
 	M.traumatic_shock -= 40
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		C.shock_stage -= 4
 	if(holder.has_reagent("mindbreaker"))
 		holder.remove_reagent("mindbreaker", 5)
-	M.hallucination = max(0, M.hallucination - 10)
-	if(prob(60))	M.adjustToxLoss(1)
+	data++
+	switch(data)
+		if(1 to 29)
+			M.drowsyness = max(M.drowsyness-5, 0)
+			M.AdjustParalysis(-3)
+			M.AdjustStunned(-3)
+			M.AdjustWeakened(-3)
+			if(prob(15))	M.adjustToxLoss(1)
+		if (30 to 49)
+			M.drowsyness = max(M.drowsyness-5, 0)
+			M.AdjustParalysis(-4)
+			M.AdjustStunned(-4)
+			M.AdjustWeakened(-4)
+			if(prob(60))	M.adjustToxLoss(1)
+			M.jitteriness = max(M.jitteriness+3, 30)
+			if(M.sleeping) M.sleeping = 0
+			if(prob(1)) M.emote(pick("twitch","blink_r","shiver"))
+		if (50 to 69) //slowly entering overdose levels
+			M.drowsyness = max(M.drowsyness-15, 0)
+			M.AdjustParalysis(-6)
+			M.AdjustStunned(-6)
+			M.AdjustWeakened(-6)
+			M.jitteriness = max(M.jitteriness+5, 60)
+			if(M.sleeping) M:sleeping = 0
+			if(prob(60))	M.adjustToxLoss(2)
+			if(prob(3)) M.emote(pick("twitch","blink_r","shiver"))
+			if(prob(5))
+				M.brainloss++
+				M << "\red You feel a strange burning in your head."
+		if (70 to 99) //CRASH
+			var/findingoriginalvarnamesishardguys = 0
+			if (!findingoriginalvarnamesishardguys)
+				M << "\red You hallucinate and find yourself falling down some stairs. You seem unable to stop falling."
+				findingoriginalvarnamesishardguys = 1
+			M.sleeping += 1
+			M.adjustToxLoss(4)
+			M.adjustBruteLoss(0.1)
+			M.stunned++
+			M.paralysis++
+		if (100 to INFINITY) //crashed harder than a jet into world trade center
+			M.sleeping += 1
+			M.adjustToxLoss(4)
+			M.adjustBruteLoss(0.1)
+			M.stunned++
+			M.paralysis++
+			if (prob(1) && prob(1))
+				M << "\blue You are unable to handle the energy inside you and burst into treats."
+				new /obj/item/weapon/reagent_containers/food/snacks/candy(get_turf(M))
+				M.gib()
 	..()
 	return
 
@@ -2023,6 +2066,7 @@ datum/reagent/hyperzine
 datum/reagent/hyperzine/on_mob_life(var/mob/living/M as mob)
 	if(!holder) return
 	if(!M) M = holder.my_atom
+	M.status_flags |= GOTTAGOFAST
 	if(prob(5)) M.emote(pick("twitch","blink_r","shiver"))
 	..()
 	return
@@ -3403,8 +3447,10 @@ datum/reagent/drink/cold/nuka_cola
 	description = "Cola, cola never changes."
 	color = "#100800" // rgb: 16, 8, 0
 	adj_sleepy = -2
+
 	on_mob_life(var/mob/living/M as mob)
 		if(!holder) return
+		M.status_flags |= GOTTAGOFAST
 		M.Jitter(20)
 		M.druggy = max(M.druggy, 30)
 		M.dizziness +=5
@@ -3894,8 +3940,8 @@ datum/reagent/ethanol/deadrum/thirteenloko
 	color = "#102000" // rgb: 16, 32, 0
 
 datum/reagent/ethanol/deadrum/thirteenloko/on_mob_life(var/mob/living/M as mob)
-	if(!holder) return
 	..()
+	if(!holder) return
 	M:nutrition += nutriment_factor
 	holder.remove_reagent(src.id, FOOD_METABOLISM)
 	M:drowsyness = max(0,M:drowsyness-7)

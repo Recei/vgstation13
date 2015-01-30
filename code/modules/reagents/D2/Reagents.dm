@@ -22,9 +22,7 @@
 			description = "Polyadrenalobin is designed to be a stimulant, it can aid in the revival of a patient who has died or is near death."
 			medical = 1
 			reagent_state = LIQUID
-			color_r = 189
-			color_g = 4
-			color_b = 92
+			color = "#bd045c"
 			medical = 1
 			on_mob_life(var/mob/M)
 				if(!M) M = holder.my_atom
@@ -49,14 +47,6 @@
 						M.bruteloss--
 					if(M.cloneloss > 50)
 						M.cloneloss--
-				//	if(M.cloneloss > 1)
-				//		M.blood_clot--
-				//	if(M.blood < 175)
-				//		M.blood++
-				//	M.oxyloss--
-				//	M.arrhythmia = 0
-				//	M.thrombosis = 0
-				//	M.heartrate = 80
 					M.stat = 1
 					M:bleeding--
 					M:brainloss += 0.1

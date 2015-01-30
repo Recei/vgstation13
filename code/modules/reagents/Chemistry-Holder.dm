@@ -11,7 +11,7 @@ datum/reagents
 	var/total_volume = 0
 	var/maximum_volume = 100
 	var/atom/my_atom = null
-	var/chem_temp = 150
+	var/chem_temp = 273
 	var/last_tick = 1
 	var/addiction_tick = 1
 	var/list/datum/reagent/addiction_list = new/list()
@@ -430,7 +430,7 @@ datum/reagents/proc/handle_reactions()
 					C.on_reaction(src, created_volume)
 					reaction_occured = 1
 
-					if(!total_required_stabilizers == total_matching_stabilizers/* && (prob(C.volatility * 15))*/) // If there is no stabilizer - calls for unstable_reaction()
+					if(!total_required_stabilizers == total_matching_stabilizers && (prob(C.volatility * 10))) // If there is no stabilizer - calls for unstable_reaction()
 						C.unstable_reaction(src, created_volume)
 
 					break
@@ -461,7 +461,21 @@ datum/reagents/proc/del_reagent(var/reagent, var/update_totals=1)
 	if(total_dirty && update_totals)
 		update_total()
 		my_atom.on_reagent_change()
+		check_sanic(my_atom)
 	return total_dirty
+
+
+datum/reagents/proc/check_sanic(var/mob/M)
+
+	var/list/sanic_reagents = list("hyperzine",
+	"nuka_cola","ephedrine","methamphetamine")
+
+	if(istype(M, /mob))
+		for(var/datum/reagent/R in M.reagents)
+			if(R.id in sanic_reagents)
+				return 1
+			else
+				M.status_flags &= ~GOTTAGOFAST
 
 datum/reagents/proc/update_total()
 	total_volume = 0

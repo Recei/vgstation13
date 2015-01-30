@@ -16,6 +16,13 @@
 	icon_state = "ash"
 	anchored = 1
 
+/obj/effect/decal/cleanable/ash/attackby(W as obj, mob/user as mob)
+	if(istype(W, /obj/item/weapon/reagent_containers/glass))
+		var/obj/item/weapon/reagent_containers/glass/G = W
+		G.reagents.add_reagent("ash", 20)
+	..()
+	return
+
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
