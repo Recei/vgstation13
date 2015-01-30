@@ -159,17 +159,20 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	M.adjustToxLoss(rand(1,5)*REM)
 	..()
 	return
+
 /datum/reagent/krokodil/addiction_act_stage2(var/mob/living/M as mob)
 	if(prob(25))
 		M << "<span class='danger'>Your skin feels loose...</span>"
 	..()
 	return
+
 /datum/reagent/krokodil/addiction_act_stage3(var/mob/living/M as mob)
 	if(prob(25))
 		M << "<span class='danger'>Your skin starts to peel away...</span>"
 	M.adjustBruteLoss(3*REM)
 	..()
 	return
+
 /datum/reagent/krokodil/addiction_act_stage4(var/mob/living/carbon/human/M as mob)
 	if(!(M_HUSK in M.mutations))
 		M << "<span class='userdanger'>Your skin falls off! Holy shit!</span>"
@@ -190,3 +193,124 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	result_amount = 6
 	mix_message = "The mixture dries into a pale blue powder."
 	required_temp = 380
+
+
+/datum/reagent/methamphetamine
+	name = "Methampetamine"
+	id = "methamphetamine"
+	description = "A rather powerful drug derived from 'drines."
+	reagent_state = LIQUID
+	color = "#000067" // rgb: 0, 0, 103
+	overdose_threshold = 20
+	addiction_threshold = 10
+
+/datum/reagent/methamphetamine/on_mob_life(var/mob/living/carbon/M as mob)
+	if(!M) M = holder.my_atom
+	M.status_flags |= GOTTAGOFAST
+	M.AdjustParalysis(-3)
+	M.AdjustStunned(-3)
+	M.AdjustWeakened(-3)
+	M.hallucination += 5
+	M.jitteriness = max(M.jitteriness-5,0)
+	if(prob(90)) M.adjustBrainLoss(1*REM)
+	holder.remove_reagent(src.id, REAGENTS_METABOLISM)
+	if(isturf(M.loc) && !istype(M.loc, /turf/space))
+		if(M.canmove)
+			if(prob(10)) step(M, pick(cardinal))
+	..()
+	return
+
+/datum/reagent/methamphetamine/addiction_act_stage1(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,5)*REM)
+	..()
+	return
+/datum/reagent/methamphetamine/addiction_act_stage2(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,5)*REM)
+	M.hallucination += rand(1,10)*REM
+	..()
+	return
+/datum/reagent/methamphetamine/addiction_act_stage3(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	M.hallucination += rand(5,15)*REM
+	..()
+	return
+/datum/reagent/methamphetamine/addiction_act_stage4(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	M.adjustToxLoss(rand(1,10)*REM)
+	M.hallucination += rand(5,15)*REM
+	..()
+	return
+
+/datum/chemical_reaction/methamphetamine
+	name = "Methampetamine"
+	id = "methamphetamine"
+	result = "methamphetamine"
+	required_reagents = list("ephedrine" = 1, "hydrogen" = 1, "phosphorous" = 1, "iodine" = 1)
+	result_amount = 4
+	mix_message = "The mixture violently reacts, leaving behind a few crystalline shards."
+	required_temp = 374
+
+
+/datum/reagent/bathsalts // not even stolen from goon tho
+	name = "Bath salts"
+	id = "bathsalts"
+	description = "A horrible drug from the depths of the space slums. Practice caution when consuming!"
+	color = "#FFFFFF" // rgb: 255, 255, 255
+	overdose_threshold = 20
+	addiction_threshold = 10
+
+/datum/reagent/bathsalts/on_mob_life(var/mob/living/M as mob)
+	M.AdjustParalysis(-4)
+	M.AdjustStunned(-4)
+	M.AdjustWeakened(-4)
+	M.Dizzy(10)
+	M.Jitter(10)
+	M.hallucination += 10
+	holder.remove_reagent(src.id, REAGENTS_METABOLISM)
+	if(prob(80)) M.adjustBrainLoss(2*REM)
+	if(isturf(M.loc) && !istype(M.loc, /turf/space))
+		if(M.canmove)
+			if(prob(20)) step(M, pick(cardinal))
+	..()
+	return
+
+datum/reagent/bathsalts/overdose_process(var/mob/living/M as mob)
+	M.adjustToxLoss(1*REM)
+	for(var/mob/living/target in range(1,get_turf(M)))
+		if(prob(20) && target != M)
+			playsound(get_turf(M), pick(punch_sound), 80, 1)
+			M.visible_message("\red <B>[M] has punched [target]!</B>", 1)
+			target.adjustBruteLoss(rand(1,4))
+	..()
+	return
+
+/datum/reagent/bathsalts/addiction_act_stage1(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,5)*REM)
+	..()
+	return
+/datum/reagent/bathsalts/addiction_act_stage2(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,5)*REM)
+	M.hallucination += rand(1,10)*REM
+	..()
+	return
+/datum/reagent/bathsalts/addiction_act_stage3(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	M.hallucination += rand(5,15)*REM
+	..()
+	return
+/datum/reagent/bathsalts/addiction_act_stage4(var/mob/living/M as mob)
+	M.adjustBrainLoss(rand(1,10)*REM)
+	M.adjustToxLoss(rand(1,10)*REM)
+	M.hallucination += rand(5,15)*REM
+	..()
+	return
+
+
+/datum/chemical_reaction/bathsalts
+	name = "Bath salts"
+	id = "bathsalts"
+	result = "bathsalts"
+	required_reagents = list("????" = 1, "mercury" = 1, "cleaner" = 1, "enzyme" = 1)
+	result_amount = 4
+	mix_message = "The mixture violently reacts, leaving behind a few crystalline shards."
+	required_temp = 374

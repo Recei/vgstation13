@@ -8,16 +8,21 @@
 
 	//(VG EDIT disabling for now) handle_embedded_objects() //Moving with objects stuck in you can cause bad times.
 
-	if(reagents.has_reagent("hyperzine"))
+	if(status_flags & GOTTAGOFAST)
 		if(dna.mutantrace == "slime")
 			tally *= 2
 		else
 			return -1
 
-	if(reagents.has_reagent("nuka_cola")) return -1
-	if(reagents.has_reagent("ephedrine")) return -1
-	if(reagents.has_reagent("epinephrine")) return -1
-	if(reagents.has_reagent("crank")) return -1
+//	if(reagents.has_reagent("hyperzine"))
+//		if(dna.mutantrace == "slime")
+//			tally *= 2
+//		else
+//			return -1
+
+//	if(reagents.has_reagent("nuka_cola")) return -1
+//	if(reagents.has_reagent("ephedrine")) return -1
+//	if(reagents.has_reagent("methamphetamine")) return -1
 
 
 	if((M_RUN in mutations)) return -1

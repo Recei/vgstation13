@@ -351,7 +351,7 @@ datum/reagent/ephedrine
 
 datum/reagent/ephedrine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	//M.status_flags |= GOTTAGOFAST
+	M.status_flags |= GOTTAGOFAST
 	M.AdjustParalysis(-1)
 	M.AdjustStunned(-1)
 	M.AdjustWeakened(-1)
@@ -422,7 +422,7 @@ datum/reagent/diphenhydramine/on_mob_life(var/mob/living/M as mob)
 	result_amount = 4
 	mix_message = "The mixture dries into a pale blue powder."
 
-datum/reagent/morphine
+datum/reagent/painkiller/morphine
 	name = "Morphine"
 	id = "morphine"
 	description = "100% chance per cycle of healing 1 point each of OXY and TOX damage."
@@ -431,17 +431,18 @@ datum/reagent/morphine
 	var/cycle_count = 0
 	overdose_threshold = 30
 	addiction_threshold = 25
+	heal_shock = 100
+	heal_shock_stage = 10
 
-datum/reagent/morphine/on_mob_life(var/mob/living/M as mob)
+datum/reagent/painkiller/morphine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	//M.status_flags |= GOTTAGOFAST
 	if(cycle_count == 36)
 		M.drowsyness += 1
 	cycle_count++
 	..()
 	return
 
-datum/reagent/morphine/overdose_process(var/mob/living/M as mob)
+datum/reagent/painkiller/morphine/overdose_process(var/mob/living/M as mob)
 	if(prob(33))
 		var/obj/item/I = M.get_active_hand()
 		if(I)
@@ -451,7 +452,7 @@ datum/reagent/morphine/overdose_process(var/mob/living/M as mob)
 	..()
 	return
 
-datum/reagent/morphine/addiction_act_stage1(var/mob/living/M as mob)
+datum/reagent/painkiller/morphine/addiction_act_stage1(var/mob/living/M as mob)
 	if(prob(33))
 		var/obj/item/I = M.get_active_hand()
 		if(I)
@@ -460,7 +461,7 @@ datum/reagent/morphine/addiction_act_stage1(var/mob/living/M as mob)
 		M.Jitter(2)
 	..()
 	return
-datum/reagent/morphine/addiction_act_stage2(var/mob/living/M as mob)
+datum/reagent/painkiller/morphine/addiction_act_stage2(var/mob/living/M as mob)
 	if(prob(33))
 		var/obj/item/I = M.get_active_hand()
 		if(I)
@@ -470,7 +471,7 @@ datum/reagent/morphine/addiction_act_stage2(var/mob/living/M as mob)
 		M.Jitter(3)
 	..()
 	return
-datum/reagent/morphine/addiction_act_stage3(var/mob/living/M as mob)
+datum/reagent/painkiller/morphine/addiction_act_stage3(var/mob/living/M as mob)
 	if(prob(33))
 		var/obj/item/I = M.get_active_hand()
 		if(I)
@@ -480,7 +481,7 @@ datum/reagent/morphine/addiction_act_stage3(var/mob/living/M as mob)
 		M.Jitter(4)
 	..()
 	return
-datum/reagent/morphine/addiction_act_stage4(var/mob/living/M as mob)
+datum/reagent/painkiller/morphine/addiction_act_stage4(var/mob/living/M as mob)
 	if(prob(33))
 		var/obj/item/I = M.get_active_hand()
 		if(I)

@@ -41,6 +41,7 @@ datum/reagent/poo
 	description = "It's poo."
 	reagent_state = LIQUID
 	color = "#402000" //rgb: 64, 32 , 0
+	addiction_threshold = 20 //HueHueHueHueHue --Smet19
 
 datum/reagent/poo/on_mob_life(var/mob/living/M)
 	if(!M) M = holder.my_atom
@@ -193,6 +194,20 @@ datum/reagent/acetone
 	result_amount = 1
 	required_temp = 480
 
+/datum/reagent/stabilizer
+	name = "Chemical Stabilizer"
+	id = "stabilizer"
+	description = "A chemical, that in contact with highly explosive materials, stabilizes them and dissolves into harmless gases."
+	reagent_state = LIQUID
+	color = "#00FF00"
+
+/datum/chemical_reaction/stabilizer
+	name = "Chemical Stabilizer"
+	id = "stabilizer"
+	result = "stabilizer"
+	required_reagents = list("iron" = 1, "oxygen" = 1, "hydrogen" = 1)
+	result_amount = 3
+
 datum/reagent/colorful_reagent
 	name = "Colorful Reagent"
 	id = "colorful_reagent"
@@ -238,3 +253,27 @@ datum/reagent/triple_citrus
 	result = "triple_citrus"
 	required_reagents = list("lemonjuice" = 1, "limejuice" = 1, "orangejuice" = 1)
 	result_amount = 5
+
+datum/reagent/emetic
+	name = "Emetic"
+	id = "emetic"
+	description = "A vomit inducing chemical."
+	reagent_state = LIQUID
+	color = "#83AD50"
+
+datum/reagent/emetic/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(prob(5))
+			H.emote("vomit")
+	..()
+	return
+
+
+/datum/chemical_reaction/emetic
+	name = "emetic"
+	id = "emetic"
+	result = "emetic"
+	required_reagents = list("vomit" = 1, "limejuice" = 1, "orangejuice" = 1)
+	result_amount = 3
