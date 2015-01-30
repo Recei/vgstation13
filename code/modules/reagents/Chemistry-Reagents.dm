@@ -3940,8 +3940,8 @@ datum/reagent/ethanol/deadrum/thirteenloko
 	color = "#102000" // rgb: 16, 32, 0
 
 datum/reagent/ethanol/deadrum/thirteenloko/on_mob_life(var/mob/living/M as mob)
-	if(!holder) return
 	..()
+	if(!holder) return
 	M:nutrition += nutriment_factor
 	holder.remove_reagent(src.id, FOOD_METABOLISM)
 	M:drowsyness = max(0,M:drowsyness-7)

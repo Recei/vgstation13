@@ -2797,6 +2797,7 @@
 	boxtag = "Mushroom Special"
 
 /obj/item/pizzabox/meat/New()
+	. = ..()
 	pizza = new /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/meatpizza(src)
 	boxtag = "Meatlover's Supreme"
 
