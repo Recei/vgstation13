@@ -17,6 +17,7 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/on_reagent_change()
 	update_icon()
+	overlays.len = 0
 
 
 /obj/item/weapon/reagent_containers/glass/bottle/New()

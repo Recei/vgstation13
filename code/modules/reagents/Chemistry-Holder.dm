@@ -479,7 +479,7 @@ datum/reagents/proc/check_sanic(var/mob/M)
 
 datum/reagents/proc/update_total()
 	total_volume = 0
-	amount_cache.Cut()
+	amount_cache.len = 0
 	for(var/datum/reagent/R in reagent_list)
 		if(R.volume < 0.1)
 			del_reagent(R.id,update_totals=0)
@@ -489,7 +489,7 @@ datum/reagents/proc/update_total()
 	return 0
 
 datum/reagents/proc/clear_reagents()
-	amount_cache.Cut()
+	amount_cache.len = 0
 	for(var/datum/reagent/R in reagent_list)
 		del_reagent(R.id,update_totals=0)
 	// Only call ONCE. -- N3X

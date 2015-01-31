@@ -620,7 +620,7 @@ datum/reagent/aslimetoxin/on_mob_life(var/mob/living/M as mob)
 			M.monkeyizing = 1
 			M.canmove = 0
 			M.icon = null
-			M.overlays.Cut()
+			M.overlays.len = 0
 			M.invisibility = 101
 			for(var/obj/item/W in M)
 				if(istype(W, /obj/item/weapon/implant))	//TODO: Carn. give implants a dropped() or something
@@ -1195,7 +1195,7 @@ datum/reagent/thermite/reaction_turf(var/turf/T, var/volume)
 	if(volume >= 5)
 		if(istype(T, /turf/simulated/wall))
 			T:thermite = 1
-			T.overlays.Cut()
+			T.overlays.len = 0
 			T.overlays = image('icons/effects/effects.dmi',icon_state = "thermite")
 	return
 
@@ -1427,7 +1427,7 @@ datum/reagent/space_cleaner/reaction_obj(var/obj/O, var/volume)
 
 datum/reagent/space_cleaner/reaction_turf(var/turf/T, var/volume)
 	if(volume >= 1)
-		T.overlays.Cut()
+		T.overlays.len = 0
 		T.clean_blood()
 		for(var/obj/effect/decal/cleanable/C in src)
 			qdel(C)
