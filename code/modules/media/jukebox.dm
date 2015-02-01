@@ -475,7 +475,7 @@ var/global/loopModeNames=list(
 			return
 	if(playing)
 		var/datum/song_info/song
-		if(current_song)
+		if(current_song && playlist && playlist.len)
 			song = playlist[current_song]
 		if(!current_song || (song && world.time >= media_start_time + song.length))
 			current_song=1
@@ -498,7 +498,7 @@ var/global/loopModeNames=list(
 			update_music()
 
 /obj/machinery/media/jukebox/update_music()
-	if(current_song && playing)
+	if(current_song && playing && playlist && playlist.len)
 		var/datum/song_info/song = playlist[current_song]
 		media_url = song.url
 		last_song = current_song

@@ -17,16 +17,32 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/on_reagent_change()
 	update_icon()
-	overlays.len = 0
-
 
 /obj/item/weapon/reagent_containers/glass/bottle/New()
 	..()
 	if(!icon_state)
 		icon_state = "bottle0"
 
+
+/obj/item/weapon/reagent_containers/glass/bottle/on_reagent_change()
+	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/pickup(mob/user)
+	..()
+	update_icon()
+
+
+/obj/item/weapon/reagent_containers/glass/bottle/dropped(mob/user)
+	..()
+	update_icon()
+
+
+/obj/item/weapon/reagent_containers/glass/bottle/attack_hand()
+	..()
+	update_icon()
+
 /obj/item/weapon/reagent_containers/glass/bottle/update_icon()
-	overlays.Cut()
+	overlays.len = 0
 	if(reagents.total_volume)
 		if (src.icon_state == "bottle0")
 			var/image/filling = image('icons/obj/reagentfillings.dmi', src, "bottle10")

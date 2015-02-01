@@ -109,6 +109,10 @@ macro "macro"
 		is-disabled = false
 	elem 
 		name = "F5"
+		command = "asay"
+		is-disabled = false
+	elem 
+		name = "CTRL+F5"
 		command = "Aghost"
 		is-disabled = false
 	elem 
@@ -355,6 +359,10 @@ macro "hotkeymode"
 		is-disabled = false
 	elem 
 		name = "F5"
+		command = "asay"
+		is-disabled = false
+	elem 
+		name = "CTRL+F5"
 		command = "Aghost"
 		is-disabled = false
 	elem 

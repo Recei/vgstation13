@@ -1992,19 +1992,19 @@ var/global/list/organ_damage_overlays = list(
 
 	if(src.stat != 2)
 		if (nutrition > 400)
-			if(lastpoocomplaint > world.timeofday)
-				lastpoocomplaint = 0
-			if(prob(10))
-				wanttopoo++
-			if(wanttopoo >=5 && prob(25))
-				emote("poo")
-				wanttopoo = 0
-			else if(wanttopoo >=3 && (world.timeofday >= (lastpoocomplaint + 6000)))
+			if(world.timeofday >= lastpoocomplaint + 6000)
 				lastpoocomplaint = world.timeofday
-				src << "<b><font size=2>You really want to poo!</font></b>"
-			else if(world.timeofday >= lastpoocomplaint + 6000)
-				lastpoocomplaint = world.timeofday
-				src << "><b>You want to poo.</b>"
+				if(wanttopoo >=3)
+					wanttopoo++
+					src << "<b><font size=2>You really want to poo!</font></b>"
+				if(wanttopoo >=5)
+					if(prob(10))
+						emote("poo")
+					else
+						src << "<b><font size=2>You nearly poop yourself!</font></b>"
+				else
+					wanttopoo++
+					src << "<b>You want to poo.</b>"
 
 		else
 			if(lastnutritioncomplaint > world.timeofday)
@@ -2022,16 +2022,19 @@ var/global/list/organ_damage_overlays = list(
 		if(lastpeecomplaint > world.timeofday)
 			lastpeecomplaint = 0
 		if (hydration > 400)
-			if(prob(10))
-				wanttopee++
-			if(wanttopee >=5 && prob(25))
-				emote("pee")
-				wanttopee = 0
-			else if(wanttopee >=3 && world.timeofday >= lastpeecomplaint + 6000)
+			if(world.timeofday >= lastpeecomplaint + 6000)
 				lastpeecomplaint = world.timeofday
-				src << "<b><font size=2>You really want to pee!</font></b>"
-			else if(world.timeofday >= lastpeecomplaint + 6000)
-				src << "<b>You want to pee.</b>"
+				if(wanttopee >=3)
+					wanttopee++
+					src << "<b><font size=2>You really want to pee!</font></b>"
+				if(wanttopee >=5)
+					if(prob(10))
+						emote("pee")
+					else
+						src << "<b><font size=2>You nearly piss yourself!</font></b>"
+				else
+					wanttopee++
+					src << "<b>You want to pee.</b>"
 
 		else
 			if(lasthydrationcomplaint > world.timeofday)
