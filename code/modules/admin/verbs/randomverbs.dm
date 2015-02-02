@@ -65,7 +65,7 @@
 					M << "\bold You hear a voice in your head... \italic [sanitize(html_decode(msg))]"
 
 	log_admin("SubtlePM: [key_name(usr)] -> [key_name(M)] : [msg]")
-	message_admins("\blue \bold SubtleMessage: [key_name_admin(usr)] -> [key_name_admin(M)] : [msg]", 1)
+	message_admins("\blue \bold SubtleMessage: [key_name_admin(usr)] -> [key_name_admin(M)] : [sanitize(msg)]", 1)
 	feedback_add_details("admin_verb","SMS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_world_narrate() // Allows administrators to fluff events a little easier -- TLE
@@ -589,10 +589,10 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		if(! (C.stat & (BROKEN|NOPOWER) ) )
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( C.loc )
 			P.name = "'[command_name()] Update.'"
-			P.info = input
+			P.info = sanitize(input)
 			P.update_icon()
 			C.messagetitle.Add("[command_name()] Update")
-			C.messagetext.Add(sanitize_uni(P.info))
+			C.messagetext.Add(sanitize(P.info))
 
 	switch(alert("Should this be announced to the general population?",,"Yes","No"))
 		if("Yes")

@@ -166,6 +166,59 @@
 	else
 		usr << "<span class='rose'>There is no magazine to remove!</span>"
 
+/obj/item/weapon/gun/projectile/automatic/m16
+	name = "M16"
+	desc = "A worldwide famous automatic rifle. Originally designed in early 60-s of XX century, it still has use by NanoTrasen Airborne Forces. Uses 5.56x45 rounds."
+	icon_state = "m16"
+	item_state = "m16"
+	inhand_states = list("left_hand" = 'icons/mob/in-hand/left/guns.dmi', "right_hand" = 'icons/mob/in-hand/right/guns.dmi')
+	w_class = 3.0
+	max_shells = 100 //It can be loaded with 100 round C-mag
+	burst_count = 3
+	caliber = list("5.56x45" = 1)
+	origin_tech = "combat=5;materials=3;"
+	ammo_type = "/obj/item/ammo_casing/c556"
+	mag_type = "/obj/item/ammo_storage/magazine/stanag"
+	fire_sound = 'sound/weapons/Gunshot_c20.ogg'
+	load_method = 2
+
+	gun_flags = EMPTYCASINGS
+
+/obj/item/weapon/gun/projectile/automatic/m16/New()
+	..()
+	update_icon()
+	return
+
+/obj/item/weapon/gun/projectile/automatic/m16/proc/update_magazine()
+	if(stored_magazine)
+		src.overlays.len = 0
+		overlays += "[stored_magazine.icon_state]"
+		return
+
+/obj/item/weapon/gun/projectile/automatic/m16/update_icon()
+	src.overlays.len = 0
+	update_magazine()
+	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
+	return
+
+/obj/item/weapon/gun/projectile/automatic/m16/m4
+	name = "M4A1"
+	desc = "Modification of famous M16 Assault rifle, used by Police , Security and Special Forces. It has EOtech 553 attached on it. Uses 5.56x45 rounds."
+	icon_state = "m4"
+	origin_tech = "combat=6;materials=4;" //New technologies and etc
+
+/obj/item/weapon/gun/projectile/automatic/m16/mk18
+	name = "MK18 MOD 1"
+	desc = "A modern version of M4A1 rifle, designed to be used by NanoTrasen NSW forces. It has EOtech 553 attached on it. Uses 5.56x45 rounds."
+	icon_state = "mk18"
+	origin_tech = "combat=7;materials=5;" //New technologies and etc
+
+/obj/item/weapon/gun/projectile/automatic/m16/patriot
+	name = "\improper The Patriot"
+	desc = "Modified version of a Colt XM-16E1, designed in order to create a carbine that combined the feel and quick handling of a handgun with the force of a rifle. Uses 5.56x45 rounds."
+	icon_state = "patriot"
+	origin_tech = "combat=6;materials=4;" //New technologies and etc
+
 
 /* The thing I found with guns in ss13 is that they don't seem to simulate the rounds in the magazine in the gun.
    Afaik, since projectile.dm features a revolver, this would make sense since the magazine is part of the gun.

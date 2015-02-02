@@ -744,7 +744,7 @@
 
 		if(("poo") || ("poop") || ("shit") || ("crap"))
 
-			if (src.nutrition <= 300)
+			if (!wanttopoo || src.nutrition < 300)
 				src.emote("fart")
 				m_type = HEARABLE
 			else if(toilet)
@@ -755,6 +755,7 @@
 				if(src.reagents)
 					src.reagents.trans_to(V, 10)
 				src.nutrition -= 80
+				wanttopoo = 0
 				m_type = HEARABLE
 			else
 				if (src.w_uniform)
@@ -768,13 +769,13 @@
 					message = "<B>[src]</B> poos on the floor."
 					playsound(src.loc, 'sound/misc/fart.ogg', 60, 1)
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
-					var/turf/location = src.loc
+					wanttopoo = 0
 
-					var/obj/effect/decal/cleanable/poo/D = new/obj/effect/decal/cleanable/poo(location)
+					var/obj/effect/decal/cleanable/poo/D = new/obj/effect/decal/cleanable/poo(get_turf(src))
 					if(src.reagents)
 						src.reagents.trans_to(D, 10)
 
-					var/obj/item/weapon/reagent_containers/food/snacks/poo/V = new/obj/item/weapon/reagent_containers/food/snacks/poo(location)
+					var/obj/item/weapon/reagent_containers/food/snacks/poo/V = new/obj/item/weapon/reagent_containers/food/snacks/poo(get_turf(src))
 					if(src.reagents)
 						src.reagents.trans_to(V, 10)
 
@@ -801,19 +802,21 @@
 										break
 
 		if(("pee") || ("urinate") || ("piss"))
-			if(!src.reagents || src.hydration <= 300)
+			if(!src.reagents || src.hydration <= 300 || !wanttopee)
 				message = "<B>[src]</B> attempts to urinate but nothing comes out."
 			else
 				if(toilet)
 					message = "<B>[src]</B> urinates in [toilet]."
 					src.hydration -= 80
+					wanttopee = 0
 					m_type = VISIBLE
 				else
-					var/obj/effect/decal/cleanable/urine/D = new/obj/effect/decal/cleanable/urine(src.loc)
+					var/obj/effect/decal/cleanable/urine/D = new/obj/effect/decal/cleanable/urine(get_turf(src))
 					if(src.reagents)
 						src.reagents.trans_to(D, 10)
 					message = "<B>[src]</B> urinates on the floor."
 					src.hydration -= 80
+					wanttopee = 0
 					m_type = VISIBLE
 				// check for being in sight of a working security camera
 					if(seen_by_camera(src))

@@ -388,6 +388,12 @@
 	mymob.nutrition_icon.name = "nutrition"
 	mymob.nutrition_icon.screen_loc = ui_nutrition
 
+	mymob.hydration_icon = new /obj/screen()
+	mymob.hydration_icon.icon = ui_style
+	mymob.hydration_icon.icon_state = "hydration0"
+	mymob.hydration_icon.name = "hydration"
+	mymob.hydration_icon.screen_loc = ui_nutrition
+
 	mymob.pullin = new /obj/screen()
 	mymob.pullin.icon = ui_style
 	mymob.pullin.icon_state = "pull0"
@@ -424,7 +430,7 @@
 	mymob.zone_sel.icon = ui_style
 	mymob.zone_sel.color = ui_color
 	mymob.zone_sel.alpha = ui_alpha
-	mymob.zone_sel.overlays.Cut()
+	mymob.zone_sel.overlays.len = 0
 	mymob.zone_sel.overlays += image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]")
 
 	//Handle the gun settings buttons

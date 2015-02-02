@@ -65,6 +65,12 @@
 	projectile_type = "/obj/item/projectile/bullet/midbullet"
 	w_type = RECYK_METAL
 
+/obj/item/ammo_casing/c556
+	desc = "A 5.56x45 bullet casing."
+	caliber = "5.56x45"
+	projectile_type = "/obj/item/projectile/bullet/nato"
+	w_type = RECYK_METAL
+
 
 /obj/item/ammo_casing/shotgun
 	name = "shotgun shell"

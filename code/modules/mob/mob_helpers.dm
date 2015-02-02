@@ -147,27 +147,44 @@ proc/hasorgans(A)
 	return t
 
 proc/slur(phrase)
-	phrase = html_decode(phrase)
-	var/leng=length(phrase)
-	var/counter=length(phrase)
-	var/newphrase=""
-	var/newletter=""
+	phrase = sanitize(phrase)
+	var/index = findtext(phrase, "&#255;")
+	while(index)
+		phrase = copytext(phrase, 1, index) + "?" + copytext(phrase, index+1)
+		index = findtext(phrase, "&#255;")
+	var
+		leng=lentext(phrase)
+		counter=lentext(phrase)
+		newphrase=""
+		newletter=""
+
 	while(counter>=1)
 		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
-		if(rand(1,3)==3)
-			if(lowertext(newletter)=="o")	newletter="u"
-			if(lowertext(newletter)=="s")	newletter="ch"
-			if(lowertext(newletter)=="a")	newletter="ah"
-			if(lowertext(newletter)=="c")	newletter="k"
+		if(prob(33))
+			if(lowertext(newletter)=="о")	newletter="у"
+			if(lowertext(newletter)=="ы")	newletter="i"
+			if(lowertext(newletter)=="р")	newletter="r"
+			if(lowertext(newletter)=="л")	newletter="ль"
+			if(lowertext(newletter)=="з")	newletter="с"
+			if(lowertext(newletter)=="в")	newletter="ф"
+			if(lowertext(newletter)=="б")	newletter="п"
+			if(lowertext(newletter)=="г")	newletter="х"
+			if(lowertext(newletter)=="д")	newletter="т"
 		switch(rand(1,15))
 			if(1,3,5,8)	newletter="[lowertext(newletter)]"
 			if(2,4,6,15)	newletter="[uppertext(newletter)]"
 			if(7)	newletter+="'"
-			//if(9,10)	newletter="<b>[newletter]</b>"
-			//if(11,12)	newletter="<big>[newletter]</big>"
-			//if(13)	newletter="<small>[newletter]</small>"
-		newphrase+="[newletter]";counter-=1
+			if(9,10)	newletter="<b>[newletter]</b>"
+			if(11,12)	newletter="<big>[newletter]</big>"
+			if(13)	newletter="<small>[newletter]</small>"
+		newphrase+="[newletter]"
+		counter-=1
+	index = findtext(newphrase, "?")
+	while(index)
+		newphrase = copytext(newphrase, 1, index) + "&#255;" + copytext(newphrase, index+1)
+		index = findtext(newphrase, "?")
 	return newphrase
+
 
 /proc/stutter(n)
 	var/te = html_decode(n)
@@ -265,6 +282,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		var/x
 		M.shakecamera = 1
 		for(x=0; x<duration, x++)
+			if(!M || !M.client)
+				M.shakecamera = 0
+				return //somebody disconnected while being shaken
 			M.client.eye = locate(dd_range(1,M.loc.x+rand(-strength,strength),world.maxx),dd_range(1,M.loc.y+rand(-strength,strength),world.maxy),M.loc.z)
 			sleep(1)
 		M.shakecamera = 0

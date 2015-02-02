@@ -452,7 +452,7 @@
 //Refreshes the icon and sets the luminosity
 /obj/machinery/portable_atmospherics/hydroponics/update_icon()
 
-	overlays.Cut()
+	overlays.len = 0
 
 	// Updates the plant overlay.
 	if(!isnull(seed))

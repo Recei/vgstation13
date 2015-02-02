@@ -3,6 +3,7 @@
 /obj/item/slime_extract/metroid_core
 	name = "metroid core"
 	desc = "A very slimy and tender part of a Metroid. They also legend to have \"magical powers\"."
+	icon_state = "metroid core"
 
 	Uses = 99999 // uses before it goes inert, infinite
 

@@ -47,7 +47,7 @@
 
 /datum/surgery_step/cavity/make_space/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!istype(target))
-		user << "<span class='warning'>This isn't a human!.</span>"
+		return 0
 	var/datum/organ/external/affected = target.get_organ(target_zone)
 	return ..() && !affected.cavity && !affected.hidden
 
@@ -123,7 +123,6 @@
 
 /datum/surgery_step/cavity/place_item/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!istype(target))
-		user << "<span class='warning'>This isn't a human!.</span>"
 		return 0
 	var/datum/organ/external/affected = target.get_organ(target_zone)
 	var/can_fit = !affected.hidden && affected.cavity && tool.w_class <= get_max_wclass(affected)

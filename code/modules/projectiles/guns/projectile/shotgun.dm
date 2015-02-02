@@ -91,9 +91,9 @@
 		return
 
 /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog/update_icon()
-	src.overlays = 0
+	src.overlays.len = 0
 	update_magazine()
-	icon_state = "bulldog[chambered ? "" : "-e"]"
+	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
 	return
 
 

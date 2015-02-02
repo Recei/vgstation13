@@ -259,7 +259,7 @@ var/global/list/organ_damage_overlays = list(
 			src << "We have been dead for too long, we stop here."
 			last_processed = "DEAD"
 		cycle = "DEAD"
-		return											//We go ahead and process them 5 times for HUD images and other stuff though.
+		return PROCESS_KILL											//We go ahead and process them 5 times for HUD images and other stuff though.
 
 	//Handle temperature/pressure differences between body and environment
 	handle_environment(environment)
@@ -336,9 +336,9 @@ var/global/list/organ_damage_overlays = list(
 	var/pressure_difference = abs( pressure - ONE_ATMOSPHERE )
 
 	var/pressure_adjustment_coefficient = 1	//Determins how much the clothing you are wearing protects you in percent.
-	if(wear_suit && (wear_suit.flags & STOPSPRESSUREDMAGE))
+	if(wear_suit && (wear_suit.flags & STOPSPRESSUREDMG))
 		pressure_adjustment_coefficient -= PRESSURE_SUIT_REDUCTION_COEFFICIENT
-	if(head && (head.flags & STOPSPRESSUREDMAGE))
+	if(head && (head.flags & STOPSPRESSUREDMG))
 		pressure_adjustment_coefficient -= PRESSURE_HEAD_REDUCTION_COEFFICIENT
 	pressure_adjustment_coefficient = max(pressure_adjustment_coefficient,0) //So it isn't less than 0
 	pressure_difference = pressure_difference * pressure_adjustment_coefficient
@@ -1188,7 +1188,7 @@ var/global/list/organ_damage_overlays = list(
 
 		else
 			for(var/atom/a in hallucinations)
-				del a
+				qdel(a)
 
 			if(halloss > 100)
 				src << "<span class='notice'>You're in too much pain to keep going...</span>"
@@ -1298,8 +1298,9 @@ var/global/list/organ_damage_overlays = list(
 			var/pixel_x_diff = rand(-amplitude, amplitude)
 			var/pixel_y_diff = rand(-amplitude/3, amplitude/3)
 
-			animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff , time = 2, loop = -1)
-			animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, time = 2)
+			spawn()
+				animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff , time = 2, loop = -1)
+				animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, time = 2)
 			jitteriness = max(jitteriness-1, 0)
 
 
@@ -1497,7 +1498,7 @@ var/global/list/organ_damage_overlays = list(
 			see_invisible = SEE_INVISIBLE_LIVING
 
 		if(healths)
-			healths.overlays.Cut()
+			healths.overlays.len = 0
 			if (analgesic)
 				healths.icon_state = "health_health_numb"
 			else
@@ -1991,19 +1992,19 @@ var/global/list/organ_damage_overlays = list(
 
 	if(src.stat != 2)
 		if (nutrition > 400)
-			if(lastpoocomplaint > world.timeofday)
-				lastpoocomplaint = 0
-			if(prob(10))
-				wanttopoo++
-			if(wanttopoo >=5 && prob(25))
-				emote("poo")
-				wanttopoo = 0
-			else if(wanttopoo >=3 && (world.timeofday >= (lastpoocomplaint + 6000)))
+			if(world.timeofday >= lastpoocomplaint + 6000)
 				lastpoocomplaint = world.timeofday
-				src << "<b><font size=2>You really want to poo!</font></b>"
-			else if(world.timeofday >= lastpoocomplaint + 6000)
-				lastpoocomplaint = world.timeofday
-				src << "><b>You want to poo.</b>"
+				if(wanttopoo >=3)
+					wanttopoo++
+					src << "<b><font size=2>You really want to poo!</font></b>"
+				if(wanttopoo >=5)
+					if(prob(10))
+						emote("poo")
+					else
+						src << "<b><font size=2>You nearly poop yourself!</font></b>"
+				else
+					wanttopoo++
+					src << "<b>You want to poo.</b>"
 
 		else
 			if(lastnutritioncomplaint > world.timeofday)
@@ -2021,16 +2022,19 @@ var/global/list/organ_damage_overlays = list(
 		if(lastpeecomplaint > world.timeofday)
 			lastpeecomplaint = 0
 		if (hydration > 400)
-			if(prob(10))
-				wanttopee++
-			if(wanttopee >=5 && prob(25))
-				emote("pee")
-				wanttopee = 0
-			else if(wanttopee >=3 && world.timeofday >= lastpeecomplaint + 6000)
+			if(world.timeofday >= lastpeecomplaint + 6000)
 				lastpeecomplaint = world.timeofday
-				src << "<b><font size=2>You really want to pee!</font></b>"
-			else if(world.timeofday >= lastpeecomplaint + 6000)
-				src << "<b>You want to pee.</b>"
+				if(wanttopee >=3)
+					wanttopee++
+					src << "<b><font size=2>You really want to pee!</font></b>"
+				if(wanttopee >=5)
+					if(prob(10))
+						emote("pee")
+					else
+						src << "<b><font size=2>You nearly piss yourself!</font></b>"
+				else
+					wanttopee++
+					src << "<b>You want to pee.</b>"
 
 		else
 			if(lasthydrationcomplaint > world.timeofday)

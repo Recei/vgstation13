@@ -17,7 +17,7 @@
 							/obj/item/slime_extract/metroid_core/t3	= 2,
 							/obj/item/slime_extract/metroid_core/t4	= 2,
 							/obj/item/slime_extract/metroid_core/t5	= 2,
-							/obj/item/slime_extract/metroid_core		= 3)
+							/obj/item/slime_extract/metroid_core	= 3)
 
 /mob/living/carbon/slime/adult/metroid
 	name = "adult metroid"
