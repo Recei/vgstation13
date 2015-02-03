@@ -116,15 +116,17 @@
 	ammo_type = "/obj/item/ammo_casing/c556"
 	max_ammo = 30
 	multiple_sprites = 1
-	sprite_modulo = 2
+	sprite_modulo = 30
 
 /obj/item/ammo_storage/magazine/stanag/short
 	name = "magazine 20(5.56x45)"
 	icon_state = "stanag_20"
 	max_ammo = 20
+	sprite_modulo = 20
 
 /obj/item/ammo_storage/magazine/stanag/drum
 	name = "magazine 100(5.56x45)"
 	icon_state = "drum"
 	ammo_type = "/obj/item/ammo_casing/c556"
 	max_ammo = 100
+	sprite_modulo = 100
