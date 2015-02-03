@@ -89,6 +89,7 @@
 		world.log << "Your server failed to establish a connection with the database."
 	else
 		world.log << "Database connection established."
+		migration_controller = new
 
 	plmaster = new /obj/effect/overlay()
 	plmaster.icon = 'icons/effects/tile_effects.dmi'
