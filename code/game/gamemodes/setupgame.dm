@@ -137,6 +137,8 @@
 // Run AFTER genetics setup and AFTER species setup.
 /proc/setup_species()
 	// SPECIES GENETICS FUN
+	if(!all_species.len)
+		buildSpeciesLists()
 	for(var/name in all_species)
 		// I hate BYOND.  Can't just call while it's in the list.
 		var/datum/species/species = all_species[name]

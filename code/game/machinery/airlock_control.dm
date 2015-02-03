@@ -239,7 +239,7 @@ obj/machinery/airlock_sensor/Topic(href,href_list)
 		else
 			newfreq = input(usr, "Specify a new frequency (GHz). Decimals assigned automatically.", src, frequency) as null|num
 		if(newfreq)
-			if(findtextEx(num2text(newfreq), "."))
+			if(findtext(num2text(newfreq), "."))
 				newfreq *= 10 // shift the decimal one place
 			if(newfreq < 10000)
 				frequency = newfreq
@@ -379,7 +379,7 @@ obj/machinery/access_button/Topic(href,href_list)
 			else
 				newfreq = input(usr, "Specify a new frequency (GHz). Decimals assigned automatically.", src, frequency) as null|num
 			if(newfreq)
-				if(findtextEx(num2text(newfreq), "."))
+				if(findtext(num2text(newfreq), "."))
 					newfreq *= 10 // shift the decimal one place
 				if(newfreq < 10000)
 					frequency = newfreq

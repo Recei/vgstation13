@@ -41,7 +41,7 @@
 			for(var/i=1, ((i <= D.stage) && (i <= temp_message.len)), i++) //Loop for each stage of the disease or until we run out of words
 				if(prob(3 * D.stage)) //Stage 1: 3% Stage 2: 6% Stage 3: 9% Stage 4: 12%
 					var/H = pick(pick_list)
-					if(findtextEx(temp_message[H], "*") || findtextEx(temp_message[H], ";") || findtextEx(temp_message[H], ":")) continue
+					if(findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
 					temp_message[H] = "HONK"
 					pick_list -= H //Make sure that you dont HONK the same word twice
 				message = list2text(temp_message, " ")
@@ -129,11 +129,11 @@
 		if(client)
 			var/virgin = 1	//has the text been modified yet?
 			var/temp = winget(client, "input", "text")
-			if(findtextEx(temp, "Say \"", 1, 7) && length(temp) > 5)	//case sensitive means
+			if(findtext(temp, "Say \"", 1, 7) && length(temp) > 5)	//case sensitive means
 
 				temp = replacetext(temp, ";", "")	//general radio
 
-				if(findtextEx(trim_left(temp), ":", 6, 7))	//dept radio
+				if(findtext(trim_left(temp), ":", 6, 7))	//dept radio
 					temp = copytext(trim_left(temp), 8)
 					virgin = 0
 
@@ -141,10 +141,10 @@
 					temp = copytext(trim_left(temp), 6)	//normal speech
 					virgin = 0
 
-				while(findtextEx(trim_left(temp), ":", 1, 2))	//dept radio again (necessary)
+				while(findtext(trim_left(temp), ":", 1, 2))	//dept radio again (necessary)
 					temp = copytext(trim_left(temp), 3)
 
-				if(findtextEx(temp, "*", 1, 2))	//emotes
+				if(findtext(temp, "*", 1, 2))	//emotes
 					return
 
 				var/trimmed = trim_left(temp)

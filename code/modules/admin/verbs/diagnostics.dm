@@ -208,7 +208,7 @@
 
 	usr << "<b>Jobbans active in this round.</b>"
 	for(var/t in jobban_keylist)
-		if(findtextEx(t, filter))
+		if(findtext(t, filter))
 			usr << "[t]"
 
 // For /vg/ Wiki docs

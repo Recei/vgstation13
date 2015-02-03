@@ -2125,9 +2125,7 @@ proc/process_adminbus_teleport_locs()
 /area/awaymission/listeningpost
 	name = "\improper Listening Post"
 	icon_state = "away"
-	requires_power = 1
-	luminosity = 0
-	lighting_use_dynamic = 1
+	requires_power = 0
 
 /area/awaymission/beach
 	name = "Beach"
