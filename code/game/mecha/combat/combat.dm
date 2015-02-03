@@ -139,7 +139,7 @@
 /obj/mecha/combat/hear_talk(mob/M as mob, text)
 	..()
 	if(am && M==occupant)
-		if(findtextEx(text,""))
+		if(findtext(text,""))
 			sam()
 	return
 

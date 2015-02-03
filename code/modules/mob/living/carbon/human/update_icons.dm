@@ -208,8 +208,6 @@ var/global/list/damage_icon_parts = list()
 	var/hulk = (M_HULK in src.mutations) && species.name == "Horror" // Part of the species.
 	var/skeleton = (SKELETON in src.mutations)
 
-	if(gender == PLURAL && !fat)
-		gender = prev_gender
 
 	var/g = "m"
 	if(gender == FEMALE)	g = "f"
@@ -331,6 +329,8 @@ var/global/list/damage_icon_parts = list()
 				facial_s.Blend(rgb(r_facial, g_facial, b_facial), ICON_ADD)
 
 			face_standing.Blend(facial_s, ICON_OVERLAY)
+		else
+			warning("Invalid f_style for [species.name]: [f_style]")
 
 	if(h_style && !(head && (head.flags & BLOCKHEADHAIR)))
 		var/datum/sprite_accessory/hair_style = hair_styles_list[h_style]
@@ -342,6 +342,8 @@ var/global/list/damage_icon_parts = list()
 				hair_s.Blend(icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_acc"), ICON_OVERLAY)
 
 			face_standing.Blend(hair_s, ICON_OVERLAY)
+		else
+			warning("Invalid h_style for [species.name]: [h_style]")
 
 	//overlays_standing[HAIR_LAYER]	= image(face_standing)
 	var/image/I = image(face_standing)

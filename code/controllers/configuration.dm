@@ -78,7 +78,7 @@
 	var/usealienwhitelist = 0
 	var/limitalienplayers = 0
 	var/alien_to_human_ratio = 0.5
-	
+
 	//used to determine if cyborgs/AI can speak
 	var/silent_ai = 0
 	var/silent_borg = 0
@@ -195,7 +195,7 @@
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtextEx(t, " ")
+		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
 
@@ -376,7 +376,7 @@
 					config.protect_roles_from_antagonist = 1
 
 				if ("probability")
-					var/prob_pos = findtextEx(value, " ")
+					var/prob_pos = findtext(value, " ")
 					var/prob_name = null
 					var/prob_value = null
 
@@ -592,7 +592,7 @@
 		else if (copytext(t, 1, 2) == "#")
 			continue
 
-		var/pos = findtextEx(t, " ")
+		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
 

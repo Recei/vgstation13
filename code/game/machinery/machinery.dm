@@ -231,7 +231,7 @@ Class Procs:
 		else
 			newfreq = input(usr, "Specify a new frequency (GHz). Decimals assigned automatically.", src, src:frequency) as null|num
 		if(newfreq)
-			if(findtextEx(num2text(newfreq), "."))
+			if(findtext(num2text(newfreq), "."))
 				newfreq *= 10 // shift the decimal one place
 			if(newfreq < 10000)
 				src:frequency = newfreq

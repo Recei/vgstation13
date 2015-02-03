@@ -139,7 +139,7 @@ proc/tg_list2text(list/list, glue=",")
 	var/last_found = 1
 	var/found
 	do
-		found = findtextEx(text, delimiter, last_found, 0)
+		found = findtext(text, delimiter, last_found, 0)
 		. += copytext(text, last_found, found)
 		last_found = found + delim_len
 	while(found)
@@ -270,7 +270,7 @@ proc/tg_list2text(list/list, glue=",")
 	var/finalNum = num2text(theNum, sigFig)
 
 	// Start from the end, or from the decimal point
-	var/end = findtextEx(finalNum, ".") || length(finalNum) + 1
+	var/end = findtext(finalNum, ".") || length(finalNum) + 1
 
 	// Moving towards start of string, insert comma every 3 characters
 	for(var/pos = end - 3, pos > 1, pos -= 3)

@@ -1,3 +1,4 @@
+
 /area/research_outpost
 	name = "Research Outpost"
 	icon_state = "anomaly"

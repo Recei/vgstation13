@@ -41,6 +41,14 @@
 /mob/proc/generate_name()
 	return name
 
+/mob/proc/get_ghost(even_if_they_cant_reenter = 0)
+	if(mind)
+		for(var/mob/dead/observer/G in dead_mob_list)
+			if(G.mind == mind)
+				if(G.can_reenter_corpse || even_if_they_cant_reenter)
+					return G
+				break
+
 /**
  * Player panel controls for this mob.
  */
@@ -168,14 +176,6 @@
 			return r_hand
 	return null
 
-
-/mob/proc/get_ghost(even_if_they_cant_reenter = 0)
-	if(mind)
-		for(var/mob/dead/observer/G in dead_mob_list)
-			if(G.mind == mind)
-				if(G.can_reenter_corpse || even_if_they_cant_reenter)
-					return G
-				break
 
 /mob/proc/restrained()
 	return
