@@ -11,6 +11,7 @@
 	fire_delay = 0
 	var/burstfire = 0 //Whether or not the gun fires multiple bullets at once
 	var/burst_count = 3
+	var/fire_rate = 1 //Delay between shots in 1/10 of second
 	load_method = 2
 	mag_type = "/obj/item/ammo_storage/magazine/smg9mm"
 
@@ -40,6 +41,7 @@
 		for(var/i = 1; i <= to_shoot; i++)
 			..()
 			shots_fired++
+			sleep(fire_rate)
 		message_admins("[usr] just shot [shots_fired] burst fire bullets out of [getAmmo() + shots_fired] from their [src].")
 		fire_delay = shots_fired * 10
 	else
@@ -56,6 +58,7 @@
 	origin_tech = "combat=5;materials=2;syndicate=8"
 	ammo_type = "/obj/item/ammo_casing/c45"
 	mag_type = "/obj/item/ammo_storage/magazine/uzi45"
+	fire_rate = 0.5
 
 /obj/item/weapon/gun/projectile/automatic/mini_uzi/isHandgun()
 	return 1
@@ -94,6 +97,7 @@
 	w_class = 3.0
 	max_shells = 20
 	burst_count = 4
+	fire_rate = 0
 	caliber = list("12mm" = 1)
 	ammo_type = "/obj/item/ammo_casing/a12mm"
 	mag_type = "/obj/item/ammo_storage/magazine/a12mm"
@@ -179,7 +183,7 @@
 	origin_tech = "combat=5;materials=3;"
 	ammo_type = "/obj/item/ammo_casing/c556"
 	mag_type = "/obj/item/ammo_storage/magazine/stanag"
-	fire_sound = 'sound/weapons/Gunshot_c20.ogg'
+	fire_sound = 'sound/weapons/Gunshot_m16.ogg'
 	load_method = 2
 
 	gun_flags = EMPTYCASINGS
