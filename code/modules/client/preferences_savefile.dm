@@ -49,6 +49,8 @@
 		return 0
 
 /datum/preferences/proc/load_preferences_sqlite(var/ckey)
+	if(!hair_styles_list.len) buildHairLists()
+	if(!all_species.len) buildSpeciesLists()
 	var/list/preference_list_client = new
 	var/database/query/check = new
 	var/database/query/q = new
