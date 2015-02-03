@@ -117,6 +117,7 @@
 
 		master_controller.setup()
 
+		buildSpeciesLists()
 		setup_species()
 
 	for(var/plugin_type in typesof(/plugin))

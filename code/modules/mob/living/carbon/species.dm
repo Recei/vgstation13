@@ -312,6 +312,7 @@ var/global/list/whitelisted_species = list("Human")
 
 // Used for species-specific names (Vox, etc)
 /datum/species/proc/makeName(var/gender,var/mob/living/carbon/C=null)
+	if(!all_species.len) buildSpeciesLists()
 	if(gender==FEMALE)	return capitalize(pick(first_names_female)) + " " + capitalize(pick(last_names))
 	else				return capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 
