@@ -1164,7 +1164,7 @@ About the new airlock wires panel:
 				spawn (20)
 					del(S)
 
-				L.emote("scream",,, 1)
+				L.emote("scream")
 
 				if (istype(loc, /turf/simulated))
 					T.add_blood(L)

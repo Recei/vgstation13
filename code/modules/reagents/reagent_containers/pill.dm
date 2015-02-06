@@ -232,3 +232,59 @@
 		reagents.add_reagent("impedrezene", 10)
 		reagents.add_reagent("synaptizine", 5)
 		reagents.add_reagent("hyperzine", 5)
+
+/obj/item/weapon/reagent_containers/pill/salicyclic
+	name = "salicylic acid pill"
+	desc = "Used to dull pain."
+	icon_state = "pill5"
+	New()
+		..()
+		reagents.add_reagent("sal_acid", 24)
+
+/obj/item/weapon/reagent_containers/pill/morphine
+	name = "morphine pill"
+	desc = "Commonly used to treat insomnia."
+	icon_state = "pill8"
+	New()
+		..()
+		reagents.add_reagent("morphine", 30)
+
+/obj/item/weapon/reagent_containers/pill/salbutamol
+	name = "salbutamol pill"
+	desc = "Used to treat oxygen deprivation."
+	icon_state = "pill18"
+	New()
+		..()
+		reagents.add_reagent("salbutamol", 30)
+
+/obj/item/weapon/reagent_containers/pill/charcoal
+	name = "antitoxin pill"
+	desc = "Neutralizes many common toxins."
+	icon_state = "pill17"
+	New()
+		..()
+		reagents.add_reagent("charcoal", 50)
+
+/obj/item/weapon/reagent_containers/pill/epinephrine
+	name = "epinephrine pill"
+	desc = "Used to stabilize patients."
+	icon_state = "pill5"
+	New()
+		..()
+		reagents.add_reagent("epinephrine", 15)
+
+/obj/item/weapon/reagent_containers/pill/mannitol
+	name = "mannitol pill"
+	desc = "Used to treat brain damage."
+	icon_state = "pill17"
+	New()
+		..()
+		reagents.add_reagent("mannitol", 50)
+
+/obj/item/weapon/reagent_containers/pill/mutadone
+	name = "mutadone pill"
+	desc = "Used to treat genetic damage."
+	icon_state = "pill20"
+	New()
+		..()
+		reagents.add_reagent("mutadone", 50)

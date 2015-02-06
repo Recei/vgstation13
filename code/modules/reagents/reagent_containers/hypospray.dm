@@ -61,15 +61,19 @@
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector
-	name = "autoinjector"
+	name = "epinephrine medipen"
 	desc = "A rapid and safe way to administer small amounts of drugs by untrained or trained personnel."
 	icon_state = "autoinjector"
 	item_state = "autoinjector"
 	amount_per_transfer_from_this = 10
 	volume = 10
-	starting_reagent = "inaprovaline"
+	starting_reagent = "epinephrine"
 	starting_amount = 10
 
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/New()
+	..()
+	update_icon()
+	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
 	..()
@@ -77,6 +81,7 @@
 		flags &= ~OPENCONTAINER
 	update_icon()
 	return
+
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
 	if(reagents.total_volume > 0)

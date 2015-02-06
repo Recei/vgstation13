@@ -14,7 +14,7 @@ datum/reagent/silver_sulfadiazine
 
 datum/reagent/silver_sulfadiazine/reaction_mob(var/mob/living/M as mob, var/method=TOUCH, var/volume)
 	if(method == TOUCH)
-		M.adjustFireLoss((volume-(volume*2))*REM)
+		M.adjustFireLoss(-volume)
 		M << "<span class='notice'>You feel your burns healing!</span>"
 		M.emote("scream")
 	if(method == INGEST)
@@ -25,8 +25,7 @@ datum/reagent/silver_sulfadiazine/reaction_mob(var/mob/living/M as mob, var/meth
 
 datum/reagent/silver_sulfadiazine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	if(prob(55))
-		M.adjustFireLoss(-2*REM)
+	M.adjustFireLoss(-2*REM)
 	..()
 	return
 
@@ -47,7 +46,7 @@ datum/reagent/styptic_powder
 
 datum/reagent/styptic_powder/reaction_mob(var/mob/living/M as mob, var/method=TOUCH, var/volume)
 	if(method == TOUCH)
-		M.heal_organ_damage(volume*REM,0)
+		M.adjustBruteLoss(-volume)
 		M << "<span class='notice'>You feel your wounds knitting back together</span>!"
 		M.emote("scream")
 	if(method == INGEST)
@@ -58,8 +57,7 @@ datum/reagent/styptic_powder/reaction_mob(var/mob/living/M as mob, var/method=TO
 
 datum/reagent/styptic_powder/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	if(prob(55))
-		M.adjustBruteLoss(-2*REM)
+	M.adjustBruteLoss(-2*REM)
 	..()
 	return
 
@@ -113,8 +111,8 @@ datum/reagent/synthflesh
 datum/reagent/synthflesh/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 	if(!M) M = holder.my_atom
 	if(method == TOUCH)
-		M.adjustBruteLoss(-(1*volume)*REM)
-		M.adjustFireLoss(-(1*volume)*REM)
+		M.adjustBruteLoss(-1,5*volume)
+		M.adjustFireLoss(-1,5*volume)
 		M << "<span class='notice'>You feel your burns healing and your flesh knitting together!</span>"
 	..()
 	return
@@ -254,7 +252,7 @@ datum/reagent/pen_acid/on_mob_life(var/mob/living/M as mob)
 	required_reagents = list("fuel" = 1, "chlorine" = 1, "ammonia" = 1, "formaldehyde" = 1, "sodium" = 1, "cyanide" = 1)
 	result_amount = 6
 
-datum/reagent/sal_acid
+datum/reagent/painkiller/sal_acid
 	name = "Salicyclic Acid"
 	id = "sal_acid"
 	description = "A liquid compound that aids tissue development. It can be used to treat small and moderate bruises. Very effective at low temperatures."
@@ -262,7 +260,7 @@ datum/reagent/sal_acid
 	color = "#EB9C0A" // rgb: 200, 165, 220
 	overdose_threshold = 50
 
-datum/reagent/sal_acid/on_mob_life(var/mob/living/M as mob)
+datum/reagent/painkiller/sal_acid/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	if(M.getBruteLoss() < 50)
 		if(prob(50))
@@ -275,7 +273,7 @@ datum/reagent/sal_acid/on_mob_life(var/mob/living/M as mob)
 	..()
 	return
 
-datum/reagent/sal_acid/overdose_process(var/mob/living/M as mob)
+datum/reagent/painkiller/sal_acid/overdose_process(var/mob/living/M as mob)
 	if(M.getBruteLoss() < 50)
 		if(prob(50))
 			M.adjustBruteLoss(2*REM)
@@ -355,7 +353,7 @@ datum/reagent/ephedrine/on_mob_life(var/mob/living/M as mob)
 	M.AdjustParalysis(-1)
 	M.AdjustStunned(-1)
 	M.AdjustWeakened(-1)
-	M.adjustHalLoss(-1*REM)
+	M.adjustHalLoss(-1)
 	..()
 	return
 
@@ -618,22 +616,21 @@ datum/reagent/strange_reagent
 	custom_metabolism = 0.2
 
 datum/reagent/strange_reagent/reaction_mob(var/mob/living/carbon/human/M as mob, var/method=TOUCH, var/volume)
-	if(M.bruteloss > 80 || M.fireloss > 80)
-		if(ishuman(M) || ismonkey(M))
-			var/mob/living/carbon/C = M
-			if(!C.has_brain()) // Their brain is already taken out
-				var/obj/item/organ/brain/B = new(C.loc)
-				B.transfer_identity(C)
-			M.gib()
-	else if(M.stat == DEAD)
+	if(M.stat == DEAD)
+		if(M.getBruteLoss() >= 80 || M.getFireLoss() >= 80)
+			if(ishuman(M) || ismonkey(M))
+				var/mob/living/carbon/C = M
+				if(!C.has_brain()) // Their brain is already taken out
+					var/obj/item/organ/brain/B = new(C.loc)
+					B.transfer_identity(C)
+					M.gib()
+				return
 		var/mob/dead/observer/ghost = M.get_ghost()
 		M.visible_message("<span class='warning'>[M]'s body convulses a bit.</span>")
-		if(M.health <= config.health_threshold_dead && !M.suiciding && !ghost && !(M_NOCLONE in M.mutations))
+		if(!M.suiciding && !ghost && !(M_NOCLONE in M.mutations))
 			M.stat = 1
-			M.adjustBruteLoss(-10)
-			M.adjustFireLoss(-10)
-			M.adjustOxyLoss(-10)
-			M.adjustToxLoss(-10)
+			M.adjustOxyLoss(-20)
+			M.adjustToxLoss(-20)
 			dead_mob_list -= M
 			living_mob_list |= list(M)
 			M.emote("gasp")
