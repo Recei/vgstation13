@@ -159,7 +159,7 @@ datum/reagent/blood
 	name = "Blood"
 	id = "blood"
 	reagent_state = LIQUID
-	color = "#a00000" // rgb: 160, 0, 0
+	color = "#980002" // rgb: 160, 0, 0 NORMAL BLOOD COLOR
 
 datum/reagent/blood/reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 	var/datum/reagent/blood/self = src

@@ -103,12 +103,11 @@ datum/reagent/neurotoxin2
 
 datum/reagent/neurotoxin2/on_mob_life(var/mob/living/M as mob)
 	cycle_count++
-	if(!M) M = holder.my_atom
 	if(M.brainloss + M.toxloss <= 60)
 		M.adjustBrainLoss(1*REM)
 		M.adjustToxLoss(1*REM)
 	if(cycle_count == 17)
-		M.sleeping += 1
+		M.sleeping += 10
 	..()
 	return
 
@@ -134,7 +133,7 @@ datum/reagent/cyanide/on_mob_life(var/mob/living/M as mob)
 	if(prob(10))
 		M.adjustOxyLoss(1*REM)
 	if(prob(8))
-		M.sleeping += 1
+		M.sleeping += 5
 		M.adjustToxLoss(2*REM)
 	..()
 	return

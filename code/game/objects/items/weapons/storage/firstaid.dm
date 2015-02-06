@@ -30,14 +30,42 @@
 		icon_state = pick("ointment","firefirstaid")
 
 		new /obj/item/device/healthanalyzer( src )
-		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
-		new /obj/item/stack/medical/ointment( src )
-		new /obj/item/stack/medical/ointment( src )
-		new /obj/item/weapon/reagent_containers/pill/kelotane( src )
-		new /obj/item/weapon/reagent_containers/pill/kelotane( src )
-		new /obj/item/weapon/reagent_containers/pill/kelotane( src ) //Replaced ointment with these since they actually work --Errorage
+		if(prob(50))
+			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
+			new /obj/item/weapon/reagent_containers/pill/salicyclic( src )
+		else
+			new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
+			new /obj/item/stack/medical/ointment( src )
+			new /obj/item/stack/medical/ointment( src )
+			new /obj/item/weapon/reagent_containers/pill/kelotane( src )
+			new /obj/item/weapon/reagent_containers/pill/kelotane( src )
+			new /obj/item/weapon/reagent_containers/pill/kelotane( src )
 		return
 
+
+/obj/item/weapon/storage/firstaid/brute
+	icon_state = "brutefirstaid"
+
+	New()
+		..()
+		if (empty) return
+		if(prob(50))
+			new /obj/item/weapon/reagent_containers/pill/patch/styptic( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/styptic( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/styptic( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/styptic( src )
+		else
+			new /obj/item/stack/medical/bruise_pack(src)
+			new /obj/item/stack/medical/bruise_pack(src)
+			new /obj/item/stack/medical/bruise_pack(src)
+			new /obj/item/stack/medical/bruise_pack(src)
+		new /obj/item/weapon/reagent_containers/pill/salicyclic( src )
+		new /obj/item/device/healthanalyzer(src)
+		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
+		return
 
 /obj/item/weapon/storage/firstaid/regular
 	icon_state = "firstaid"
@@ -45,11 +73,18 @@
 	New()
 		..()
 		if (empty) return
-		new /obj/item/stack/medical/bruise_pack(src)
-		new /obj/item/stack/medical/bruise_pack(src)
-		new /obj/item/stack/medical/bruise_pack(src)
-		new /obj/item/stack/medical/ointment(src)
-		new /obj/item/stack/medical/ointment(src)
+		if(prob(50))
+			new /obj/item/weapon/reagent_containers/pill/patch/styptic( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/styptic( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
+			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
+			new /obj/item/weapon/reagent_containers/pill/salicyclic( src )
+		else
+			new /obj/item/stack/medical/bruise_pack(src)
+			new /obj/item/stack/medical/bruise_pack(src)
+			new /obj/item/stack/medical/bruise_pack(src)
+			new /obj/item/stack/medical/ointment(src)
+			new /obj/item/stack/medical/ointment(src)
 		new /obj/item/device/healthanalyzer(src)
 		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 		return
@@ -65,13 +100,20 @@
 		if (empty) return
 
 		icon_state = pick("antitoxin","antitoxfirstaid","antitoxfirstaid2","antitoxfirstaid3")
-
-		new /obj/item/weapon/reagent_containers/syringe/antitoxin( src )
-		new /obj/item/weapon/reagent_containers/syringe/antitoxin( src )
-		new /obj/item/weapon/reagent_containers/syringe/antitoxin( src )
-		new /obj/item/weapon/reagent_containers/pill/antitox( src )
-		new /obj/item/weapon/reagent_containers/pill/antitox( src )
-		new /obj/item/weapon/reagent_containers/pill/antitox( src )
+		if(prob(50))
+			new /obj/item/weapon/reagent_containers/glass/bottle/charcoal( src )
+			new /obj/item/weapon/reagent_containers/glass/bottle/charcoal( src )
+			new /obj/item/weapon/reagent_containers/glass/bottle/charcoal( src )
+			new /obj/item/weapon/reagent_containers/pill/charcoal( src )
+			new /obj/item/weapon/reagent_containers/pill/charcoal( src )
+			new /obj/item/weapon/reagent_containers/pill/charcoal( src )
+		else
+			new /obj/item/weapon/reagent_containers/syringe/antitoxin( src )
+			new /obj/item/weapon/reagent_containers/syringe/antitoxin( src )
+			new /obj/item/weapon/reagent_containers/syringe/antitoxin( src )
+			new /obj/item/weapon/reagent_containers/pill/antitox( src )
+			new /obj/item/weapon/reagent_containers/pill/antitox( src )
+			new /obj/item/weapon/reagent_containers/pill/antitox( src )
 		new /obj/item/device/healthanalyzer( src )
 		return
 
@@ -84,10 +126,16 @@
 	New()
 		..()
 		if (empty) return
-		new /obj/item/weapon/reagent_containers/pill/dexalin( src )
-		new /obj/item/weapon/reagent_containers/pill/dexalin( src )
-		new /obj/item/weapon/reagent_containers/pill/dexalin( src )
-		new /obj/item/weapon/reagent_containers/pill/dexalin( src )
+		if(prob(50))
+			new /obj/item/weapon/reagent_containers/pill/salbutamol( src )
+			new /obj/item/weapon/reagent_containers/pill/salbutamol( src )
+			new /obj/item/weapon/reagent_containers/pill/salbutamol( src )
+			new /obj/item/weapon/reagent_containers/pill/salbutamol( src )
+		else
+			new /obj/item/weapon/reagent_containers/pill/dexalin( src )
+			new /obj/item/weapon/reagent_containers/pill/dexalin( src )
+			new /obj/item/weapon/reagent_containers/pill/dexalin( src )
+			new /obj/item/weapon/reagent_containers/pill/dexalin( src )
 		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 		new /obj/item/weapon/reagent_containers/syringe/inaprovaline( src )
 		new /obj/item/device/healthanalyzer( src )
@@ -105,9 +153,9 @@
 	new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 	new /obj/item/stack/medical/advanced/bruise_pack(src)
 	new /obj/item/stack/medical/advanced/bruise_pack(src)
-	new /obj/item/stack/medical/advanced/bruise_pack(src)
 	new /obj/item/stack/medical/advanced/ointment(src)
 	new /obj/item/stack/medical/advanced/ointment(src)
+	new /obj/item/weapon/reagent_containers/pill/tramadol( src )
 	new /obj/item/stack/medical/splint(src)
 	return
 /*

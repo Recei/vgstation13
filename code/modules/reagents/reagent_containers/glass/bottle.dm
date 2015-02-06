@@ -428,3 +428,35 @@
 	New()
 		..()
 		reagents.add_reagent("histamine", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/epinephrine
+	name = "epinephrine bottle"
+	desc = "A small bottle. Contains epinephrine - used to stabilize patients."
+	New()
+		..()
+		reagents.add_reagent("epinephrine", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/diphenhydramine
+	name = "antihistamine bottle"
+	desc = "A small bottle of diphenhydramine."
+	New()
+		..()
+		reagents.add_reagent("diphenhydramine", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/potass_iodide
+	name = "anti-radiation bottle"
+	desc = "A small bottle of potassium iodide."
+	New()
+		..()
+		reagents.add_reagent("potass_iodide", 30)
+
+/obj/item/weapon/reagent_containers/glass/bottle/atropine
+	name = "atropine bottle"
+	desc = "A small bottle of atropine."
+	New()
+		..()
+		reagents.add_reagent("atropine", 30)
+
+
+
+

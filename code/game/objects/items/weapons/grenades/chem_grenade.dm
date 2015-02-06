@@ -169,12 +169,38 @@
 
 	visible_message("<span class='warning'>\icon[src] \The [src] bursts open.</span>")
 
+	mix_reagents()
+
+	if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
+		var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
+		steam.set_up(10, 0, get_turf(src))
+		steam.attach(src)
+		steam.start()
+
+		for(var/atom/A in view(affected_area, src.loc))
+			if( A == src ) continue
+			src.reagents.reaction(A, 1, 10)
+
+	invisibility = INVISIBILITY_MAXIMUM //Why am i doing this?
+	spawn(50)		   //To make sure all reagents can work
+		del(src)	   //correctly before deleting the grenade.
+	/*else
+		icon_state = initial(icon_state) + "_locked"
+		crit_fail = 1
+		for(var/obj/item/weapon/reagent_containers/glass/G in beakers)
+			G.loc = get_turf(src.loc)*/
+/obj/item/weapon/grenade/chem_grenade/proc/mix_reagents()
 	reservoir = new /obj/item/weapon/reagent_containers/glass/beaker/noreactgrenade() //acts like a stasis beaker, so the chemical reactions don't occur before all the slime reactions have occured
+
+	var/total_temp
 
 	for(var/obj/item/weapon/reagent_containers/glass/G in beakers)
 		G.reagents.trans_to(reservoir, G.reagents.total_volume)
-	for(var/obj/item/slime_extract/S in beakers)		//checking for reagents inside the slime extracts
+		total_temp += G.reagents.chem_temp
+	for(var/obj/item/slime_extract/S in beakers)
 		S.reagents.trans_to(reservoir, S.reagents.total_volume)
+		total_temp += S.reagents.chem_temp
+
 	if (E != null)
 		extract_uses = E.Uses
 		for(var/i=1,i<=extract_uses,i++)//<-------//exception for slime extracts injected with steroids. The grenade will repeat its checks untill all its remaining uses are gone
@@ -205,25 +231,7 @@
 		reservoir.reagents.update_total()
 
 	reservoir.reagents.trans_to(src, reservoir.reagents.total_volume)
-
-	if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
-		var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
-		steam.set_up(10, 0, get_turf(src))
-		steam.attach(src)
-		steam.start()
-
-		for(var/atom/A in view(affected_area, src.loc))
-			if( A == src ) continue
-			src.reagents.reaction(A, 1, 10)
-
-	invisibility = INVISIBILITY_MAXIMUM //Why am i doing this?
-	spawn(50)		   //To make sure all reagents can work
-		del(src)	   //correctly before deleting the grenade.
-	/*else
-		icon_state = initial(icon_state) + "_locked"
-		crit_fail = 1
-		for(var/obj/item/weapon/reagent_containers/glass/G in beakers)
-			G.loc = get_turf(src.loc)*/
+	reagents.chem_temp = total_temp / beakers.len + 30
 
 /obj/item/weapon/grenade/chem_grenade/New()
 	. = ..()
