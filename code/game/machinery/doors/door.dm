@@ -301,7 +301,7 @@
 		explosion_resistance = initial(explosion_resistance)
 	else
 		// under all objects if opened. 2.7 due to tables being at 2.6
-		layer = 2.7
+		layer = initial(layer)
 
 		explosion_resistance = 0
 
