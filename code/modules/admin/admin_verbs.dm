@@ -163,6 +163,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/debug_reagents,
 	/client/proc/make_invulnerable,
 	/client/proc/cmd_admin_dump_delprofile,
+	/client/proc/mob_list,
 #ifdef PROFILE_MACHINES
 	/client/proc/cmd_admin_dump_macprofile,
 #endif
@@ -248,6 +249,7 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/cmd_debug_tog_aliens,
 	/client/proc/air_report,
 	/client/proc/enable_debug_verbs,
+	/client/proc/mob_list,
 	/proc/possess,
 	/proc/release
 	)

@@ -124,9 +124,6 @@ var/list/department_radio_keys = list(
 
 	if(handle_inherent_channels(message, message_mode))
 		return
-	if(isMoMMI(src))
-		src:mommi_talk(message)
-		return
 	if(!can_speak_vocal(message))
 		return
 
@@ -141,7 +138,7 @@ var/list/department_radio_keys = list(
 	if(radio_return & REDUCE_RANGE)
 		message_range = 1
 
-	
+
 	send_speech(message, message_range, src, bubble_type)
 
 	log_say("[name]/[key] : [message]")
@@ -170,7 +167,7 @@ var/list/department_radio_keys = list(
 	var/list/listening = get_hearers_in_view(message_range, source)
 	var/list/listening_dead = list()
 	for(var/mob/M in player_list)
-		if(M.stat == DEAD && (M.client.prefs.toggles & CHAT_GHOSTEARS) && client) // client is so that ghosts don't have to listen to mice
+		if(client && M.client && M.stat == DEAD && (M.client.prefs.toggles & CHAT_GHOSTEARS)) // client is so that ghosts don't have to listen to mice
 			listening_dead |= M
 
 	listening -= listening_dead //so ghosts dont hear stuff twice
