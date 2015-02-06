@@ -70,6 +70,10 @@
 	starting_reagent = "epinephrine"
 	starting_amount = 10
 
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/New()
+	..()
+	update_icon()
+	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
 	..()
@@ -77,6 +81,7 @@
 		flags &= ~OPENCONTAINER
 	update_icon()
 	return
+
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
 	if(reagents.total_volume > 0)

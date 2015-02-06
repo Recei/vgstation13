@@ -354,7 +354,7 @@ datum/reagent/water/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 							if(affecting.take_damage(25, 0))
 								H.QueueUpdateDamageIcon(1)
 							H.status_flags |= DISFIGURED
-							H.emote("scream",,, 1)
+							H.emote("scream")
 					else
 						M.take_organ_damage(min(15, volume * 2)) // uses min() and volume to make sure they aren't being sprayed in trace amounts (1 unit != insta rape) -- Doohl
 			else
@@ -805,7 +805,7 @@ datum/reagent/holywater/reaction_mob(var/mob/living/M, var/method=TOUCH, var/vol
 								if(affecting.take_damage(25, 0))
 									H.QueueUpdateDamageIcon(1)
 								H.status_flags |= DISFIGURED
-								H.emote("scream",,, 1)
+								H.emote("scream")
 						else
 							M.take_organ_damage(min(15, volume * 2)) // uses min() and volume to make sure they aren't being sprayed in trace amounts (1 unit != insta rape) -- Doohl
 			else
@@ -2543,11 +2543,11 @@ datum/reagent/condensedcapsaicin/reaction_mob(var/mob/living/M, var/method=TOUCH
 				return
 			else if ( eyes_covered ) // Eye cover is better than mouth cover
 				victim << "<span class='warning'>Your [eyes_covered] protects your eyes from the pepperspray!</span>"
-				victim.emote("scream",,, 1)
+				victim.emote("scream")
 				victim.eye_blurry = max(M.eye_blurry, 5)
 				return
 			else // Oh dear :D
-				victim.emote("scream",,, 1)
+				victim.emote("scream")
 				victim << "<span class='danger'>You're sprayed directly in the eyes with pepperspray!</span>"
 				victim.eye_blurry = max(M.eye_blurry, 25)
 				victim.eye_blind = max(M.eye_blind, 10)

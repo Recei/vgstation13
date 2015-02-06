@@ -37,12 +37,12 @@
 			new /obj/item/weapon/reagent_containers/pill/patch/silver_sulf( src )
 			new /obj/item/weapon/reagent_containers/pill/salicyclic( src )
 		else
-			new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 			new /obj/item/stack/medical/ointment( src )
 			new /obj/item/stack/medical/ointment( src )
 			new /obj/item/weapon/reagent_containers/pill/kelotane( src )
 			new /obj/item/weapon/reagent_containers/pill/kelotane( src )
 			new /obj/item/weapon/reagent_containers/pill/kelotane( src )
+		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 		return
 
 
@@ -101,9 +101,9 @@
 
 		icon_state = pick("antitoxin","antitoxfirstaid","antitoxfirstaid2","antitoxfirstaid3")
 		if(prob(50))
-			new /obj/item/weapon/reagent_containers/glass/bottle/charcoal( src )
-			new /obj/item/weapon/reagent_containers/glass/bottle/charcoal( src )
-			new /obj/item/weapon/reagent_containers/glass/bottle/charcoal( src )
+			new /obj/item/weapon/reagent_containers/syringe/charcoal( src )
+			new /obj/item/weapon/reagent_containers/syringe/charcoal( src )
+			new /obj/item/weapon/reagent_containers/syringe/charcoal( src )
 			new /obj/item/weapon/reagent_containers/pill/charcoal( src )
 			new /obj/item/weapon/reagent_containers/pill/charcoal( src )
 			new /obj/item/weapon/reagent_containers/pill/charcoal( src )
