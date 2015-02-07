@@ -79,6 +79,7 @@
 	required_reagents = list("mercury" = 1, "oxygen" = 1, "nitrogen" = 1, "carbon" = 1)
 	result_amount = 4
 	required_temp = 474
+	required_stabilizers = list("stabilizer" = 1)
 
 /datum/reagent/sorium/reaction_turf(var/turf/simulated/T, var/volume)
 	if(istype(T, /turf/simulated/floor/))
@@ -93,7 +94,20 @@
 		goonchem_vortex(T, 1, 5, 3)
 		return
 
-/datum/chemical_reaction/sorium/on_reaction(var/datum/reagents/holder, var/created_volume)
+/datum/chemical_reaction/sorium/unstable_reaction(var/datum/reagents/holder, var/created_volume)
+	var/turf/simulated/T = get_turf(holder.my_atom)
+	goonchem_vortex(T, 1, 5, 6)
+	return
+
+/datum/chemical_reaction/sorium_det
+	name = "Sorium Detonation"
+	id = "sorium_det"
+	result = "sorium"
+	required_reagents = list("sorium" = 1)
+	result_amount = 1
+	required_temp = 484
+
+/datum/chemical_reaction/sorium_det/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	goonchem_vortex(T, 1, 5, 6)
 	return
@@ -112,6 +126,7 @@
 	required_reagents = list("stable_plasma" = 1, "radium" = 1, "carbon" = 1)
 	result_amount = 3
 	required_temp = 474
+	required_stabilizers = list("stabilizer" = 1)
 
 /datum/reagent/liquid_dark_matter/reaction_turf(var/turf/simulated/T, var/volume)
 	if(istype(T, /turf/simulated/floor/))
@@ -126,10 +141,24 @@
 		goonchem_vortex(T, 0, 5, 3)
 		return
 
-/datum/chemical_reaction/liquid_dark_matter/on_reaction(var/datum/reagents/holder, var/created_volume)
+/datum/chemical_reaction/liquid_dark_matter/unstable_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/simulated/T = get_turf(holder.my_atom)
 	goonchem_vortex(T, 0, 5, 6)
 	return
+
+/datum/chemical_reaction/liquid_dark_matter_det
+	name = "Liquid Dark Matter Detonation"
+	id = "liquid_dark_matter_det"
+	result = "liquid_dark_matter"
+	required_reagents = list("liquid_dark_matter" = 1)
+	result_amount = 1
+	required_temp = 484
+
+/datum/chemical_reaction/liquid_dark_matter_det/on_reaction(var/datum/reagents/holder, var/created_volume)
+	var/turf/simulated/T = get_turf(holder.my_atom)
+	goonchem_vortex(T, 0, 5, 6)
+	return
+
 
 proc/goonchem_vortex(var/turf/simulated/T, var/setting_type, var/range, var/pull_times)
 	for(var/atom/movable/X in orange(range, T))
@@ -139,7 +168,7 @@ proc/goonchem_vortex(var/turf/simulated/T, var/setting_type, var/range, var/pull
 			if((X))
 				if(setting_type)
 					for(var/i = 0, i < pull_times, i++)
-						step_towards(X,T)
+						step_away(X,T)
 				else
 					for(var/i = 0, i < pull_times, i++)
 						step_towards(X,T)

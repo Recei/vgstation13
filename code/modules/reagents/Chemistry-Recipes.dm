@@ -524,6 +524,8 @@ datum/chemical_reaction/chemsmoke
 	result = null
 	required_reagents = list("potassium" = 1, "sugar" = 1, "phosphorus" = 1)
 	result_amount = null
+	required_temp = 374
+	required_stabilizers = list("stabilizer" = 1)
 	secondary = 1
 
 datum/chemical_reaction/chemsmoke/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -538,6 +540,9 @@ datum/chemical_reaction/chemsmoke/on_reaction(var/datum/reagents/holder, var/cre
 		S.start()
 	holder.clear_reagents()
 	return
+
+datum/chemical_reaction/chemsmoke/unstable_reaction(var/datum/reagents/holder, var/created_volume)
+	return on_reaction(holder, created_volume)
 
 datum/chemical_reaction/chloralhydrate
 	name = "Chloral Hydrate"
