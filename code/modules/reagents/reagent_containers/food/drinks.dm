@@ -488,7 +488,7 @@
 				reagents.add_reagent("toxin", 20)
 			if(3)
 				name = "Groans Banned Soda: Sour Suprise"
-				reagents.add_reagent("pacid", 20)
+				reagents.add_reagent("facid", 20)
 			if(4)
 				name = "Groans Banned Soda: Sleepy Suprise"
 				reagents.add_reagent("stoxin", 10)

@@ -19,7 +19,7 @@
 	var/global/list/reagents_to_log = list( \
 		"fuel"  =  "welder fuel", \
 		"plasma"=  "plasma", \
-		"pacid" =  "polytrinic acid", \
+		"facid" =  "fluorosulfuric acid", \
 		"sacid" =  "sulphuric acid" \
 	)
 

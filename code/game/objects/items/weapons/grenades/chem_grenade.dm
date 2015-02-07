@@ -339,7 +339,7 @@ obj/item/weapon/grenade/chem_grenade/exgrenade/attackby(obj/item/weapon/W as obj
 
 	B1.reagents.add_reagent("aluminum", 30)
 	B2.reagents.add_reagent("foaming_agent", 10)
-	B2.reagents.add_reagent("pacid", 10)
+	B2.reagents.add_reagent("facid", 10)
 
 	detonator = new/obj/item/device/assembly_holder/timer_igniter(src)
 

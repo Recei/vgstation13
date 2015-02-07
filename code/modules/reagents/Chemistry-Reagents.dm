@@ -75,7 +75,7 @@ datum/reagent/proc/reaction_turf(var/turf/T, var/volume)
 
 datum/reagent/proc/on_mob_life(var/mob/living/M as mob, var/alien)
 	if(!istype(M, /mob/living))
-		return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
+		return //Noticed runtime errors from facid trying to damage ghosts, this should fix. --NEO
 
 	if(!holder) return
 	holder.remove_reagent(src.id, custom_metabolism) //By default it slowly disappears.
@@ -1088,10 +1088,10 @@ datum/reagent/toxin/acid/reaction_obj(var/obj/O, var/volume)
 		return
 	O.acid_act(acidpwr, toxpwr, volume)
 
-datum/reagent/toxin/acid/polyacid
-	name = "Polytrinic acid"
-	id = "pacid"
-	description = "Polytrinic acid is a an extremely corrosive chemical substance."
+datum/reagent/toxin/acid/fluacid
+	name = "Fluorosulfuric acid"
+	id = "facid"
+	description = "Fluorosulfuric acid is a an extremely corrosive chemical substance."
 	color = "#8E18A9" // rgb: 142, 24, 169
 	toxpwr = 2
 	acidpwr = 20
@@ -1743,8 +1743,8 @@ datum/reagent/adminordrazine/on_mob_life(var/mob/living/carbon/M as mob)
 		holder.remove_reagent("plasma", 5)
 	if(holder.has_reagent("sacid"))
 		holder.remove_reagent("sacid", 5)
-	if(holder.has_reagent("pacid"))
-		holder.remove_reagent("pacid", 5)
+	if(holder.has_reagent("facid"))
+		holder.remove_reagent("facid", 5)
 	if(holder.has_reagent("cyanide"))
 		holder.remove_reagent("cyanide", 5)
 	if(holder.has_reagent("lexorin"))

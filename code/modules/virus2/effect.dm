@@ -226,7 +226,7 @@
 	//
 	if(!ishuman(mob)) return 0
 	var/mob/living/carbon/human/H = mob
-	mob.reagents.add_reagent("pacid", 10)
+	mob.reagents.add_reagent("facid", 10)
 	mob << "<span class = 'warning'> Your body burns as your cells break down.</span>"
 	shake_camera(mob,5*multiplier)
 

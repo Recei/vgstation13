@@ -282,3 +282,30 @@ datum/reagent/emetic/on_mob_life(var/mob/living/M as mob)
 	result = "emetic"
 	required_reagents = list("vomit" = 1, "limejuice" = 1, "orangejuice" = 1)
 	result_amount = 3
+
+/datum/reagent/potash
+	name = "Potash"
+	id = "potash"
+	description = "A salt commonly used as fertilizer."
+	reagent_state = LIQUID
+	color = "#60A584" // rgb: 96, 165, 132
+
+/datum/chemical_reaction/potash
+	name = "potash"
+	id = "potash"
+	result = "potash"
+	required_reagents = list("sacid" = 1, "chlorine" = 1, "potassium" = 1)
+
+/datum/reagent/saltpetre
+	name = "Saltpetre"
+	id = "saltpetre"
+	description = "A salt commonly used as fertilizer."
+	reagent_state = LIQUID
+	color = "#60A584" // rgb: 96, 165, 132
+
+/datum/chemical_reaction/saltpetre
+	name = "saltpetre"
+	id = "saltpetre"
+	result = "saltpetre"
+	required_reagents = list("potash" = 1, "poo" = 1, "urine" = 1)
+	result_amount = 3

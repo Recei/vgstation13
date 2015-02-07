@@ -801,7 +801,7 @@ proc/populate_seed_list()
 	mutants = null
 	packet_icon = "seed-deathnettle"
 	plant_icon = "deathnettle"
-	chems = list("nutriment" = list(1,50), "pacid" = list(0,1))
+	chems = list("nutriment" = list(1,50), "facid" = list(0,1))
 
 	maturation = 8
 	yield = 2

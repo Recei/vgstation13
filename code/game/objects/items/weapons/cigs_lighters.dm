@@ -164,7 +164,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	..()
 	var/turf/location = get_turf(src)
 	if(istype(glass))	//you can dip cigarettes into beakers
-		if(glass.reagents.has_reagent("sacid") || glass.reagents.has_reagent("pacid"))
+		if(glass.reagents.has_reagent("sacid") || glass.reagents.has_reagent("facid"))
 			new src.type_butt(location)
 			processing_objects.Remove(src)
 			user << "<span class='warning'>Half of the [name] dissolves with a nasty fizzle.</span>"

@@ -238,12 +238,13 @@ datum/chemical_reaction/lube
 	required_reagents = list("water" = 1, "silicon" = 1, "oxygen" = 1)
 	result_amount = 4
 
-datum/chemical_reaction/pacid
-	name = "Polytrinic acid"
-	id = "pacid"
-	result = "pacid"
-	required_reagents = list("sacid" = 1, "chlorine" = 1, "potassium" = 1)
-	result_amount = 3
+/datum/chemical_reaction/facid
+	name = "Fluorosulfuric acid"
+	id = "facid"
+	result = "facid"
+	required_reagents = list("sacid" = 1, "fluorine" = 1, "hydrogen" = 1, "potassium" = 1)
+	result_amount = 4
+	required_temp = 380
 
 datum/chemical_reaction/synaptizine
 	name = "Synaptizine"
@@ -420,7 +421,7 @@ datum/chemical_reaction/nitroglycerin
 	name = "Nitroglycerin"
 	id = "nitroglycerin"
 	result = "nitroglycerin"
-	required_reagents = list("glycerol" = 1, "pacid" = 1, "sacid" = 1)
+	required_reagents = list("glycerol" = 1, "facid" = 1, "sacid" = 1)
 	result_amount = 2
 
 datum/chemical_reaction/nitroglycerin/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -595,7 +596,7 @@ datum/chemical_reaction/plastication
 	name = "Plastic"
 	id = "solidplastic"
 	result = null
-	required_reagents = list("pacid" = 10, "plasticide" = 20)
+	required_reagents = list("facid" = 10, "plasticide" = 20)
 	result_amount = 1
 
 datum/chemical_reaction/plastication/on_reaction(var/datum/reagents/holder)
@@ -683,7 +684,7 @@ datum/chemical_reaction/metalfoam
 	name = "Metal Foam"
 	id = "metalfoam"
 	result = null
-	required_reagents = list("aluminum" = 3, "foaming_agent" = 1, "pacid" = 1)
+	required_reagents = list("aluminum" = 3, "foaming_agent" = 1, "facid" = 1)
 	result_amount = 5
 
 datum/chemical_reaction/metalfoam/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -699,7 +700,7 @@ datum/chemical_reaction/ironfoam
 	name = "Iron Foam"
 	id = "ironlfoam"
 	result = null
-	required_reagents = list("iron" = 3, "foaming_agent" = 1, "pacid" = 1)
+	required_reagents = list("iron" = 3, "foaming_agent" = 1, "facid" = 1)
 	result_amount = 5
 
 datum/chemical_reaction/ironfoam/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -846,7 +847,7 @@ slimeteleport
 	name = "Slime Teleport"
 	id = "m_tele"
 	result = null
-	required_reagents = list("pacid" = 2, "mutagen" = 2)
+	required_reagents = list("facid" = 2, "mutagen" = 2)
 	required_catalysts = list("plasma" = 1)
 	result_amount = 1
 	required_container = /obj/item/slime_core
@@ -1813,7 +1814,7 @@ datum/chemical_reaction/metroidteleport
 	name = "Metroid Teleport"
 	id = "m_tele"
 	result = null
-	required_reagents = list("pacid" = 2, "mutagen" = 2)
+	required_reagents = list("facid" = 2, "mutagen" = 2)
 	required_catalysts = list("plasma" = 1)
 	result_amount = 1
 	required_container = /obj/item/slime_extract/metroid_core/t4
