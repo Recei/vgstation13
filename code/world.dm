@@ -118,10 +118,7 @@
 
 		master_controller.setup()
 
-		buildSpeciesLists()
 		setup_species()
-
-		buildHairLists()
 
 	for(var/plugin_type in typesof(/plugin))
 		var/plugin/P = new plugin_type()

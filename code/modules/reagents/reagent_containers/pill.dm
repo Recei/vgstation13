@@ -247,7 +247,7 @@
 	icon_state = "pill8"
 	New()
 		..()
-		reagents.add_reagent("morphine", 30)
+		reagents.add_reagent("morphine", 20)
 
 /obj/item/weapon/reagent_containers/pill/salbutamol
 	name = "salbutamol pill"

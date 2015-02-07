@@ -498,7 +498,7 @@ var/global/loopModeNames=list(
 			update_music()
 
 /obj/machinery/media/jukebox/update_music()
-	if(current_song > playlist.len)
+	if(playlist) if(current_song > playlist.len)
 		current_song = 0
 	if(current_song && playing && playlist && playlist.len)
 		var/datum/song_info/song = playlist[current_song]
