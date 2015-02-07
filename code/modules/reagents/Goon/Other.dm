@@ -223,9 +223,14 @@ datum/reagent/colorful_reagent
 	required_reagents = list("stable_plasma" = 1, "radium" = 1, "space_drugs" = 1, "cryoxadone" = 1, "triple_citrus" = 1)
 	result_amount = 5
 
-datum/reagent/colorful_reagent/reaction_mob(var/mob/M, var/volume)
-	if(M && isliving(M))
-		M.color = pick(potential_colors)
+datum/reagent/colorful_reagent/reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+	if(method==INGEST)
+		if(M && ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.species.blood_color = pick(potential_colors)
+	if(method == TOUCH)
+		if(M && isliving(M))
+			M.color = pick(potential_colors)
 	..()
 	return
 datum/reagent/colorful_reagent/reaction_obj(var/obj/O, var/volume)
