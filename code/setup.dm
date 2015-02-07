@@ -1023,3 +1023,6 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 #define TOTAL_LAYERS			25
 //////////////////////////////////
 
+
+//COMMENT IF YOUR DREAMDAEMON VERSION IS BELOW 507.1248
+#define BORDER_USE_TURF_EXIT 1
