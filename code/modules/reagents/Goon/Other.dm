@@ -130,6 +130,14 @@ datum/reagent/carpet
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
 
+/datum/reagent/carpet/reaction_turf(var/turf/simulated/T, var/volume)
+	if(istype(T, /turf/simulated/floor/) && !istype(T, /turf/simulated/floor/carpet))
+		var/turf/simulated/floor/F = T
+		F.visible_message("[T] gets a layer of carpeting applied!")
+		F.ChangeTurf(/turf/simulated/floor/carpet)
+	..()
+	return
+
 datum/reagent/bromine
 	name = "Bromine"
 	id = "bromine"
@@ -214,7 +222,7 @@ datum/reagent/colorful_reagent
 	description = "A solution."
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
-	var/list/potential_colors = list("#FF0000","#0000FF","#008000","#FFFF00")
+	var/list/potential_colors = list("#00aedb","#a200ff","#f47835","#d41243","#d11141","#00b159","#00aedb","#f37735","#ffc425","#008744","#0057e7","#d62d20","#ffa700")
 
 /datum/chemical_reaction/colorful_reagent
 	name = "colorful_reagent"
@@ -222,6 +230,16 @@ datum/reagent/colorful_reagent
 	result = "colorful_reagent"
 	required_reagents = list("stable_plasma" = 1, "radium" = 1, "space_drugs" = 1, "cryoxadone" = 1, "triple_citrus" = 1)
 	result_amount = 5
+
+datum/reagent/colorful_reagent/on_mob_life(var/mob/living/M as mob)
+	if(M && isliving(M))
+		var/new_color = pick(potential_colors)
+		M.color = new_color
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.species.blood_color = new_color
+	..()
+	return
 
 datum/reagent/colorful_reagent/reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 	if(method==INGEST)
@@ -309,3 +327,164 @@ datum/reagent/emetic/on_mob_life(var/mob/living/M as mob)
 	result = "saltpetre"
 	required_reagents = list("potash" = 1, "poo" = 1, "urine" = 1)
 	result_amount = 3
+
+datum/reagent/corn_starch
+	name = "Corn Starch"
+	id = "corn_starch"
+	description = "A slippery solution."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+/datum/chemical_reaction/corn_syrup
+	name = "corn_syrup"
+	id = "corn_syrup"
+	result = "corn_syrup"
+	required_reagents = list("corn_starch" = 1, "sacid" = 1)
+	result_amount = 5
+	required_temp = 374
+
+datum/reagent/corn_syrup
+	name = "Corn Syrup"
+	id = "corn_syrup"
+	description = "Decays into sugar."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+datum/reagent/corn_syrup/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	M.reagents.add_reagent("sugar", 3)
+	M.reagents.remove_reagent("corn_syrup", 1)
+	..()
+	return
+
+/datum/chemical_reaction/corgium
+	name = "corgium"
+	id = "corgium"
+	result = null
+	required_reagents = list("nutriment" = 5, "colorful_reagent" = 5, "strange_reagent" = 5, "blood" = 5)
+	result_amount = 0
+	required_temp = 374
+
+/datum/chemical_reaction/corgium/on_reaction(var/datum/reagents/holder, var/created_volume)
+	var/location = get_turf(holder.my_atom)
+	new /mob/living/simple_animal/corgi(location)
+	..()
+	return
+
+datum/reagent/hair_dye
+	name = "Quantum Hair Dye"
+	id = "hair_dye"
+	description = "A solution."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+	var/list/potential_colors = list("0ad","a0f","f73","d14","d14","0b5","0ad","f73","fc2","084","05e","d22","fa0") // fucking hair code
+	var/new_color = null
+
+datum/reagent/hair_dye/on_mob_life(var/mob/living/M as mob)
+	if(M && ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(new_color)
+			mix_hair_color(new_color, H)
+		else
+			var/picked_color = "#[pick(potential_colors)][pick(potential_colors)]"
+			mix_hair_color(picked_color, H)
+	..()
+	return
+
+datum/reagent/hair_dye/proc/mix_hair_color(var/colour, var/mob/living/carbon/human/H)
+	H.r_hair = hex2num(copytext(colour, 2, 4))
+	H.g_hair = hex2num(copytext(colour, 4, 6))
+	H.b_hair = hex2num(copytext(colour, 6, 8))
+	H.r_facial = hex2num(copytext(colour, 2, 4))
+	H.g_facial = hex2num(copytext(colour, 4, 6))
+	H.b_facial = hex2num(copytext(colour, 6, 8))
+	H.update_hair()
+	return
+
+datum/reagent/hair_dye/reaction_mob(var/mob/living/M, var/volume)
+	if(M && ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(new_color)
+			mix_hair_color(new_color, H)
+		else
+			var/picked_color = "#[pick(potential_colors)][pick(potential_colors)]"
+			mix_hair_color(picked_color, H)
+	..()
+	return
+
+/datum/chemical_reaction/hair_dye
+	name = "hair_dye"
+	id = "hair_dye"
+	result = "hair_dye"
+	required_reagents = list("colorful_reagent" = 1, "radium" = 1, "space_drugs" = 1)
+	result_amount = 5
+
+datum/reagent/barbers_aid
+	name = "Barber's Aid"
+	id = "barbers_aid"
+	description = "A solution to hair loss across the world."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+datum/reagent/barbers_aid/reaction_mob(var/mob/living/M, var/volume)
+	if(M && ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/datum/sprite_accessory/hair/picked_hair = pick(hair_styles_list)
+		var/datum/sprite_accessory/facial_hair/picked_beard = pick(facial_hair_styles_list)
+		H.h_style = picked_hair
+		H.f_style = picked_beard
+		H.update_hair()
+	..()
+	return
+
+/datum/chemical_reaction/barbers_aid
+	name = "barbers_aid"
+	id = "barbers_aid"
+	result = "barbers_aid"
+	required_reagents = list("carpet" = 1, "radium" = 1, "space_drugs" = 1)
+	result_amount = 5
+
+datum/reagent/concentrated_barbers_aid
+	name = "Concentrated Barber's Aid"
+	id = "concentrated_barbers_aid"
+	description = "A concentrated solution to hair loss across the world."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+/datum/chemical_reaction/concentrated_barbers_aid
+	name = "concentrated_barbers_aid"
+	id = "concentrated_barbers_aid"
+	result = "concentrated_barbers_aid"
+	required_reagents = list("barbers_aid" = 1, "mutagen" = 1)
+	result_amount = 2
+
+datum/reagent/concentrated_barbers_aid/reaction_mob(var/mob/living/M, var/volume)
+	if(M && ishuman(M))
+		var/mob/living/carbon/human/H = M
+		H.h_style = "Very Long Hair"
+		H.f_style = "Very Long Beard"
+		H.update_hair()
+	..()
+	return
+
+datum/reagent/untable_mutagen
+	name = "Untable Mutagen"
+	id = "untable_mutagen"
+	description = "A solution."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+/datum/chemical_reaction/untable_mutagen
+	name = "untable_mutagen"
+	id = "untable_mutagen"
+	result = "untable_mutagen"
+	required_reagents = list("liquid_dark_matter" = 1, "iron" = 1, "mutagen" = 1)
+	result_amount = 3
+
+datum/reagent/untable_mutagen/reaction_obj(var/obj/O, var/volume)
+	if(istype(O, /obj/structure/table))
+		O.visible_message("<span class = 'notice'>[O] melts into goop!</span>")
+		new/obj/item/trash/candle(O.loc)
+		qdel(O)
+	..()
+	return

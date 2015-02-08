@@ -449,3 +449,22 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	result_amount = 7
 	mix_message = "The mixture violently reacts, leaving behind a few crystalline shards."
 	required_temp = 374
+
+/datum/reagent/aranesp
+	name = "Aranesp"
+	id = "aranesp"
+	description = "Volatile."
+	reagent_state = LIQUID
+	color = "#60A584" // rgb: 96, 165, 132
+/datum/reagent/aranesp/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
+	if(prob(5))
+		M << "<span class='notice'>[high_message]</span>"
+	M.adjustHalLoss(-35)
+	M.adjustToxLoss(1)
+	if(prob(rand(1,100)))
+		M.losebreath++
+		M.adjustOxyLoss(20)
+	..()
+	return

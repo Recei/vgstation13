@@ -666,24 +666,24 @@
 							)
 						var/smell = pick(smells)
 						var/list/farts = list(
-							"farts",
-							"passes wind",
-							"toots",
-							"farts [pick("lightly", "tenderly", "softly", "with care")]",
-							"farts with the force of one thousand suns",
-							"farts like a farting motherfucker",
-							"nearly shits themself",
-							"almost shit their pants",
-							"flatulates",
-							"lets out their anal exhaust",
-							"farts a ten second long fart",
-							"<span class = 'sans'>farts</span>",
-							"farts like an asshole",
-							"nearly fucking craps themself",
-							"doesn't fart. Just kidding",
-							"tries not to fart, but fails",
-							"burps, the burp smells like a fart",
-							"farts. Now it smells like [smell] in here",
+							"farts.",
+							"passes wind.",
+							"toots.",
+							"farts [pick("lightly", "tenderly", "softly", "with care")].",
+							"farts with the force of one thousand suns.",
+							"farts like a farting motherfucker!",
+							"nearly shits themself!",
+							"almost shit their pants!",
+							"flatulates.",
+							"lets out their anal exhaust.",
+							"farts a ten second long fart!",
+							"<span class = 'sans'>farts</span>!",
+							"farts like an asshole!",
+							"nearly fucking craps themself!",
+							"doesn't fart. Just kidding.",
+							"tries not to fart, but fails.",
+							"burps, the burp smells like a fart!",
+							"farts. Now it smells like [smell] in here.",
 							"lets out a girly little 'toot' from butt.",
 							"farts loudly!",
 							"lets one rip!",
@@ -697,7 +697,7 @@
 							"suffers from flatulence!",
 							"farts like a goone!",
 							"farts and fondles YOUR buttocks.",
-							"farts out pure plasma! <span class = 'warning'><B>FUCK!</B></span>",
+							"farts out pure plasma! <span class = 'danger'><B>FUCK!</B></span>!",
 							"farts out pure oxygen. What the fuck did he eat?",
 							"<B>\red f \blue a \black r \red t \blue s \black</B>!",
 							"laughs! It smells like [smell].",
@@ -710,7 +710,7 @@
 						var/fart = pick(farts)
 
 						if(!miming)
-							message = "<b>[src]</b> [fart]."
+							message = "<b>[src]</b> [fart]"
 							if(mind && mind.assigned_role == "Clown")
 								playsound(get_turf(src), pick('sound/items/bikehorn.ogg','sound/items/AirHorn.ogg'), 50, 1)
 							else

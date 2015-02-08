@@ -202,8 +202,8 @@ REAGENT SCANNER
 			for(var/datum/wound/W in e.wounds) if(W.internal)
 				user.show_message(text("\red Internal bleeding detected. Advanced scanner required for location."), 1)
 				break
-		if(M:vessel)
-			var/blood_volume = round(M:vessel.get_reagent_amount("blood"))
+		if(H.vessel)
+			var/blood_volume = round(H.vessel.get_reagent_amount("blood"))
 			var/blood_percent =  blood_volume / 560
 			blood_percent *= 100
 			if(blood_volume <= 500)
@@ -213,6 +213,21 @@ REAGENT SCANNER
 			else
 				user.show_message("\blue Blood Level Normal: [blood_percent]% [blood_volume]cl")
 		user.show_message("\blue Subject's pulse: <font color='[H.pulse == PULSE_THREADY || H.pulse == PULSE_NONE ? "red" : "blue"]'>[H.get_pulse(GETPULSE_TOOL)] bpm.</font>")
+		// Reagent Scanning - Iamgoofball
+		if(H.reagents)
+			if(H.reagents.reagent_list.len)
+				user.show_message("<span class='notice'>Subject contains the following reagents:</span>")
+				for(var/datum/reagent/R in H.reagents.reagent_list)
+					user.show_message("<span class='notice'>[R.volume]u of [R.name][R.overdosed == 1 ? "</span> - <span class = 'userdanger'>OVERDOSING</span>" : ".</span>"]")
+			else
+				user.show_message("<span class = 'notice'>Subject contains no reagents.</span>")
+			if(H.reagents.addiction_list.len)
+				user.show_message("<span class='userdanger'>Subject is addicted to the following reagents:</span>")
+				for(var/datum/reagent/R in H.reagents.addiction_list)
+					user.show_message("<span class='danger'>[R.name]</span>")
+			else
+				user.show_message("<span class='notice'>Subject is not addicted to any reagents.</span>")
+
 	src.add_fingerprint(user)
 	return
 

@@ -99,6 +99,9 @@ datum/reagent/proc/on_update(var/atom/A)
 datum/reagent/proc/overdose_process(var/mob/living/M as mob)
 	return
 
+datum/reagent/proc/overdose_start(var/mob/living/M as mob)
+	return
+
 datum/reagent/proc/addiction_act_stage1(var/mob/living/M as mob)
 	if(prob(30))
 		M << "<span class = 'notice'>You feel like some [name] right about now.</span>"
@@ -1057,10 +1060,22 @@ datum/reagent/sugar
 	description = "The organic compound commonly known as table sugar and sometimes called saccharose. This white, odorless, crystalline powder has a pleasing, sweet taste."
 	reagent_state = SOLID
 	color = "#FFFFFF" // rgb: 255, 255, 255
+	overdose_threshold = 200 // Hyperglycaemic shock
 
 datum/reagent/sugar/on_mob_life(var/mob/living/M as mob)
 	M.nutrition += 2*REM
 	M.hydration -= 3*REM
+	..()
+	return
+
+datum/reagent/consumable/sugar/overdose_start(var/mob/living/M as mob)
+	M << "<span class = 'userdanger'>You go into hyperglycaemic shock! Lay off the twinkies!</span>"
+	M.sleeping += 30
+	..()
+	return
+
+datum/reagent/consumable/sugar/overdose_process(var/mob/living/M as mob)
+	M.sleeping += 3
 	..()
 	return
 

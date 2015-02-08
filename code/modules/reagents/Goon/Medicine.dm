@@ -789,6 +789,7 @@ datum/reagent/antihol
 	id = "antihol"
 	description = "A powerful oxidizer that reacts with ethanol."
 	color = "#C8A5DC" // rgb: 200, 165, 220
+
 datum/reagent/antihol/on_mob_life(var/mob/living/M as mob)
 	M.dizziness = 0
 	M.drowsyness = 0
@@ -797,15 +798,33 @@ datum/reagent/antihol/on_mob_life(var/mob/living/M as mob)
 	M.reagents.remove_reagent("ethanol", 8)
 	M.adjustToxLoss(-0.2*REM)
 	..()
+	return
+
 /datum/chemical_reaction/antihol
 	name = "antihol"
 	id = "antihol"
 	result = "antihol"
 	required_reagents = list("ethanol" = 1, "charcoal" = 1)
 	result_amount = 2
+
 /datum/chemical_reaction/cryoxadone
 	name = "Cryoxadone"
 	id = "cryoxadone"
 	result = "cryoxadone"
 	required_reagents = list("stable_plasma" = 1, "acetone" = 1, "mutagen" = 1)
 	result_amount = 3
+
+datum/reagent/insulin
+	name = "Insulin"
+	id = "insulin"
+	description = "Increases sugar depletion rates."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+datum/reagent/insulin/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	if(M.sleeping)
+		M.sleeping--
+	M.reagents.remove_reagent("sugar", 5)
+	..()
+	return
