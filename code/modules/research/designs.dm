@@ -100,6 +100,8 @@ k
 			return D
 	return
 
+/datum/proc/FindDesignByID(var/id)
+	//
 //sum of the required tech of a design
 /datum/design/proc/TechTotal()
 	var/total = 0
@@ -2018,29 +2020,29 @@ k
 	name = "Plasma Pistol"
 	desc = "A plasma pistol."
 	id = "xcomplasmapistol"
-	req_tech = list("combat" = 4, "materials" = 3, "powerstorage" = 3)
+	req_tech = list("combat" = 5, "materials" = 3, "powerstorage" = 3, "plasmatech" = 3)
 	build_type = PROTOLATHE
-	materials = list("$iron" = 10000, "$glass" = 1000, "$diamond" = 1000)
+	materials = list("$iron" = 10000, "$glass" = 1000, "$plasma" = 12000, "$uranium" = 4000)
 	build_path = /obj/item/weapon/gun/energy/plasma/pistol
 	locked = 1
 
 /datum/design/xcomplasmarifle
-	name = "Plasma Rifle"
-	desc = "A plasma rifle."
+	name = "Plasma Cannon"
+	desc = "A plasma cannon."
 	id = "xcomplasmarifle"
-	req_tech = list("combat" = 4, "materials" = 3, "powerstorage" = 3)
+	req_tech = list("combat" = 5, "materials" = 3, "powerstorage" = 3, "plasmatech" = 3)
 	build_type = PROTOLATHE
-	materials = list("$iron" = 10000, "$glass" = 1000, "$diamond" = 3000)
+	materials = list("$iron" = 10000, "$glass" = 1000, "$diamond" = 3000, "$plasma" = 28000, "$uranium" = 12000)
 	build_path = /obj/item/weapon/gun/energy/plasma/rifle
 	locked = 1
 
 /datum/design/xcomlightplasmarifle
-	name = "Light Plasma Rifle"
+	name = "Plasma Rifle"
 	desc = "A plasma rifle."
 	id = "xcomlightplasmarifle"
-	req_tech = list("combat" = 4, "materials" = 3, "powerstorage" = 3)
+	req_tech = list("combat" = 5, "materials" = 3, "powerstorage" = 3, "plasmatech" = 3)
 	build_type = PROTOLATHE
-	materials = list("$iron" = 10000, "$glass" = 1000, "$diamond" = 2000)
+	materials = list("$iron" = 10000, "$glass" = 1000, "$plasma" = 20000, "$uranium" = 8000)
 	build_path = /obj/item/weapon/gun/energy/plasma/light
 	locked = 1
 
@@ -2246,7 +2248,7 @@ k
 	build_type = PROTOLATHE
 	materials = list("$iron" = 50, "$glass" = 50)
 	build_path = /obj/item/clothing/glasses/meson
-	
+
 /datum/design/excavationdrill
 	name = "Excavation Drill"
 	desc = "Advanced archaeological drill combining ultrasonic excitation and bluespace manipulation to provide extreme precision. The diamond tip is adjustable from 1 to 30 cms."
@@ -2500,7 +2502,7 @@ k
 	build_type = MECHFAB
 	req_tech = list("combat" = 4, "syndicate" = 3)
 	build_path = /obj/item/borg/upgrade/syndicate
-	category = "Cyborg Upgrade Modules"
+	category = "Robotic_Upgrade_Modules"
 	materials = list("$iron"=10000,"$glass"=15000,"$diamond" = 10000)
 
 /datum/design/borg_engineer_upgrade
@@ -2510,7 +2512,7 @@ k
 	build_type = MECHFAB
 	req_tech = list("engineering" = 1)
 	build_path = /obj/item/borg/upgrade/engineering
-	category = "Cyborg Upgrade Modules"
+	category = "Robotic_Upgrade_Modules"
 	materials = list("$iron"=10000,"$glass"=10000,"$plasma"=5000)
 
 /datum/design/medical_module_surgery

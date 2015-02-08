@@ -459,7 +459,7 @@ datum/chemical_reaction/flash_powder/on_reaction(var/datum/reagents/holder, var/
 	s.start()
 	playsound(get_turf(src), 'sound/effects/phasein.ogg', 25, 1)
 	var/eye_safety = 0
-	for(var/mob/living/carbon/M in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/living/carbon/M in viewers(get_turf(holder.my_atom), null))
 		if(iscarbon(M))
 			eye_safety = M.eyecheck()
 		if (get_dist(M, location) <= 3)
@@ -1017,7 +1017,7 @@ datum/chemical_reaction/slimespawn/on_reaction(var/datum/reagents/holder)
 	else
 		holder.my_atom.visible_message("<span class='rose'>Infused with plasma, the core begins to quiver and grow, and soon a new baby slime emerges from it!</span>")
 	var/mob/living/carbon/slime/S = new /mob/living/carbon/slime
-	S.loc = get_turf_loc(holder.my_atom)
+	S.loc = get_turf(holder.my_atom)
 
 datum/chemical_reaction/slimemonkey
 	name = "Slime Monkey"
@@ -1031,7 +1031,7 @@ datum/chemical_reaction/slimemonkey
 datum/chemical_reaction/slimemonkey/on_reaction(var/datum/reagents/holder)
 	for(var/i = 1, i <= 3, i++)
 		var /obj/item/weapon/reagent_containers/food/snacks/monkeycube/M = new /obj/item/weapon/reagent_containers/food/snacks/monkeycube
-		M.loc = get_turf_loc(holder.my_atom)
+		M.loc = get_turf(holder.my_atom)
 
 //Green
 datum/chemical_reaction/slimemutate
@@ -1054,12 +1054,11 @@ datum/chemical_reaction/slimemetal
 	required_other = 1
 
 datum/chemical_reaction/slimemetal/on_reaction(var/datum/reagents/holder)
-	var/obj/item/stack/sheet/metal/M = new /obj/item/stack/sheet/metal
+	var/obj/item/stack/sheet/metal/M = getFromPool(/obj/item/stack/sheet/metal, get_turf(holder.my_atom))
 	M.amount = 15
-	M.loc = get_turf_loc(holder.my_atom)
 	var/obj/item/stack/sheet/plasteel/P = new /obj/item/stack/sheet/plasteel
 	P.amount = 5
-	P.loc = get_turf_loc(holder.my_atom)
+	P.loc = get_turf(holder.my_atom)
 
 //Gold
 datum/chemical_reaction/slimecrit
@@ -1111,8 +1110,8 @@ datum/chemical_reaction/slimecrit/on_reaction(var/datum/reagents/holder)
 		/mob/living/simple_animal/hostile/mining_drone,
 		)//exclusion list for things you don't want the reaction to create.
 	var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
-	playsound(get_turf_loc(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1126,7 +1125,7 @@ datum/chemical_reaction/slimecrit/on_reaction(var/datum/reagents/holder)
 		var/chosen = pick(critters)
 		var/mob/living/simple_animal/hostile/C = new chosen
 		C.faction = "slimesummon"
-		C.loc = get_turf_loc(holder.my_atom)
+		C.loc = get_turf(holder.my_atom)
 		if(prob(50))
 			for(var/j = 1, j <= rand(1, 3), j++)
 				step(C, pick(NORTH,SOUTH,EAST,WEST))
@@ -1180,7 +1179,7 @@ datum/chemical_reaction/slimecritlesser/on_reaction(var/datum/reagents/holder)
 	var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 	send_admin_alert(holder, reaction_name="gold slime + blood")
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1214,7 +1213,7 @@ datum/chemical_reaction/slimebork/on_reaction(var/datum/reagents/holder)
 	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - blocked
 	// BORK BORK BORK
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1261,7 +1260,7 @@ datum/chemical_reaction/slimedrinks/on_reaction(var/datum/reagents/holder)
 	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/drinks) - blocked
 	// BORK BORK BORK
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
