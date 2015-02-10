@@ -16,6 +16,10 @@ They can only use one tool at a time, they can't choose modules, and they have 1
 	var/picked = 0
 	var/subtype="keeper"
 	var/obj/screen/inv_tool = null
+
+	mob_bump_flag = ROBOT
+	mob_swap_flags = ALLMOBS
+	mob_push_flags = 0
 	//var/obj/screen/inv_sight = null
 
 //one tool and one sightmod can be activated at any one time.
@@ -295,7 +299,7 @@ They can only use one tool at a time, they can't choose modules, and they have 1
 
 	if(!istype(user, /mob/living/silicon))
 		switch(user.a_intent)
-			if("disarm")
+			if(I_DISARM)
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
 				src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [user.name] ([user.ckey])</font>")
 				log_admin("ATTACK: [user.name] ([user.ckey]) disarmed [src.name] ([src.ckey])")

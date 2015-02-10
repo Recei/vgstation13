@@ -51,6 +51,10 @@
 	var/unsuitable_atoms_damage = 2	//This damage is taken when atmos doesn't fit all the requirements above
 
 
+	mob_bump_flag = SIMPLE_ANIMAL
+	mob_swap_flags = MONKEY|SLIME|SIMPLE_ANIMAL
+	mob_push_flags = MONKEY|SLIME|SIMPLE_ANIMAL
+
 	//LETTING SIMPLE ANIMALS ATTACK? WHAT COULD GO WRONG. Defaults to zero so Ian can still be cuddly
 	var/melee_damage_lower = 0
 	var/melee_damage_upper = 0
@@ -239,34 +243,6 @@
 		adjustBruteLoss(unsuitable_atoms_damage)
 	return 1
 
-/mob/living/simple_animal/Bump(AM as mob|obj)
-	if(!AM) return
-
-	if(resting || buckled || !Adjacent(AM))
-		return
-	var/dense = 0
-	if(loc.density)
-		dense = 1
-	for(var/atom/movable/A in loc)
-		if(A == src)
-			continue
-		if(A.density)
-			if(A.flags&ON_BORDER)
-				dense = !A.CanPass(src, src.loc)
-			else
-				dense = 1
-		if(dense) break
-
-	if(isturf(src.loc))
-		if(ismob(AM))
-			var/mob/living/L = AM
-			if(L.canmove && !dense)
-				var/newamloc = src.loc
-				src.loc = AM:loc
-				AM:loc = newamloc
-		else
-			..()
-
 /mob/living/simple_animal/gib(var/animation = 0)
 	if(icon_gib)
 		flick(icon_gib, src)
@@ -326,13 +302,13 @@
 
 	switch(M.a_intent)
 
-		if("help")
+		if(I_HELP)
 			if (health > 0)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message("\blue [M] [response_help] [src].")
 
-		if("grab")
+		if(I_GRAB)
 			if (M == src || anchored)
 				return
 			if (!(status_flags & CANPUSH))
@@ -351,7 +327,7 @@
 				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
-		if("hurt", "disarm")
+		if(I_HURT, I_DISARM)
 			adjustBruteLoss(harm_intent_damage)
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
@@ -363,12 +339,12 @@
 
 	switch(M.a_intent)
 
-		if ("help")
+		if (I_HELP)
 
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src] with its scythe like arm."), 1)
-		if ("grab")
+		if (I_GRAB)
 			if(M == src || anchored)
 				return
 			if(!(status_flags & CANPUSH))
@@ -388,7 +364,7 @@
 				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
-		if("hurt", "disarm")
+		if(I_HURT, I_DISARM)
 			var/damage = rand(15, 30)
 			visible_message("\red <B>[M] has slashed at [src]!</B>")
 			adjustBruteLoss(damage)
@@ -398,7 +374,7 @@
 /mob/living/simple_animal/attack_larva(mob/living/carbon/alien/larva/L as mob)
 
 	switch(L.a_intent)
-		if("help")
+		if(I_HELP)
 			visible_message("\blue [L] rubs it's head against [src]")
 
 

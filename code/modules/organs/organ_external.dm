@@ -54,6 +54,7 @@
 		parent.children.Add(src)
 	return ..()
 
+
 /****************************************************
 			   DAMAGE PROCS
 ****************************************************/
@@ -580,6 +581,14 @@ Note that amputating the affected organ does in fact remove the infection from t
 					organ= new /obj/item/weapon/organ/head/posi(owner.loc, owner)
 				else
 					organ= new /obj/item/weapon/organ/head(owner.loc, owner)
+				var/datum/organ/internal/brain/B = owner.internal_organs_by_name["brain"]
+				var/obj/item/weapon/organ/head/H = organ
+				H.organ_data = B
+				B.organ_holder = organ
+				owner.internal_organs_by_name["brain"] = null
+				owner.internal_organs_by_name -= "brain"
+				owner.internal_organs -= B
+				internal_organs -= B
 				owner.u_equip(owner.glasses)
 				owner.u_equip(owner.head)
 				owner.u_equip(owner.l_ear)
@@ -1028,6 +1037,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 obj/item/weapon/organ
 	icon = 'icons/mob/human_races/r_human.dmi'
+	var/datum/organ/internal/organ_data
 
 obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	..(loc)
@@ -1108,7 +1118,7 @@ obj/item/weapon/organ/head/New(loc, mob/living/carbon/human/H)
 		src.icon_state = H.gender == MALE? "head_m" : "head_f"
 	..()
 	//Add (facial) hair.
-	if(H.f_style)
+	if(H.f_style &&  !H.check_hidden_head_flags(HIDEBEARDHAIR))
 		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[H.f_style]
 		if(facial_hair_style)
 			var/icon/facial = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
@@ -1117,7 +1127,7 @@ obj/item/weapon/organ/head/New(loc, mob/living/carbon/human/H)
 
 			overlays.Add(facial) // icon.Blend(facial, ICON_OVERLAY)
 
-	if(H.h_style && !(H.head && (H.head.flags & BLOCKHEADHAIR)))
+	if(H.h_style && !H.check_hidden_head_flags(HIDEHEADHAIR))
 		var/datum/sprite_accessory/hair_style = hair_styles_list[H.h_style]
 		if(hair_style)
 			var/icon/hair = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")

@@ -113,92 +113,6 @@
 	if(!delay_ready_dna)
 		dna.ready_dna(src)
 
-/mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
-	if ((!( yes ) || now_pushing))
-		return
-	now_pushing = 1
-	if (ismob(AM))
-		var/mob/tmob = AM
-
-		if( istype(tmob, /mob/living/carbon) && prob(10) )
-			src.spread_disease_to(AM, "Contact")
-//BubbleWrap - Should stop you pushing a restrained person out of the way
-
-		if(istype(tmob, /mob/living/carbon/human))
-
-			for(var/mob/M in range(tmob, 1))
-				if(tmob.pinned.len ||  ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
-					if ( !(world.time % 5) )
-						src << "<span class='warning'>[tmob] is restrained, you cannot push past</span>"
-					now_pushing = 0
-					return
-				if( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
-					if ( !(world.time % 5) )
-						src << "<span class='warning'>[tmob] is restraining [M], you cannot push past</span>"
-					now_pushing = 0
-					return
-
-		//BubbleWrap: people in handcuffs are always switched around as if they were on 'help' intent to prevent a person being pulled from being seperated from their puller
-		var/dense = 0
-		if(loc.density)
-			dense = 1
-		for(var/atom/movable/A in loc)
-			if(A == src)
-				continue
-			if(A.density)
-				if(A.flags&ON_BORDER)
-					dense = !A.CanPass(src, src.loc)
-				else
-					dense = 1
-			if(dense) break
-		if((tmob.a_intent == "help" || tmob.restrained()) && (a_intent == "help" || src.restrained()) && tmob.canmove && canmove && !dense) // mutual brohugs all around!
-			var/turf/oldloc = loc
-			loc = tmob.loc
-			tmob.loc = oldloc
-			now_pushing = 0
-			for(var/mob/living/carbon/slime/slime in view(1,tmob))
-				if(slime.Victim == tmob)
-					slime.UpdateFeed()
-			return
-
-		if(istype(tmob, /mob/living/carbon/human) && (M_FAT in tmob.mutations))
-			if(prob(40) && !(M_FAT in src.mutations))
-				src << "<span class='danger'>You fail to push [tmob]'s fat ass out of the way.</span>"
-				now_pushing = 0
-				return
-		if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
-			if(prob(99))
-				now_pushing = 0
-				return
-		if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
-			if(prob(99))
-				now_pushing = 0
-				return
-		if(!(tmob.status_flags & CANPUSH))
-			now_pushing = 0
-			return
-
-		tmob.LAssailant = src
-
-	now_pushing = 0
-	spawn(0)
-		..()
-		if (!istype(AM, /atom/movable))
-			return
-		if (!now_pushing)
-			now_pushing = 1
-
-			if (!AM.anchored)
-				var/t = get_dir(src, AM)
-				if (istype(AM, /obj/structure/window/full))
-					for(var/obj/structure/window/win in get_step(AM,t))
-						now_pushing = 0
-						return
-				step(AM, t)
-			now_pushing = 0
-		return
-	return
-
 /mob/living/carbon/human/player_panel_controls()
 	var/html=""
 
@@ -625,7 +539,8 @@
 		apply_damage(0.5*damage, BRUTE, "l_arm")
 		apply_damage(0.5*damage, BRUTE, "r_arm")
 
-		var/obj/effect/decal/cleanable/blood/B = new(src.loc)
+		var/obj/effect/decal/cleanable/blood/B = getFromPool(/obj/effect/decal/cleanable/blood, get_turf(src))
+		B.New(B.loc)
 		B.blood_DNA = list()
 		B.blood_DNA[src.dna.unique_enzymes] = src.dna.b_type
 
@@ -1141,8 +1056,29 @@
 	else
 		return null
 
+/mob/living/carbon/human/proc/check_hidden_head_flags(var/hidden_flags = 0)
+	if(!hidden_flags)
+		return 0
 
+	var/list/head_slots = list(head, wear_mask, glasses, ears)
+	for(var/obj/item/equipped in head_slots)
+		if(!equipped)
+			continue
+		if(equipped.flags_inv & hidden_flags)
+			return 1
+	return 0
 
+/mob/living/carbon/human/proc/check_hidden_body_flags(var/hidden_flags = 0)
+	if(!hidden_flags)
+		return
+
+	var/list/body_slots = list(wear_suit, shoes, back, w_uniform, gloves)
+	for(var/obj/item/equipped in body_slots)
+		if(!equipped)
+			continue
+		if(equipped.flags_inv & hidden_flags)
+			return 1
+	return
 
 
 ///eyecheck()
@@ -1727,7 +1663,8 @@
 			message += "-"
 			src << "<span class='warning'>You ran out of blood to write with!</span>"
 
-		var/obj/effect/decal/cleanable/blood/writing/W = new(T)
+		var/obj/effect/decal/cleanable/blood/writing/W = getFromPool(/obj/effect/decal/cleanable/blood/writing, T)
+		W.New(T)
 		W.basecolor = (hand_blood_color) ? hand_blood_color : "#A10808"
 		W.update_icon()
 		W.message = message

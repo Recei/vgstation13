@@ -931,7 +931,12 @@
 	set desc = "Sets an extended description of your character's features."
 	set category = "IC"
 
-	flavor_text =  copytext(sanitize(input(usr, "Please enter your new flavour text.", "Flavour text", null)  as text), 1)
+	if(appearance_isbanned(usr))
+		src << "<span class = 'notice'>You are appearance banned!</span>"
+		flavor_text = null
+		return
+	else
+		flavor_text =  copytext(sanitize(input(usr, "Please enter your new flavour text.", "Flavour text", null)  as text), 1)
 
 //Emote helpers & procs
 /mob/living/carbon/human/proc/anus_bombanull()
@@ -949,6 +954,7 @@
 		if(affecting.take_damage(40, 10))
 			src.UpdateDamageIcon()
 		src.updatehealth()
+
 /mob/living/carbon/human/var/fail_farts = 0
 /mob/living/carbon/human/var/superfart_processing = 0
 
