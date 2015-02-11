@@ -7,8 +7,8 @@
 	use_power = 1
 	idle_power_usage = 40
 	var/obj/item/weapon/reagent_containers/beaker = null
-	var/temperature = 300
-	var/rate = 10 //heating/cooling rate, default is 10 kelvin per tick
+	var/desired_temp = 300
+	var/heater_coefficient = 0.15
 	var/on = FALSE
 
 	machine_flags = SCREWTOGGLE | CROWDESTROY | WRENCHMOVE | FIXED2WORK
@@ -17,14 +17,14 @@
 	..()
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/chem_heater(null)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(null)
+	component_parts += new /obj/item/weapon/stock_parts/micro_laser(null)
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	RefreshParts()
 
 /obj/machinery/chem_heater/RefreshParts()
-	rate = 10
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
-		rate *= M.rating
+	heater_coefficient = 0.15
+	for(var/obj/item/weapon/stock_parts/micro_laser/M in component_parts)
+		heater_coefficient *= M.rating
 
 /obj/machinery/chem_heater/process()
 	..()
@@ -33,12 +33,11 @@
 	var/state_change = 0
 	if(on)
 		if(beaker)
-			if(beaker.reagents.chem_temp > temperature)
-				beaker.reagents.chem_temp = max(beaker.reagents.chem_temp-rate, temperature)
-				beaker.reagents.handle_reactions()
-				state_change = 1
-			else if(beaker.reagents.chem_temp < temperature)
-				beaker.reagents.chem_temp = min(beaker.reagents.chem_temp+rate, temperature)
+			if(beaker.reagents.chem_temp != desired_temp)
+				beaker.reagents.chem_temp += ((desired_temp - beaker.reagents.chem_temp) * heater_coefficient)
+				beaker.reagents.chem_temp = round(beaker.reagents.chem_temp) //stops stuff like 456.12312312302
+				if(beaker.reagents.chem_temp == ((desired_temp-3) || (desired_temp+3)))//need better way to stop superdecimals and rounding drops
+					beaker.reagents.chem_temp = desired_temp
 				beaker.reagents.handle_reactions()
 				state_change = 1
 			beaker.reagents.update_total()
@@ -141,7 +140,9 @@
 	if(href_list["adjust_temperature"])
 		var/val = Clamp(input("Please input the target temperature", name) as num, 0, 1000)
 		if(isnum(val))
-			temperature = Clamp(val, 0, 1000) //WHO THE FUCK THOUGHT THAT TEMPERATURE+VAL IS NORMAL?!
+			desired_temp = Clamp(val, 0, 1000) //WHO THE FUCK THOUGHT THAT TEMPERATURE+VAL IS NORMAL?!
+		else if(val == "input")
+			desired_temp = Clamp(input("Please input the target temperature", name) as num, 0, 1000)
 		else
 			return 0
 		. = 1
