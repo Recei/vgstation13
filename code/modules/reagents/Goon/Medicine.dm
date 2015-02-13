@@ -65,7 +65,7 @@ datum/reagent/styptic_powder/on_mob_life(var/mob/living/M as mob)
 	name = "Styptic Powder"
 	id = "styptic_powder"
 	result = "styptic_powder"
-	required_reagents = list("aluminium" = 1, "hydrogen" = 1, "oxygen" = 1, "sacid" = 1)
+	required_reagents = list("aluminum" = 1, "hydrogen" = 1, "oxygen" = 1, "sacid" = 1)
 	result_amount = 4
 	mix_message = "The solution yields an astringent powder."
 
@@ -307,7 +307,7 @@ datum/reagent/salbutamol/on_mob_life(var/mob/living/M as mob)
 	name = "Salbutamol"
 	id = "salbutamol"
 	result = "salbutamol"
-	required_reagents = list("sal_acid" = 1, "lithium" = 1, "aluminium" = 1, "bromine" = 1, "ammonia" = 1)
+	required_reagents = list("sal_acid" = 1, "lithium" = 1, "aluminum" = 1, "bromine" = 1, "ammonia" = 1)
 	result_amount = 5
 
 datum/reagent/perfluorodecalin

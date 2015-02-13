@@ -700,7 +700,7 @@
 							"farts out pure plasma! <span class = 'danger'><B>FUCK!</B></span>!",
 							"farts out pure oxygen. What the fuck did he eat?",
 							"<B>\red f \blue a \black r \red t \blue s \black</B>!",
-							"laughs! It smells like [smell].",
+							"laughs! It smells like fart.",
 							"farts like a pubby!"
 							)
 
