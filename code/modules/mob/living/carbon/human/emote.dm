@@ -22,8 +22,8 @@
 
 	if(act == "oath" && src.miming)
 		src.miming = 0
-		for(var/obj/effect/proc_holder/spell/aoe_turf/conjure/mime_wall/s in src.spell_list)
-			del(s)
+		for(var/spell/aoe_turf/conjure/forcewall/mime/spell in src.spell_list)
+			del(spell)
 		message_admins("[src.name] ([src.ckey]) has broken their oath of silence. (<A HREF='?_src_=holder;adminplayerobservejump=\ref[src]'>JMP</a>)")
 		src << "\red An unsettling feeling surrounds you..."
 		return
@@ -666,24 +666,24 @@
 							)
 						var/smell = pick(smells)
 						var/list/farts = list(
-							"farts",
-							"passes wind",
-							"toots",
-							"farts [pick("lightly", "tenderly", "softly", "with care")]",
-							"farts with the force of one thousand suns",
-							"farts like a farting motherfucker",
-							"nearly shits themself",
-							"almost shit their pants",
-							"flatulates",
-							"lets out their anal exhaust",
-							"farts a ten second long fart",
-							"<span class = 'sans'>farts</span>",
-							"farts like an asshole",
-							"nearly fucking craps themself",
-							"doesn't fart. Just kidding",
-							"tries not to fart, but fails",
-							"burps, the burp smells like a fart",
-							"farts. Now it smells like [smell] in here",
+							"farts.",
+							"passes wind.",
+							"toots.",
+							"farts [pick("lightly", "tenderly", "softly", "with care")].",
+							"farts with the force of one thousand suns.",
+							"farts like a farting motherfucker!",
+							"nearly shits themself!",
+							"almost shit their pants!",
+							"flatulates.",
+							"lets out their anal exhaust.",
+							"farts a ten second long fart!",
+							"<span class = 'sans'>farts</span>!",
+							"farts like an asshole!",
+							"nearly fucking craps themself!",
+							"doesn't fart. Just kidding.",
+							"tries not to fart, but fails.",
+							"burps, the burp smells like a fart!",
+							"farts. Now it smells like [smell] in here.",
 							"lets out a girly little 'toot' from butt.",
 							"farts loudly!",
 							"lets one rip!",
@@ -697,10 +697,10 @@
 							"suffers from flatulence!",
 							"farts like a goone!",
 							"farts and fondles YOUR buttocks.",
-							"farts out pure plasma! <span class = 'warning'><B>FUCK!</B></span>",
+							"farts out pure plasma! <span class = 'danger'><B>FUCK!</B></span>!",
 							"farts out pure oxygen. What the fuck did he eat?",
 							"<B>\red f \blue a \black r \red t \blue s \black</B>!",
-							"laughs! It smells like [smell].",
+							"laughs! It smells like fart.",
 							"farts like a pubby!"
 							)
 
@@ -710,7 +710,7 @@
 						var/fart = pick(farts)
 
 						if(!miming)
-							message = "<b>[src]</b> [fart]."
+							message = "<b>[src]</b> [fart]"
 							if(mind && mind.assigned_role == "Clown")
 								playsound(get_turf(src), pick('sound/items/bikehorn.ogg','sound/items/AirHorn.ogg'), 50, 1)
 							else
@@ -931,7 +931,12 @@
 	set desc = "Sets an extended description of your character's features."
 	set category = "IC"
 
-	flavor_text =  copytext(sanitize(input(usr, "Please enter your new flavour text.", "Flavour text", null)  as text), 1)
+	if(appearance_isbanned(usr))
+		src << "<span class = 'notice'>You are appearance banned!</span>"
+		flavor_text = null
+		return
+	else
+		flavor_text =  copytext(sanitize(input(usr, "Please enter your new flavour text.", "Flavour text", null)  as text), 1)
 
 //Emote helpers & procs
 /mob/living/carbon/human/proc/anus_bombanull()
@@ -949,6 +954,7 @@
 		if(affecting.take_damage(40, 10))
 			src.UpdateDamageIcon()
 		src.updatehealth()
+
 /mob/living/carbon/human/var/fail_farts = 0
 /mob/living/carbon/human/var/superfart_processing = 0
 

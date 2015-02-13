@@ -65,7 +65,7 @@ datum/reagent/styptic_powder/on_mob_life(var/mob/living/M as mob)
 	name = "Styptic Powder"
 	id = "styptic_powder"
 	result = "styptic_powder"
-	required_reagents = list("aluminium" = 1, "hydrogen" = 1, "oxygen" = 1, "sacid" = 1)
+	required_reagents = list("aluminum" = 1, "hydrogen" = 1, "oxygen" = 1, "sacid" = 1)
 	result_amount = 4
 	mix_message = "The solution yields an astringent powder."
 
@@ -307,7 +307,7 @@ datum/reagent/salbutamol/on_mob_life(var/mob/living/M as mob)
 	name = "Salbutamol"
 	id = "salbutamol"
 	result = "salbutamol"
-	required_reagents = list("sal_acid" = 1, "lithium" = 1, "aluminium" = 1, "bromine" = 1, "ammonia" = 1)
+	required_reagents = list("sal_acid" = 1, "lithium" = 1, "aluminum" = 1, "bromine" = 1, "ammonia" = 1)
 	result_amount = 5
 
 datum/reagent/perfluorodecalin
@@ -567,7 +567,7 @@ datum/reagent/atropine/overdose_process(var/mob/living/M as mob)
 datum/reagent/epinephrine
 	name = "Epinephrine"
 	id = "epinephrine"
-	description = "Reduces most of the knockout/stun effects, minor stamina regeneration buff. Attempts to cap OXY damage at 35 and LOSEBREATH at 3. If health is between -10 to -65, heals 1 TOX, 1 BRUTE, 1 BURN."
+	description = "Reduces most of the knockout/stun effects, minor stamina regeneration buff. Attempts to cap OXY damage at 35 and LOSEBREATH at 10. If health is between -10 to -65, heals 1 TOX, 1 BRUTE, 1 BURN."
 	reagent_state = LIQUID
 	color = "#C8A5DC" // rgb: 200, 165, 220
 	custom_metabolism = 0.2
@@ -581,8 +581,8 @@ datum/reagent/epinephrine/on_mob_life(var/mob/living/M as mob)
 		M.adjustFireLoss(-1*REM)
 	if(M.oxyloss > 35)
 		M.setOxyLoss(35)
-	if(M.losebreath > 3)
-		M.losebreath = 3
+	if(M.losebreath >= 10)
+		M.losebreath = max(10, M.losebreath-5)
 	M.adjustHalLoss(-1*REM)
 	if(prob(30))
 		M.AdjustParalysis(-1)
@@ -789,6 +789,7 @@ datum/reagent/antihol
 	id = "antihol"
 	description = "A powerful oxidizer that reacts with ethanol."
 	color = "#C8A5DC" // rgb: 200, 165, 220
+
 datum/reagent/antihol/on_mob_life(var/mob/living/M as mob)
 	M.dizziness = 0
 	M.drowsyness = 0
@@ -797,15 +798,33 @@ datum/reagent/antihol/on_mob_life(var/mob/living/M as mob)
 	M.reagents.remove_reagent("ethanol", 8)
 	M.adjustToxLoss(-0.2*REM)
 	..()
+	return
+
 /datum/chemical_reaction/antihol
 	name = "antihol"
 	id = "antihol"
 	result = "antihol"
 	required_reagents = list("ethanol" = 1, "charcoal" = 1)
 	result_amount = 2
+
 /datum/chemical_reaction/cryoxadone
 	name = "Cryoxadone"
 	id = "cryoxadone"
 	result = "cryoxadone"
 	required_reagents = list("stable_plasma" = 1, "acetone" = 1, "mutagen" = 1)
 	result_amount = 3
+
+datum/reagent/insulin
+	name = "Insulin"
+	id = "insulin"
+	description = "Increases sugar depletion rates."
+	reagent_state = LIQUID
+	color = "#C8A5DC" // rgb: 200, 165, 220
+
+datum/reagent/insulin/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	if(M.sleeping)
+		M.sleeping--
+	M.reagents.remove_reagent("sugar", 5)
+	..()
+	return

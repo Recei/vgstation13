@@ -28,6 +28,12 @@ var/global/list/image/splatter_cache=list()
 		D.holder = null
 	..()
 
+/obj/effect/decal/cleanable/blood/resetVariables()
+	Destroy()
+	viruses = list()
+	virus2 = list()
+	blood_DNA = list()
+	..("viruses","virus2", "blood_DNA", args)
 /obj/effect/decal/cleanable/blood/New()
 	..()
 	update_icon()
@@ -42,7 +48,7 @@ var/global/list/image/splatter_cache=list()
 					if (B.blood_DNA)
 						src.amount += B.amount
 						blood_DNA |= B.blood_DNA.Copy()
-					del(B)
+					returnToPool(B)
 
 /obj/effect/decal/cleanable/blood/update_icon()
 	if(basecolor == "rainbow") basecolor = "#[pick(list("FF0000","FF7F00","FFFF00","00FF00","0000FF","4B0082","8F00FF"))]"
@@ -67,7 +73,8 @@ var/global/list/image/splatter_cache=list()
 		perp.shoes.overlays -= perp.shoes.blood_overlay
 		perp.shoes.blood_overlay.color = basecolor
 		perp.shoes.overlays += perp.shoes.blood_overlay
-		perp.shoes.blood_DNA |= blood_DNA.Copy()
+		if(blood_DNA)
+			perp.shoes.blood_DNA |= blood_DNA.Copy()
 		perp.shoes.blood_color=basecolor
 		perp.update_inv_shoes(1)
 	else
@@ -194,7 +201,7 @@ var/global/list/image/splatter_cache=list()
 	icon_state = "floor1"
 	random_icon_states = list("floor1", "floor2", "floor3", "floor4", "floor5", "floor6", "floor7")
 
-/obj/effect/decal/cleanable/blood/viralsputum/Del()
+/obj/effect/decal/cleanable/blood/viralsputum/Destroy()
 	for(var/datum/disease/D in viruses)
 		D.cure(0)
 	..()
@@ -209,7 +216,8 @@ var/global/list/image/splatter_cache=list()
 		for (var/i = 0, i < pick(1, 200; 2, 150; 3, 50; 4), i++)
 			sleep(3)
 			if (i > 0)
-				var/obj/effect/decal/cleanable/blood/b = new /obj/effect/decal/cleanable/blood/splatter(src.loc)
+				var/obj/effect/decal/cleanable/blood/b = getFromPool(/obj/effect/decal/cleanable/blood/splatter, src.loc)
+				b.New(src.loc)
 				b.basecolor = src.basecolor
 				b.update_icon()
 				for(var/datum/disease/D in src.viruses)

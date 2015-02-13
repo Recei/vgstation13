@@ -196,3 +196,48 @@ datum/reagent/itching_powder/on_mob_life(var/mob/living/M as mob)
 	result = "itching_powder"
 	required_reagents = list("fuel" = 1, "ammonia" = 1)
 	result_amount = 2
+
+datum/reagent/cholesterol
+	name = "Cholesterol"
+	id = "cholesterol"
+	description = "Minor stamina penalty."
+	reagent_state = LIQUID
+	color = "#CF3600" // rgb: 207, 54, 0]
+	overdose_threshold = 25
+
+datum/reagent/cholesterol/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	M.adjustHalLoss(0.5)
+	..()
+	return
+
+datum/reagent/cholesterol/overdose_process(var/mob/living/M as mob)
+	if(prob(rand(1,100)))
+		M.adjustToxLoss(1)
+	if(prob(rand(1,100)))
+		var/obj/item/I = M.get_active_hand()
+		if(I)
+			M.drop_item()
+			M.show_message("You fumble and drop [I]!")
+	if(prob(rand(1,100)))
+		M.Stun(1)
+	..()
+	return
+
+datum/reagent/porktonium
+	name = "Porktonium"
+	id = "porktonium"
+	description = "OVERDOSE - An 8% chance of metabolizing to 10 cyanide, 15 radium and 2 cholesterol for every 0.2 units above 125."
+	reagent_state = LIQUID
+	color = "#CF3600" // rgb: 207, 54, 0]
+	overdose_threshold = 125
+	custom_metabolism = 0.2
+
+datum/reagent/porktonium/overdose_process(var/mob/living/M as mob)
+	if(prob(8) && volume > 125)
+		M.reagents.add_reagent("cyanide", 10)
+		M.reagents.add_reagent("radium", 15)
+		M.reagents.add_reagent("cholesterol", 2)
+		M.reagents.remove_reagent("corn_syrup", 0.2)
+	..()
+	return

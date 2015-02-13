@@ -329,13 +329,13 @@
 		var/list/data = list("viruses"= list(F))
 		reagents.add_reagent("blood", 20, data)
 
-/obj/item/weapon/reagent_containers/glass/bottle/pacid
-	name = "Polytrinic Acid Bottle"
-	desc = "A small bottle. Contains a small amount of Polytrinic Acid"
+/obj/item/weapon/reagent_containers/glass/bottle/facid
+	name = "Fluorosulfuric Acid Bottle"
+	desc = "A small bottle. Contains a small amount of Fluorosulfuric Acid"
 
 	New()
 		..()
-		reagents.add_reagent("pacid", 30)
+		reagents.add_reagent("facid", 30)
 
 /obj/item/weapon/reagent_containers/glass/bottle/adminordrazine
 	name = "Adminordrazine Bottle"

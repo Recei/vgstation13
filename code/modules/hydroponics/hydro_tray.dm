@@ -49,7 +49,7 @@
 		"fluorine" =        2.5,
 		"chlorine" =        1.5,
 		"sacid" =           1.5,
-		"pacid" =           3,
+		"facid" =           3,
 		"plantbgone" =      3,
 		"cryoxadone" =     -3,
 		"radium" =          2
@@ -76,7 +76,7 @@
 		"phosphorus" =     -2,
 		"sugar" =           2,
 		"sacid" =          -2,
-		"pacid" =          -4,
+		"facid" =          -4,
 		"plantbgone" =     -8,
 		"adminordrazine" = -5
 		)
@@ -106,7 +106,7 @@
 		"phosphorus" =     list( -0.75, 0,   0   ),
 		"sodawater" =      list(  0.1,  0,   0   ),
 		"sacid" =          list( -1,    0,   0   ),
-		"pacid" =          list( -2,    0,   0   ),
+		"facid" =          list( -2,    0,   0   ),
 		"plantbgone" =     list( -2,    0,   0.2 ),
 		"cryoxadone" =     list(  3,    0,   0   ),
 		"ammonia" =        list(  0.5,  0,   0   ),

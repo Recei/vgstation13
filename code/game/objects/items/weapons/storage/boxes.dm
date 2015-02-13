@@ -633,3 +633,13 @@
 		new /obj/item/weapon/light/tube(src)
 	for(var/i = 0; i < 7; i++)
 		new /obj/item/weapon/light/bulb(src)
+//By iamgoofball
+/obj/item/weapon/storage/box/bacon
+	name = "box of bacon"
+	desc = "To be used to encouage bacon usage."
+
+/obj/item/weapon/storage/box/bacon/New()
+	..()
+	for(var/i = 0; i < 14; i++)
+		new /obj/item/weapon/reagent_containers/food/snacks/bacon(src)
+

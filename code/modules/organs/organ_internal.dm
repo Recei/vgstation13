@@ -15,6 +15,19 @@
 	var/rejecting            // Is this organ already being rejected?
 	var/obj/item/organ/organ_holder
 
+
+/datum/organ/internal/Copy()
+	var/datum/organ/internal/I = ..()
+	I.damage = damage
+	I.min_bruised_damage = min_bruised_damage
+	I.min_broken_damage = min_broken_damage
+	I.parent_organ = parent_organ
+	I.robotic = robotic
+	I.removed_type = removed_type
+	I.transplant_data = transplant_data
+	I.rejecting = rejecting
+	I.organ_holder = null
+	return I
 /datum/organ/internal/proc/rejuvenate()
 	damage=0
 
@@ -169,6 +182,11 @@
 	var/process_accuracy = 10
 	removed_type = /obj/item/organ/liver
 
+	Copy()
+		var/datum/organ/internal/liver/I = ..()
+		I.process_accuracy = process_accuracy
+		return I
+
 	process()
 		..()
 		if (germ_level > INFECTION_LEVEL_ONE)
@@ -205,7 +223,7 @@
 						owner.adjustToxLoss(0.1 * process_accuracy)
 
 				// Can't cope with toxins at all
-				for(var/toxin in list("toxin", "plasma", "sacid", "pacid", "cyanide", "lexorin", "amatoxin", "chloralhydrate", "carpotoxin", "zombiepowder", "mindbreaker"))
+				for(var/toxin in list("toxin", "plasma", "sacid", "facid", "cyanide", "lexorin", "amatoxin", "chloralhydrate", "carpotoxin", "zombiepowder", "mindbreaker"))
 					if(owner.reagents.has_reagent(toxin))
 						owner.adjustToxLoss(0.3 * process_accuracy)
 

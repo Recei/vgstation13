@@ -46,7 +46,7 @@
 	var/fillevel = gulp_size
 
 	//smashing on someone
-	if(user.a_intent == "hurt" && isGlass && molotov != 1)  //to smash on someone, must be harm intent, breakable glass, and have no rag inside
+	if(user.a_intent == I_HURT && isGlass && molotov != 1)  //to smash on someone, must be harm intent, breakable glass, and have no rag inside
 		if(!M)
 			return
 
@@ -488,7 +488,7 @@
 				reagents.add_reagent("toxin", 20)
 			if(3)
 				name = "Groans Banned Soda: Sour Suprise"
-				reagents.add_reagent("pacid", 20)
+				reagents.add_reagent("facid", 20)
 			if(4)
 				name = "Groans Banned Soda: Sleepy Suprise"
 				reagents.add_reagent("stoxin", 10)
@@ -752,6 +752,7 @@
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
+	sharpness = 0.8 //same as glass shards
 	w_class = 1
 	item_state = "beer"
 	attack_verb = list("stabbed", "slashed", "attacked")

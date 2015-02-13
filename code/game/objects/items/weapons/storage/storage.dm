@@ -27,6 +27,7 @@
 	var/collection_mode = 1;  //0 = pick one at a time, 1 = pick all on tile
 	var/foldable = null	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	var/foldable_amount = 1 // Number of foldables to produce, if any - N3X
+	var/internal_store = 0
 
 /obj/item/weapon/storage/MouseDrop(obj/over_object as obj)
 	if (ishuman(usr) || ismonkey(usr)) //so monkeys can take off their backpacks -- Urist
@@ -198,6 +199,13 @@
 			usr << "<span class='notice'>[src] is full, make some space.</span>"
 		return 0 //Storage item is full
 
+	if(W.wielded)
+		var/obj/item/ref_name = W
+		if(istype(W, /obj/item/offhand))
+			ref_name = W:wielding
+		usr << "<span class='notice'>Unwield \the [ref_name] first.</span>"
+		return
+
 	if(can_hold.len)
 		var/ok = 0
 		for(var/A in can_hold)
@@ -294,19 +302,22 @@
 		var/obj/item/weapon/storage/fancy/F = src
 		F.update_icon(1)
 
-	for(var/mob/M in range(1, src.loc))
+	for(var/mob/M in range(1, get_turf(src)))
 		if (M.s_active == src)
 			if (M.client)
 				M.client.screen -= W
 
 	if(new_location)
+		var/mob/M
 		if(ismob(loc))
-			W.dropped(usr)
+			M = loc
+			W.dropped(M)
 		if(ismob(new_location))
-			W.layer = 20
+			M = new_location
+			W.pickup(M)
+			M.put_in_active_hand(W)
 		else
-			W.layer = initial(W.layer)
-		W.loc = new_location
+			W.loc = new_location
 	else
 		W.loc = get_turf(src)
 
@@ -375,17 +386,18 @@
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.l_store == src && !H.get_active_hand())	//Prevents opening if it's in a pocket.
-			H.put_in_hands(src)
-			H.l_store = null
-			return
-		if(H.r_store == src && !H.get_active_hand())
-			H.put_in_hands(src)
-			H.r_store = null
-			return
+		if((H.l_store == src || H.r_store == src) && !H.get_active_hand())	//Prevents opening if it's in a pocket.
+			return ..()
 
 	src.orient2hud(user)
-	if (src.loc == user)
+	var/atom/maxloc = src.loc
+	if(src.internal_store)
+		for(var/i = 1; i++ <= internal_store)
+			if(maxloc == user)
+				break
+			if(maxloc.loc)
+				maxloc = maxloc.loc
+	if (maxloc == user)
 		if (user.s_active)
 			user.s_active.close(user)
 		src.show_to(user)

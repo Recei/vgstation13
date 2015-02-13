@@ -20,9 +20,6 @@
 	|| istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink))
 		return
 
-	if(istype(A, /obj/effect/proc_holder/spell))
-		return
-
 	user.delayNextAttack(8)
 
 	if(istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
@@ -74,7 +71,7 @@
 	if(reagents.has_reagent("sacid"))
 		message_admins("[key_name_admin(user)] fired sulphuric acid from a spray bottle at [formatJumpTo(get_turf(src))]")
 		log_game("[key_name(user)] fired sulphuric acid from a spray bottle at [formatJumpTo(get_turf(src))].")
-	if(reagents.has_reagent("pacid"))
+	if(reagents.has_reagent("facid"))
 		message_admins("[key_name_admin(user)] fired Polyacid from a spray bottle at [formatJumpTo(get_turf(src))].")
 		log_game("[key_name(user)] fired Polyacid from a spray bottle at [formatJumpTo(get_turf(src))].")
 	if(reagents.has_reagent("lube"))
@@ -146,9 +143,6 @@
 	|| istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink))
 		return
 
-	if(istype(A, /obj/effect/proc_holder/spell))
-		return
-
 	if(istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
 		if(!A.reagents.total_volume && A.reagents)
 			user << "<span class='notice'>\The [A] is empty.</span>"
@@ -207,7 +201,7 @@
 	if(reagents.has_reagent("sacid"))
 		message_admins("[key_name_admin(user)] fired sulphuric acid from a chem sprayer.")
 		log_game("[key_name(user)] fired sulphuric acid from a chem sprayer.")
-	if(reagents.has_reagent("pacid"))
+	if(reagents.has_reagent("facid"))
 		message_admins("[key_name_admin(user)] fired Polyacid from a chem sprayer.")
 		log_game("[key_name(user)] fired Polyacid from a chem sprayer.")
 	if(reagents.has_reagent("lube"))

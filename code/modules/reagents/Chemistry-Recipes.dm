@@ -238,12 +238,13 @@ datum/chemical_reaction/lube
 	required_reagents = list("water" = 1, "silicon" = 1, "oxygen" = 1)
 	result_amount = 4
 
-datum/chemical_reaction/pacid
-	name = "Polytrinic acid"
-	id = "pacid"
-	result = "pacid"
-	required_reagents = list("sacid" = 1, "chlorine" = 1, "potassium" = 1)
-	result_amount = 3
+/datum/chemical_reaction/facid
+	name = "Fluorosulfuric acid"
+	id = "facid"
+	result = "facid"
+	required_reagents = list("sacid" = 1, "fluorine" = 1, "hydrogen" = 1, "potassium" = 1)
+	result_amount = 4
+	required_temp = 380
 
 datum/chemical_reaction/synaptizine
 	name = "Synaptizine"
@@ -420,7 +421,7 @@ datum/chemical_reaction/nitroglycerin
 	name = "Nitroglycerin"
 	id = "nitroglycerin"
 	result = "nitroglycerin"
-	required_reagents = list("glycerol" = 1, "pacid" = 1, "sacid" = 1)
+	required_reagents = list("glycerol" = 1, "facid" = 1, "sacid" = 1)
 	result_amount = 2
 
 datum/chemical_reaction/nitroglycerin/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -458,7 +459,7 @@ datum/chemical_reaction/flash_powder/on_reaction(var/datum/reagents/holder, var/
 	s.start()
 	playsound(get_turf(src), 'sound/effects/phasein.ogg', 25, 1)
 	var/eye_safety = 0
-	for(var/mob/living/carbon/M in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/living/carbon/M in viewers(get_turf(holder.my_atom), null))
 		if(iscarbon(M))
 			eye_safety = M.eyecheck()
 		if (get_dist(M, location) <= 3)
@@ -595,7 +596,7 @@ datum/chemical_reaction/plastication
 	name = "Plastic"
 	id = "solidplastic"
 	result = null
-	required_reagents = list("pacid" = 10, "plasticide" = 20)
+	required_reagents = list("facid" = 10, "plasticide" = 20)
 	result_amount = 1
 
 datum/chemical_reaction/plastication/on_reaction(var/datum/reagents/holder)
@@ -683,7 +684,7 @@ datum/chemical_reaction/metalfoam
 	name = "Metal Foam"
 	id = "metalfoam"
 	result = null
-	required_reagents = list("aluminum" = 3, "foaming_agent" = 1, "pacid" = 1)
+	required_reagents = list("aluminum" = 3, "foaming_agent" = 1, "facid" = 1)
 	result_amount = 5
 
 datum/chemical_reaction/metalfoam/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -699,7 +700,7 @@ datum/chemical_reaction/ironfoam
 	name = "Iron Foam"
 	id = "ironlfoam"
 	result = null
-	required_reagents = list("iron" = 3, "foaming_agent" = 1, "pacid" = 1)
+	required_reagents = list("iron" = 3, "foaming_agent" = 1, "facid" = 1)
 	result_amount = 5
 
 datum/chemical_reaction/ironfoam/on_reaction(var/datum/reagents/holder, var/created_volume)
@@ -846,7 +847,7 @@ slimeteleport
 	name = "Slime Teleport"
 	id = "m_tele"
 	result = null
-	required_reagents = list("pacid" = 2, "mutagen" = 2)
+	required_reagents = list("facid" = 2, "mutagen" = 2)
 	required_catalysts = list("plasma" = 1)
 	result_amount = 1
 	required_container = /obj/item/slime_core
@@ -1016,7 +1017,7 @@ datum/chemical_reaction/slimespawn/on_reaction(var/datum/reagents/holder)
 	else
 		holder.my_atom.visible_message("<span class='rose'>Infused with plasma, the core begins to quiver and grow, and soon a new baby slime emerges from it!</span>")
 	var/mob/living/carbon/slime/S = new /mob/living/carbon/slime
-	S.loc = get_turf_loc(holder.my_atom)
+	S.loc = get_turf(holder.my_atom)
 
 datum/chemical_reaction/slimemonkey
 	name = "Slime Monkey"
@@ -1030,7 +1031,7 @@ datum/chemical_reaction/slimemonkey
 datum/chemical_reaction/slimemonkey/on_reaction(var/datum/reagents/holder)
 	for(var/i = 1, i <= 3, i++)
 		var /obj/item/weapon/reagent_containers/food/snacks/monkeycube/M = new /obj/item/weapon/reagent_containers/food/snacks/monkeycube
-		M.loc = get_turf_loc(holder.my_atom)
+		M.loc = get_turf(holder.my_atom)
 
 //Green
 datum/chemical_reaction/slimemutate
@@ -1053,12 +1054,11 @@ datum/chemical_reaction/slimemetal
 	required_other = 1
 
 datum/chemical_reaction/slimemetal/on_reaction(var/datum/reagents/holder)
-	var/obj/item/stack/sheet/metal/M = new /obj/item/stack/sheet/metal
+	var/obj/item/stack/sheet/metal/M = getFromPool(/obj/item/stack/sheet/metal, get_turf(holder.my_atom))
 	M.amount = 15
-	M.loc = get_turf_loc(holder.my_atom)
 	var/obj/item/stack/sheet/plasteel/P = new /obj/item/stack/sheet/plasteel
 	P.amount = 5
-	P.loc = get_turf_loc(holder.my_atom)
+	P.loc = get_turf(holder.my_atom)
 
 //Gold
 datum/chemical_reaction/slimecrit
@@ -1110,8 +1110,8 @@ datum/chemical_reaction/slimecrit/on_reaction(var/datum/reagents/holder)
 		/mob/living/simple_animal/hostile/mining_drone,
 		)//exclusion list for things you don't want the reaction to create.
 	var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
-	playsound(get_turf_loc(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1125,7 +1125,7 @@ datum/chemical_reaction/slimecrit/on_reaction(var/datum/reagents/holder)
 		var/chosen = pick(critters)
 		var/mob/living/simple_animal/hostile/C = new chosen
 		C.faction = "slimesummon"
-		C.loc = get_turf_loc(holder.my_atom)
+		C.loc = get_turf(holder.my_atom)
 		if(prob(50))
 			for(var/j = 1, j <= rand(1, 3), j++)
 				step(C, pick(NORTH,SOUTH,EAST,WEST))
@@ -1179,7 +1179,7 @@ datum/chemical_reaction/slimecritlesser/on_reaction(var/datum/reagents/holder)
 	var/list/critters = typesof(/mob/living/simple_animal/hostile) - blocked // list of possible hostile mobs
 	send_admin_alert(holder, reaction_name="gold slime + blood")
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1213,7 +1213,7 @@ datum/chemical_reaction/slimebork/on_reaction(var/datum/reagents/holder)
 	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - blocked
 	// BORK BORK BORK
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1260,7 +1260,7 @@ datum/chemical_reaction/slimedrinks/on_reaction(var/datum/reagents/holder)
 	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/drinks) - blocked
 	// BORK BORK BORK
 	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
+	for(var/mob/O in viewers(get_turf(holder.my_atom), null))
 		if (istype(O, /mob/living/carbon/human/))
 			var /mob/living/carbon/human/H = O
 			if((H.eyecheck() <= 0)&&(!istype(H.glasses, /obj/item/clothing/glasses/science)))
@@ -1813,7 +1813,7 @@ datum/chemical_reaction/metroidteleport
 	name = "Metroid Teleport"
 	id = "m_tele"
 	result = null
-	required_reagents = list("pacid" = 2, "mutagen" = 2)
+	required_reagents = list("facid" = 2, "mutagen" = 2)
 	required_catalysts = list("plasma" = 1)
 	result_amount = 1
 	required_container = /obj/item/slime_extract/metroid_core/t4

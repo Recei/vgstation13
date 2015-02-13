@@ -4,7 +4,7 @@
 	if(announce)
 		command_alert("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure")
 		for(var/mob/M in player_list)
-			M << sound('sound/AI/poweroff.ogg')
+			if(M.client) M << sound('sound/AI/poweroff.ogg')
 	for(var/obj/machinery/power/smes/S in world)
 		if(istype(get_area(S), /area/turret_protected) || S.z != 1)
 			continue
@@ -35,7 +35,7 @@
 		A.power_equip = 0
 		A.power_environ = 0
 
-	for(var/obj/machinery/power/apc/C in machines)
+	for(var/obj/machinery/power/apc/C in power_machines)
 		if(C.cell && C.z == 1)
 			var/area/A = get_area(C)
 
@@ -53,11 +53,11 @@
 	if(announce)
 		command_alert("Power has been restored to [station_name()]. We apologize for the inconvenience.", "Power Systems Nominal")
 		for(var/mob/M in player_list)
-			M << sound('sound/AI/poweron.ogg')
-	for(var/obj/machinery/power/apc/C in machines)
+			if(M.client) M << sound('sound/AI/poweron.ogg')
+	for(var/obj/machinery/power/apc/C in power_machines)
 		if(C.cell && C.z == 1)
 			C.cell.charge = C.cell.maxcharge
-	for(var/obj/machinery/power/smes/S in machines)
+	for(var/obj/machinery/power/smes/S in power_machines)
 		if(S.z != 1)
 			continue
 		S.charge = S.capacity
@@ -76,7 +76,7 @@
 	if(announce)
 		command_alert("All SMESs on [station_name()] have been recharged. We apologize for the inconvenience.", "Power Systems Nominal")
 		for(var/mob/M in player_list)
-			M << sound('sound/AI/poweron.ogg')
+			if(M.client) M << sound('sound/AI/poweron.ogg')
 	for(var/obj/machinery/power/smes/S in world)
 		if(S.z != 1)
 			continue

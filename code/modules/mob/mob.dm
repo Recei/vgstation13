@@ -1265,6 +1265,9 @@ var/list/slot_equipment_priority = list( \
 				process = processScheduler.getProcess("machinery")
 				stat(null, "MAC([machines.len])\t - #[process.getTicks()]\t - [process.getLastRunTime()]")
 
+				process = processScheduler.getProcess("pow_machine")
+				stat(null, "POM([power_machines.len])\t - #[process.getTicks()]\t - [process.getLastRunTime()]")
+
 				process = processScheduler.getProcess("obj")
 				stat(null, "OBJ([processing_objects.len])\t - #[process.getTicks()]\t - [process.getLastRunTime()]")
 
@@ -1294,8 +1297,8 @@ var/list/slot_equipment_priority = list( \
 					statpanel(listed_turf.name, null, A)
 
 		if(spell_list && spell_list.len)
-			for(var/obj/effect/proc_holder/spell/S in spell_list)
-				if(istype(S, /obj/effect/proc_holder/spell/noclothes) || !statpanel(S.panel))
+			for(var/spell/S in spell_list)
+				if(istype(S, /spell/noclothes) || !statpanel(S.panel))
 					continue //Not showing the noclothes spell
 				switch(S.charge_type)
 					if("recharge")

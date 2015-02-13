@@ -277,7 +277,7 @@
 			L += get_contents(S)
 		for(var/obj/item/clothing/suit/storage/S in src.contents)//Check for labcoats and jackets
 			L += get_contents(S)
-		for(var/obj/item/clothing/tie/storage/S in src.contents)//Check for holsters
+		for(var/obj/item/clothing/accessory/storage/S in src.contents)//Check for holsters
 			L += get_contents(S)
 		for(var/obj/item/weapon/gift/G in src.contents) //Check for gift-wrapped items
 			L += G.gift
@@ -317,8 +317,7 @@
 	..()
 
 /mob/living/proc/get_organ_target()
-	var/mob/shooter = src
-	var/t = shooter:zone_sel.selecting
+	var/t = src.zone_sel.selecting
 	if ((t in list( "eyes", "mouth" )))
 		t = "head"
 	var/datum/organ/external/def_zone = ran_zone(t)
@@ -857,3 +856,111 @@
 		return 0
 	usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
+
+/*one proc, four uses
+swapping: if it's 1, the mobs are trying to switch, if 0, non-passive is pushing passive
+default behaviour is:
+ - non-passive mob passes the passive version
+ - passive mob checks to see if its mob_bump_flag is in the non-passive's mob_bump_flags
+ - if si, the proc returns
+*/
+/mob/living/proc/can_move_mob(var/mob/living/swapped, swapping = 0, passive = 0)
+	if(!swapped)
+		return 1
+	if(!passive)
+		return swapped.can_move_mob(src, swapping, 1)
+	else
+		var/context_flags = 0
+		if(swapping)
+			context_flags = swapped.mob_swap_flags
+		else
+			context_flags = swapped.mob_push_flags
+		if(!mob_bump_flag) //nothing defined, go wild
+			return 1
+		if(mob_bump_flag & context_flags)
+			return 1
+		return 0
+
+/mob/living/Bump(atom/movable/AM as mob|obj, yes)
+	spawn(0)
+		if ((!( yes ) || now_pushing))
+			return
+		now_pushing = 1
+		if (istype(AM, /mob/living))
+			var/mob/living/tmob = AM
+
+			for(var/mob/living/M in range(tmob, 1))
+				if(tmob.pinned.len ||  ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
+					if ( !(world.time % 5) )
+						src << "<span class='warning'>[tmob] is restrained, you cannot push past</span>"
+					now_pushing = 0
+					return
+				if( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
+					if ( !(world.time % 5) )
+						src << "<span class='warning'>[tmob] is restraining [M], you cannot push past</span>"
+					now_pushing = 0
+					return
+
+			//BubbleWrap: people in handcuffs are always switched around as if they were on 'help' intent to prevent a person being pulled from being seperated from their puller
+			var/dense = 0
+			if(loc.density)
+				dense = 1
+			for(var/atom/movable/A in loc)
+				if(A == src)
+					continue
+				if(A.density)
+					if(A.flags&ON_BORDER)
+						dense = !A.CanPass(src, src.loc)
+					else
+						dense = 1
+				if(dense) break
+			if((tmob.a_intent == I_HELP || tmob.restrained()) && (a_intent == I_HELP || src.restrained()) && tmob.canmove && canmove && !dense && can_move_mob(tmob, 1, 0)) // mutual brohugs all around!
+				var/turf/oldloc = loc
+				loc = tmob.loc
+				tmob.loc = oldloc
+				now_pushing = 0
+				for(var/mob/living/carbon/slime/slime in view(1,tmob))
+					if(slime.Victim == tmob)
+						slime.UpdateFeed()
+				return
+
+			if(!can_move_mob(tmob, 0, 0))
+				now_pushing = 0
+				return
+			if(istype(tmob, /mob/living/carbon/human) && (M_FAT in tmob.mutations))
+				if(prob(40) && !(M_FAT in src.mutations))
+					src << "<span class='danger'>You fail to push [tmob]'s fat ass out of the way.</span>"
+					now_pushing = 0
+					return
+			if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
+				if(prob(99))
+					now_pushing = 0
+					return
+			if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
+				if(prob(99))
+					now_pushing = 0
+					return
+			if(!(tmob.status_flags & CANPUSH))
+				now_pushing = 0
+				return
+
+			tmob.LAssailant = src
+
+		now_pushing = 0
+		spawn(0)
+			..()
+			if (!istype(AM, /atom/movable))
+				return
+			if (!now_pushing)
+				now_pushing = 1
+
+				if (!AM.anchored)
+					var/t = get_dir(src, AM)
+					if (istype(AM, /obj/structure/window/full))
+						for(var/obj/structure/window/win in get_step(AM,t))
+							now_pushing = 0
+							return
+					step(AM, t)
+				now_pushing = 0
+			return
+	return

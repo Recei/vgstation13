@@ -26,4 +26,5 @@
 		)
 
 ////////////////////////////////////////////////////////////////
-#include "taxistation.dmm"
+//#include "taxistation.dmm"
+#include "maps\taxistation2.dmm"

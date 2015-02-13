@@ -17,9 +17,6 @@
 	return
 
 /obj/item/weapon/robot_module/proc/on_emag()
-	return
-
-/obj/item/weapon/robot_module/on_emag()
 	modules += emag
 	rebuild()
 	..()
@@ -131,8 +128,8 @@
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.emag = new /obj/item/weapon/reagent_containers/spray(src)
 
-	src.emag.reagents.add_reagent("pacid", 250)
-	src.emag.name = "Polyacid spray"
+	src.emag.reagents.add_reagent("facid", 250)
+	src.emag.name = "Fluorosulfuric spray"
 
 	var/obj/item/stack/medical/advanced/bruise_pack/B = new /obj/item/stack/medical/advanced/bruise_pack(src)
 	B.max_amount = 10

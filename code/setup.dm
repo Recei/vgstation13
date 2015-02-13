@@ -194,6 +194,9 @@ var/MAX_EXPLOSION_RANGE = 14
 #define MASKINTERNALS	8	// mask allows internals
 //#define SUITSPACE		8	// suit protects against space
 
+#define TWOHANDABLE		32
+#define MUSTTWOHAND		64
+
 #define FPRINT		256		// takes a fingerprint
 #define ON_BORDER	512		// item has priority to check when entering or leaving
 #define NOBLUDGEON  4  // when an item has this it produces no "X has been hit by Y with Z" message with the default handler
@@ -210,11 +213,7 @@ var/MAX_EXPLOSION_RANGE = 14
 
 #define	NOREACT		16384 			//Reagents dont' react inside this container.
 
-#define BLOCKHEADHAIR 4             // temporarily removes the user's hair overlay. Leaves facial hair.
-#define BLOCKHAIR	32768			// temporarily removes the user's hair, facial and otherwise.
-
 #define INVULNERABLE 128
-
 
 #define ALL ~0
 #define NONE 0
@@ -228,6 +227,8 @@ var/MAX_EXPLOSION_RANGE = 14
 /*
 	These defines are used specifically with the atom/movable/languages bitmask.
 	They are used in atom/movable/Hear() and atom/movable/say() to determine whether hearers can understand a message.
+
+	They also have a secondary use in Bump() code for living mobs, in the mob_bump_flag and mob_swap_flags/mob_push_flags vars
 */
 
 #define HUMAN 1
@@ -236,6 +237,8 @@ var/MAX_EXPLOSION_RANGE = 14
 #define ROBOT 8
 #define SLIME 16
 #define SIMPLE_ANIMAL 32
+
+#define ALLMOBS 63 //update this
 
 //turf-only flags
 #define NOJAUNT		1
@@ -246,10 +249,13 @@ var/MAX_EXPLOSION_RANGE = 14
 #define HIDESUITSTORAGE	2	//APPLIES ONLY TO THE EXTERIOR SUIT!!
 #define HIDEJUMPSUIT	4	//APPLIES ONLY TO THE EXTERIOR SUIT!!
 #define HIDESHOES		8	//APPLIES ONLY TO THE EXTERIOR SUIT!!
-#define HIDEMASK	1	//APPLIES ONLY TO HELMETS/MASKS!!
-#define HIDEEARS	2	//APPLIES ONLY TO HELMETS/MASKS!! (ears means headsets and such)
-#define HIDEEYES	4	//APPLIES ONLY TO HELMETS/MASKS!! (eyes means glasses)
-#define HIDEFACE	8	//APPLIES ONLY TO HELMETS/MASKS!! Dictates whether we appear as unknown.
+#define HIDEMASK		1	//APPLIES ONLY TO HELMETS/MASKS!!
+#define HIDEEARS		2	//APPLIES ONLY TO HELMETS/MASKS!! (ears means headsets and such)
+#define HIDEEYES		4	//APPLIES ONLY TO HELMETS/MASKS!! (eyes means glasses)
+#define HIDEFACE		8	//APPLIES ONLY TO HELMETS/MASKS!! Dictates whether we appear as unknown.
+#define HIDEHEADHAIR 	16	// APPLIES ONLY TO HELMETS/MASKS!! removes the user's hair overlay
+#define HIDEBEARDHAIR	32	// APPLIES ONLY TO HELMETS/MASKS!! removes the user's beard overlay
+#define HIDEHAIR		48	// APPLIES ONLY TO HELMETS/MASKS!! removes the user's hair, facial and otherwise.
 
 //slots
 #define slot_back 1
@@ -495,6 +501,13 @@ var/list/global_mutations = list() // list of hidden mutation things
 #define STUTTER		"stutter"
 #define EYE_BLUR	"eye_blur"
 #define DROWSY		"drowsy"
+
+
+//intent flags yay
+#define I_HELP		"help"
+#define I_DISARM	"disarm"
+#define I_GRAB		"grab"
+#define I_HURT		"hurt"
 
 //I hate adding defines like this but I'd much rather deal with bitflags than lists and string searches
 #define BRUTELOSS 1
@@ -917,6 +930,23 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 #define MELTPOINT_STEEL   1510+T0C
 #define MELTPOINT_SILICON 1687 // KELVIN
 #define MELTPOINT_PLASTIC 180+T0C
+#define MELTPOINT_SNOW	304.15	//about 30°C
+
+// snow business
+#define SNOWBALL_MINIMALTEMP 265	//about -10°C, the minimal temperature at which a thrown snowball can cool you down.
+#define SNOWBALL_TIMELIMIT 400	//in deciseconds, how long after being spawn does the snowball disappears if it hasn't been picked up
+
+#define SNOWSPREAD_MAXTEMP 296.15	//23°C, the maximal temperature (in Kelvin) at which cosmic snow will spread to adjacent tiles
+#define COSMICSNOW_MINIMALTEMP 233	//-40°C, the lowest temperature at which Cosmic snow will cool down its surroundings
+
+//the following defines refer to the number of cosmic snow tiles in the world.
+#define COSMICFREEZE_LEVEL_1 300	//Cosmic snow now has a chance to spawn a sappling upon spreading.
+#define COSMICFREEZE_LEVEL_2 600	//Cosmic snow now has a chance to spawn a snowman upon spreading.
+#define COSMICFREEZE_LEVEL_3 1400	//Pine Trees now has a chance to spawn a spiderling upon growing.
+#define COSMICFREEZE_LEVEL_4 1500	//(triggered once per round) Space bears spawn around the station.
+#define COSMICFREEZE_LEVEL_5 2200	//Pine Trees now have a chance to spawn a Space Bear upon growing.
+#define COSMICFREEZE_END 2500	//All the snow procs come to a stop, snow no longer spread.
+
 
 //used to define machine behaviour in attackbys and other code situations
 #define EMAGGABLE		1 //can we emag it? If this is flagged, the machine calls emag()
@@ -959,6 +989,7 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 // EMOTES!
 #define VISIBLE 1
 #define HEARABLE 2
+
 
 // /vg/ - Pipeline processing (enables exploding pipes and whatnot)
 // COMMENT OUT TO DISABLE
@@ -1025,3 +1056,23 @@ var/list/RESTRICTED_CAMERA_NETWORKS = list( //Those networks can only be accesse
 
 //COMMENT IF YOUR DREAMDAEMON VERSION IS BELOW 507.1248
 //#define BORDER_USE_TURF_EXIT 1
+
+////////////////////////
+////WIZARD SHIT GO//////
+////////////////////////
+
+/*		WIZARD SPELL FLAGS		*/
+#define GHOSTCAST		1	//can a ghost cast it?
+#define NEEDSCLOTHES	2	//does it need the wizard garb to cast? Nonwizard spells should not have this
+#define NEEDSHUMAN		4	//does it require the caster to be human?
+#define Z2NOCAST		8	//if this is added, the spell can't be cast at centcomm
+#define STATALLOWED		16	//if set, the user doesn't have to be conscious to cast. Required for ghost spells
+#define IGNOREPREV		32	//if set, each new target does not overlap with the previous one
+//The following flags only affect different types of spell, and therefore overlap
+//Targeted spells
+#define INCLUDEUSER		64	//does the spell include the caster in its target selection?
+#define SELECTABLE		128	//can you select each target for the spell?
+//AOE spells
+#define IGNOREDENSE		64	//are dense turfs ignored in selection?
+#define IGNORESPACE		128	//are space turfs ignored in selection?
+s

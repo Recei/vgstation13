@@ -17,7 +17,7 @@ var/global/list/whitelisted_species = list("Human")
 	for(. in (typesof(/datum/species)-/datum/species))
 		S = new .
 		all_species[S.name] = S
-		if(S.flags & WHITELISTED) whitelisted_species += S.name
+		if(S.flags & IS_WHITELISTED) whitelisted_species += S.name
 	return
 
 ////////////////////////////////////////////////////////////////
@@ -347,7 +347,7 @@ var/global/list/whitelisted_species = list("Human")
 	language = "Sol Common"
 	primitive = /mob/living/carbon/monkey
 
-	flags = HAS_SKIN_TONE | HAS_LIPS | HAS_UNDERWEAR | CAN_BE_FAT
+	flags = HAS_SKIN_TONE | HAS_LIPS | HAS_UNDERWEAR | CAN_BE_FAT | NO_BLOOD
 
 /datum/species/unathi
 	name = "Unathi"
@@ -474,7 +474,7 @@ var/global/list/whitelisted_species = list("Human")
 
 	primitive = /mob/living/carbon/monkey // TODO
 
-	flags = WHITELISTED | HAS_LIPS | HAS_UNDERWEAR | CAN_BE_FAT
+	flags = IS_WHITELISTED | HAS_LIPS | HAS_UNDERWEAR | CAN_BE_FAT
 
 	// Both must be set or it's only a 45% chance of manifesting.
 	default_mutations=list(M_REMOTE_TALK)
@@ -537,7 +537,7 @@ var/global/list/whitelisted_species = list("Human")
 	eyes = "vox_eyes_s"
 	breath_type = "nitrogen"
 
-	flags = WHITELISTED | NO_SCAN | NO_BLOOD
+	flags = IS_WHITELISTED | NO_SCAN
 
 	blood_color = "#2299FC"
 	flesh_color = "#808D11"

@@ -10,7 +10,7 @@
 	response_harm   = "punches"
 	icon_dead = "shade_dead"
 	speed = -1
-	a_intent = "hurt"
+	a_intent = I_HURT
 	stop_automated_movement = 1
 	status_flags = CANPUSH
 	attack_sound = 'sound/weapons/spiderlunge.ogg'
@@ -27,6 +27,9 @@
 	faction = "cult"
 	supernatural = 1
 	var/nullblock = 0
+
+	mob_swap_flags = HUMAN|SIMPLE_ANIMAL|SLIME|MONKEY
+	mob_push_flags = ALLMOBS
 
 	var/list/construct_spells = list()
 
@@ -79,38 +82,6 @@
 	msg += "*---------*</span>"
 
 	user << msg
-
-/mob/living/simple_animal/construct/Bump(atom/movable/AM as mob|obj, yes)
-	if ((!( yes ) || now_pushing))
-		return
-	now_pushing = 1
-	if(ismob(AM))
-		var/mob/tmob = AM
-		if(istype(tmob, /mob/living/carbon/human) && (M_FAT in tmob.mutations))
-			if(prob(5))
-				src << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
-				now_pushing = 0
-				return
-		if(!(tmob.status_flags & CANPUSH))
-			now_pushing = 0
-			return
-		now_pushing = 1
-
-		tmob.LAssailant = src
-	now_pushing = 0
-	..()
-	if (!istype(AM, /atom/movable))
-		return
-	if (!( now_pushing ))
-		now_pushing = 1
-		if (!( AM.anchored ))
-			var/t = get_dir(src, AM)
-			if (istype(AM, /obj/structure/window/full))
-				for(var/obj/structure/window/win in get_step(AM,t))
-					now_pushing = 0
-					return
-			step(AM, t)
-		now_pushing = null
 
 
 /mob/living/simple_animal/construct/attack_animal(mob/living/simple_animal/M as mob)
@@ -176,7 +147,7 @@
 	environment_smash = 2
 	attack_sound = 'sound/weapons/heavysmash.ogg'
 	status_flags = 0
-	construct_spells = list(/obj/effect/proc_holder/spell/aoe_turf/conjure/lesserforcewall)
+	construct_spells = list(/spell/aoe_turf/conjure/forcewall/lesser)
 
 /mob/living/simple_animal/construct/armoured/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	user.delayNextAttack(8)
@@ -248,7 +219,7 @@
 	environment_smash = 1
 	see_in_dark = 7
 	attack_sound = 'sound/weapons/rapidslice.ogg'
-	construct_spells = list(/obj/effect/proc_holder/spell/targeted/ethereal_jaunt/shift)
+	construct_spells = list(/spell/targeted/ethereal_jaunt/shift)
 
 
 
@@ -273,11 +244,11 @@
 	speed = 0
 	environment_smash = 2
 	attack_sound = 'sound/weapons/rapidslice.ogg'
-	construct_spells = list(/obj/effect/proc_holder/spell/aoe_turf/conjure/construct/lesser,
-							/obj/effect/proc_holder/spell/aoe_turf/conjure/wall,
-							/obj/effect/proc_holder/spell/aoe_turf/conjure/floor,
-							/obj/effect/proc_holder/spell/aoe_turf/conjure/soulstone,
-							/obj/effect/proc_holder/spell/aoe_turf/conjure/pylon,
+	construct_spells = list(/spell/aoe_turf/conjure/construct/lesser,
+							/spell/aoe_turf/conjure/wall,
+							/spell/aoe_turf/conjure/floor,
+							/spell/aoe_turf/conjure/soulstone,
+							/spell/aoe_turf/conjure/pylon,
 							///obj/effect/proc_holder/spell/targeted/projectile/magic_missile/lesser
 							)
 
@@ -305,6 +276,7 @@
 	attack_sound = 'sound/weapons/heavysmash.ogg'
 	var/energy = 0
 	var/max_energy = 1000
+	construct_spells = list(/spell/aoe_turf/conjure/forcewall/lesser)
 
 /mob/living/simple_animal/construct/behemoth/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	user.delayNextAttack(8)
@@ -448,9 +420,9 @@
 			if(1 to 41)				healths.icon_state = "juggernaut_health6"
 			else					healths.icon_state = "juggernaut_health7"
 
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/aoe_turf/conjure/lesserforcewall))
+			if(istype(D, /spell/aoe_turf/conjure/forcewall/lesser))
 				S = D
 				break
 		if(S)
@@ -487,9 +459,9 @@
 			else					healths.icon_state = "artificer_health7"
 
 	if(construct_spell1)
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/aoe_turf/conjure/wall))
+			if(istype(D, /spell/aoe_turf/conjure/wall))
 				S = D
 				break
 		if(S)
@@ -500,9 +472,9 @@
 
 
 	if(construct_spell2)
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/aoe_turf/conjure/soulstone))
+			if(istype(D, /spell/aoe_turf/conjure/soulstone))
 				S = D
 				break
 		if(S)
@@ -513,9 +485,9 @@
 
 
 	if(construct_spell3)
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/aoe_turf/conjure/floor))
+			if(istype(D, /spell/aoe_turf/conjure/floor))
 				S = D
 				break
 		if(S)
@@ -526,9 +498,9 @@
 
 
 	if(construct_spell4)
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/aoe_turf/conjure/construct/lesser))
+			if(istype(D, /spell/aoe_turf/conjure/construct/lesser))
 				S = D
 				break
 		if(S)
@@ -539,9 +511,9 @@
 
 
 	if(construct_spell5)
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/aoe_turf/conjure/pylon))
+			if(istype(D, /spell/aoe_turf/conjure/pylon))
 				S = D
 				break
 		if(S)
@@ -565,9 +537,9 @@
 			else					healths.icon_state = "wraith_health7"
 
 	if(construct_spell1)
-		var/obj/effect/proc_holder/spell/S = null
+		var/spell/S = null
 		for(var/datum/D in spell_list)
-			if(istype(D, /obj/effect/proc_holder/spell/targeted/ethereal_jaunt/shift))
+			if(istype(D, /spell/targeted/ethereal_jaunt/shift))
 				S = D
 				break
 		if(S)
