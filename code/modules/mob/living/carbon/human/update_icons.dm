@@ -329,7 +329,7 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 
 	if(f_style && !check_hidden_head_flags(HIDEBEARDHAIR))
 		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[f_style]
-		if(facial_hair_style && src.species.name in facial_hair_style.species_allowed)
+		if((facial_hair_style) && (src.species.name in facial_hair_style.species_allowed))
 			var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			if(facial_hair_style.do_colouration)
 				facial_s.Blend(rgb(r_facial, g_facial, b_facial), ICON_ADD)
@@ -340,7 +340,7 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 
 	if(h_style && !check_hidden_head_flags(HIDEHEADHAIR))
 		var/datum/sprite_accessory/hair_style = hair_styles_list[h_style]
-		if(hair_style && src.species.name in hair_style.species_allowed)
+		if((hair_style) && (src.species.name in hair_style.species_allowed))
 			var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 			if(hair_style.do_colouration)
 				hair_s.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
@@ -550,8 +550,8 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 		else
 			standing.icon	= 'icons/mob/uniform.dmi'
 
-		var/obj/item/I = w_uniform
-		if(species.name in I.species_fit) //Allows clothes to display differently for multiple species
+		var/obj/item/clothing/under/under_uniform = w_uniform
+		if(species.name in under_uniform.species_fit) //Allows clothes to display differently for multiple species
 			if(species.uniform_icons)
 				standing.icon = species.uniform_icons
 
@@ -568,10 +568,13 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 			var/image/poosies	= image("icon" = 'icons/effects/pooeffect.dmi', "icon_state" = "uniformpoo")
 			O.overlays += poosies
 
-		if(w_uniform:hastie)	//WE CHECKED THE TYPE ABOVE. THIS REALLY SHOULD BE FINE.
-			var/tie_color = w_uniform:hastie._color
-			if(!tie_color) tie_color = w_uniform:hastie.icon_state
-			O.overlays	+= image("icon" = 'icons/mob/ties.dmi', "icon_state" = "[tie_color]")
+		if(under_uniform.accessories.len)	//Runtime operator is not permitted, typecast
+			for(var/obj/item/clothing/accessory/accessory in under_uniform.accessories)
+				var/tie_color = accessory._color
+				if(!tie_color)
+					tie_color = accessory.icon_state
+				O.overlays	+= image("icon" = 'icons/mob/ties.dmi', "icon_state" = "[tie_color]")
+
 
 
 		O.icon = standing
@@ -877,7 +880,7 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 
 /mob/living/carbon/human/update_inv_wear_mask(var/update_icons=1)
 	overlays -= obj_overlays[FACEMASK_LAYER]
-	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/tie) ) )
+	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory) ) )
 		var/obj/Overlays/O = obj_overlays[FACEMASK_LAYER]
 		O.overlays.len = 0
 		wear_mask.screen_loc = ui_mask	//TODO
@@ -978,21 +981,21 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 //Fire icons
 /mob/living/carbon/human/update_fire(var/update_icons=1)
 	if (on_fire) // On fire
-//		overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)  //Old icon
+//		obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)  //Old icon
 		switch(fire_stacks)
 			if(1 to 9.9)
-				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming1")//, "layer"=-FIRE_LAYER)
+				obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming1")//, "layer"=-FIRE_LAYER)
 			if(10 to 15)
-				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2")//, "layer"=-FIRE_LAYER)
+				obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2")//, "layer"=-FIRE_LAYER)
 			if(15.1 to INFINITY)
-				overlays_standing[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3")//, "layer"=-FIRE_LAYER)
+				obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3")//, "layer"=-FIRE_LAYER)
 				if(prob(50) && f_style != "Shaved" && h_style != "Bald")
 					overlays_standing[HAIR_LAYER] = null
 					f_style = "Shaved"
 					h_style = "Bald"
 					src << "\red <b>YOUR HAIRS BURNS OFF!!!</b>"
 	else
-		overlays_standing[FIRE_LAYER] = null
+		obj_overlays[FIRE_LAYER] = null
 	if(update_icons)		update_icons()
 
 
