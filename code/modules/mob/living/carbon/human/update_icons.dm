@@ -479,18 +479,6 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 		//overlays_standing[TARGETED_LAYER]	= null
 	if(update_icons)		update_icons()
 
-/mob/living/carbon/human/update_fire(var/update_icons=1)
-	overlays -= obj_overlays[FIRE_LAYER]
-	if(on_fire)
-		var/obj/Overlays/O = obj_overlays[FIRE_LAYER]
-		O.icon = fire_dmi
-		O.icon_state = fire_sprite
-		overlays += O
-		obj_overlays[FIRE_LAYER] = O
-		//overlays_standing[FIRE_LAYER] = image("icon"=fire_dmi, "icon_state"=fire_sprite, "layer"=-FIRE_LAYER)
-	//else
-		//overlays_standing[FIRE_LAYER] = null
-	if(update_icons)		update_icons()
 
 /* --------------------------------------- */
 //For legacy support.
@@ -980,25 +968,22 @@ var/list/overlay_exclusions = list("groin", "l_hand", "r_hand", "l_foot", "r_foo
 
 //Fire icons
 /mob/living/carbon/human/update_fire(var/update_icons=1)
-	if (on_fire) // On fire
-//		obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"=-FIRE_LAYER)  //Old icon
-		switch(fire_stacks)
-			if(1 to 9.9)
-				obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming1")//, "layer"=-FIRE_LAYER)
-			if(10 to 15)
-				obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming2")//, "layer"=-FIRE_LAYER)
-			if(15.1 to INFINITY)
-				obj_overlays[FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="flaming3")//, "layer"=-FIRE_LAYER)
-				if(prob(50) && f_style != "Shaved" && h_style != "Bald")
-					overlays_standing[HAIR_LAYER] = null
-					f_style = "Shaved"
-					h_style = "Bald"
-					src << "\red <b>YOUR HAIRS BURNS OFF!!!</b>"
-	else
-		obj_overlays[FIRE_LAYER] = null
+	if (on_fire)
+		var/obj/Overlays/O = obj_overlays[FIRE_LAYER]
+		O.icon = fire_dmi
+		if(species == "Human")
+			switch(fire_stacks)
+				if(1 to 9.9)
+					O.icon_state = "flaming1"
+				if(10 to 15)
+					O.icon_state = "flaming2"
+				if(15.1 to INFINITY)
+					O.icon_state = "flaming3"
+		else
+			O.icon_state = fire_sprite
+		overlays += O
+		obj_overlays[FIRE_LAYER] = O
 	if(update_icons)		update_icons()
-
-
 
 /mob/living/carbon/human/update_inv_r_hand(var/update_icons=1)
 	overlays -= obj_overlays[R_HAND_LAYER]
