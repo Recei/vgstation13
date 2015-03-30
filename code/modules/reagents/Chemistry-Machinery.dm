@@ -263,6 +263,37 @@ USE THIS CHEMISTRY DISPENSER FOR MAPS SO THEY START AT 100 ENERGY
 		return
 
 	ui_interact(user)
+//Cafe stuff
+
+/obj/machinery/chem_dispenser/brewer
+	name = "Space-Brewery"
+	icon_state = "brewer"
+	dispensable_reagents = list("tea","greentea","redtea", "coffee","milk","cream","water","hot_coco", "soymilk")
+
+
+/obj/machinery/chem_dispenser/brewer/mapping
+	max_energy = 100
+	energy = 100
+
+//Soda/booze dispensers.
+
+/obj/machinery/chem_dispenser/soda_dispenser
+	name = "Soda Dispenser"
+	icon_state = "soda_dispenser"
+	dispensable_reagents = list("cola", "sodawater", "lemon_lime", "dr_gibb", "spacemountainwind", "ice", "tonic")
+
+/obj/machinery/chem_dispenser/soda_dispenser/mapping
+	max_energy = 100
+	energy = 100
+
+/obj/machinery/chem_dispenser/booze_dispenser
+	name = "Booze Dispenser"
+	icon_state = "booze_dispenser"
+	dispensable_reagents = list("beer", "whiskey", "tequila", "vodka", "vermouth", "rum", "cognac", "wine", "kahlua", "ale", "ice")
+
+/obj/machinery/chem_dispenser/booze_dispenser/mapping
+	max_energy = 100
+	energy = 100
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -808,10 +839,11 @@ USE THIS CHEMISTRY DISPENSER FOR MAPS SO THEY START AT 100 ENERGY
 		src.updateUsrDialog()
 		return
 	else if(href_list["name_disease"])
+		var/norange = (usr.mutations && usr.mutations.len && (M_TK in usr.mutations))
 		var/new_name = stripped_input(usr, "Name the Disease", "New Name", "", MAX_NAME_LEN)
 		if(stat & (NOPOWER|BROKEN)) return
 		if(usr.stat || usr.restrained()) return
-		if(!in_range(src, usr)) return
+		if(!in_range(src, usr) && !norange) return
 		var/id = href_list["name_disease"]
 		if(archive_diseases[id])
 			var/datum/disease/advance/A = archive_diseases[id]

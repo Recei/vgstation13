@@ -144,8 +144,8 @@
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W, mob/user)
 
 	if(istype(W,/obj/item/weapon/pen)) //Renaming food
-		var/n_name = copytext(sanitize(input(user, "What would you like to name this dish?", "Food Renaming", null)  as text), 1, MAX_NAME_LEN)
-		if((loc == user && user.stat == 0))
+		var/n_name = copytext(sanitize(input(user, "What would you like to name this dish?", "Food Renaming", null) as text|null), 1, MAX_NAME_LEN)
+		if(n_name && Adjacent(user) && !user.stat)
 			name = "[n_name]"
 		return
 	if(istype(W,/obj/item/weapon/storage))
@@ -529,10 +529,10 @@
 		var/clr = C.colourName
 
 		if(!(clr in list("blue", "green", "mime", "orange", "purple", "rainbow", "red", "yellow")))
-			usr << "<span class='notice'>[src] refuses to take on this colour!</span>"
+			user << "<span class='notice'>[src] refuses to take on this colour!</span>"
 			return
 
-		usr << "<span class='notice'>You colour [src] [clr].</span>"
+		user << "<span class='notice'>You colour [src] [clr].</span>"
 		icon_state = "egg-[clr]"
 		_color = clr
 	else
@@ -2766,6 +2766,7 @@
 			return
 
 		var/t = input("Enter what you want to add to the tag:", "Write", null, null) as text
+		if (!Adjacent(user) || user.stat) return
 
 		var/obj/item/pizzabox/boxtotagto = src
 		if( boxes.len > 0 )
@@ -3257,7 +3258,7 @@
 	icon_state = "clown_chips"
 	item_state = "clown_chips"
 
-/obj/item/weapon/reagent_containers/food/snacks/chip/scookable/clown/New()
+/obj/item/weapon/reagent_containers/food/snacks/chip/cookable/clown/New()
 	..()
 	reagents.add_reagent("nutriment", 5)
 	reagents.add_reagent("honkserum", 5)
@@ -3296,4 +3297,117 @@
 /obj/item/weapon/reagent_containers/food/snacks/chips/cookable/xeno/New()
 	..()
 	reagents.add_reagent("nutriment", 10)
+	bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/gigapuddi
+	name = "Giga Puddi"
+	desc = "A large crème caramel"
+	icon_state = "gigapuddi"
+	trash = /obj/item/trash/plate
+	New()
+		..()
+		reagents.add_reagent("nutriment", 20)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/gigapuddi/happy
+	desc = "A large crème caramel made with extra love"
+	icon_state = "happypuddi"
+
+/obj/item/weapon/reagent_containers/food/snacks/gigapuddi/anger
+	desc = "A large crème caramel made with extra hate"
+	icon_state = "angerpuddi"
+
+/obj/item/weapon/reagent_containers/food/snacks/flan
+	name = "Flan"
+	desc = "A small crème caramel"
+	icon_state = "flan"
+	trash = /obj/item/trash/plate
+	New()
+		..()
+		reagents.add_reagent("nutriment", 10)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/omurice
+	name = "omelette rice"
+	desc = "Just like your Japanese animes!"
+	icon_state = "omurice"
+	trash = /obj/item/trash/plate
+
+	New()
+		..()
+		reagents.add_reagent("nutriment", 8)
+		bitesize = 1
+
+/obj/item/weapon/reagent_containers/food/snacks/omurice/heart
+	icon_state = "omuriceheart"
+
+/obj/item/weapon/reagent_containers/food/snacks/muffin/bluespace
+	name = "Bluespace-berry Muffin"
+	desc = "Just like a normal blueberry muffin, except with completely unnecessary floaty things!"
+	icon_state = "bluespace"
+
+/obj/item/weapon/reagent_containers/food/snacks/yellowcake
+	name = "Yellowcake"
+	desc = "For Fat Men."
+	icon_state = "yellowcake"
+	New()
+		..()
+		reagents.add_reagent("nutriment", 40)
+		reagents.add_reagent("radium", 10)
+		reagents.add_reagent("uranium", 5)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/yellowcupcake
+	name = "Yellowcupcake"
+	desc = "For Little Boys."
+	icon_state = "yellowcupcake"
+	New()
+		..()
+		reagents.add_reagent("nutriment", 15)
+		reagents.add_reagent("radium", 5)
+		reagents.add_reagent("uranium", 2)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/cookiebowl
+	name = "Bowl of cookies"
+	desc = "A bowl full of small cookies."
+	icon_state = "cookiebowl"
+	trash = /obj/item/trash/snack_bowl
+	New()
+		..()
+		reagents.add_reagent("nutriment", 5)
+		reagents.add_reagent("sugar", 5)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/chococherrycake
+	name = "chocolate-cherry cake"
+	desc = "A chocolate cake with icing and cherries."
+	icon_state = "chococherrycake"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/chococherrycakeslice
+	slices_num = 5
+	New()
+		..()
+		reagents.add_reagent("nutriment", 20)
+
+/obj/item/weapon/reagent_containers/food/snacks/chococherrycakeslice
+	name = "chocolate-cherry cake slice"
+	desc = "Just a slice of cake, it is enough for everyone."
+	icon_state = "chococherrycake_slice"
+	trash = /obj/item/trash/plate
+	bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/sliceable/pumpkinbread
+	name = "Pumpkin Bread"
+	desc = "A loaf of pumpkin bread."
+	icon_state = "pumpkinbread"
+	slice_path = /obj/item/weapon/reagent_containers/food/snacks/pumpkinbreadslice
+	slices_num = 5
+	New()
+		..()
+		reagents.add_reagent("nutriment", 15)
+
+/obj/item/weapon/reagent_containers/food/snacks/pumpkinbreadslice
+	name = "Pumpkin Bread slice"
+	desc = "A slice of pumpkin bread."
+	icon_state = "pumpkinbreadslice"
 	bitesize = 2
