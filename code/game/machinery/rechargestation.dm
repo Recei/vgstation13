@@ -84,14 +84,10 @@
 			occupant << "<span class='notice'>Upgrade completed.</span>"
 			playsound(get_turf(src), 'sound/machines/ping.ogg', 50, 0)
 
-/obj/machinery/recharge_station/attackby(var/obj/item/W, var/mob/user)
+/obj/machinery/recharge_station/attackby(var/obj/item/W, var/mob/living/user)
 	if(is_type_in_list(W, acceptable_upgradeables))
 		if(!(locate(W.type) in upgrade_holder))
-			if(!isMoMMI(user))
-				user:drop_item_v(W)
-			else
-				user:drop_item()
-			W.loc = src
+			user.drop_item(src)
 			upgrade_holder.Add(W)
 			user << "<span class='notice'>You add \the [W] to \the [src].</span>"
 			return
@@ -110,40 +106,27 @@
 	attack_hand(user)
 
 /obj/machinery/recharge_station/attack_hand(var/mob/user)
-	if(!Adjacent(user))
-		if(user == occupant)
-			if(upgrading)
-				user << "<span class='notice'>You interrupt the upgrade process.</span>"
-				upgrading = 0
-				upgrade_finished = -1
-				return 0
-			else if(upgrade_holder.len)
-				upgrading = input(user, "Choose an item to swap out.","Upgradeables") as null|anything in upgrade_holder
-				if(!upgrading)
-					upgrading = 0
-					return
-				if(alert(user, "You have chosen [upgrading], is this correct?", , "Yes", "No") == "Yes")
-					upgrade_finished = world.timeofday + 600
-					user << "The upgrade should complete in approximately 60 seconds, you will be unable to exit \the [src] during this unless you cancel the process."
-					return
-		return
-	else
-		if(user == occupant)
-			if(upgrading)
-				user << "<span class='notice'>You interrupt the upgrade process.</span>"
-				upgrading = 0
-				upgrade_finished = -1
-				return 0
-			else if(upgrade_holder.len)
-				upgrading = input(user, "Choose an item to swap out.","Upgradeables") as null|anything in upgrade_holder
-				if(!upgrading)
-					upgrading = 0
-					return
-				if(alert(user, "You have chosen [upgrading], is this correct?", , "Yes", "No") == "Yes")
-					upgrade_finished = world.timeofday + 600
-					user << "The upgrade should complete in approximately 60 seconds, you will be unable to exit \the [src] during this unless you cancel the process."
-					return
+	if(user == occupant)
+		if(upgrading)
+			user << "<span class='notice'>You interrupt the upgrade process.</span>"
+			upgrading = 0
+			upgrade_finished = -1
+			return 0
 		else if(upgrade_holder.len)
+			upgrading = input(user, "Choose an item to swap out.","Upgradeables") as null|anything in upgrade_holder
+			if(!upgrading)
+				upgrading = 0
+				return
+			if(alert(user, "You have chosen [upgrading], is this correct?", , "Yes", "No") == "Yes")
+				upgrade_finished = world.timeofday + 600
+				user << "The upgrade should complete in approximately 60 seconds, you will be unable to exit \the [src] during this unless you cancel the process."
+				return
+			else
+				upgrading = 0
+				user << "You decide not to apply the upgrade"
+				return
+	else if(Adjacent(user))
+		if(upgrade_holder.len)
 			var/obj/removed = input(user, "Choose an item to remove.",upgrade_holder[1]) as null|anything in upgrade_holder
 			if(!removed)
 				return
@@ -226,7 +209,7 @@
 				// ^ makes sinle list of active (R.contents) and inactive modules (R.module.modules)
 				for(var/obj/O in um)
 					// Engineering
-					if(istype(O,/obj/item/weapon/cable_coil))
+					if(istype(O,/obj/item/stack/cable_coil))
 						if(O:amount < 50)
 							O:amount += 2
 						if(O:amount > 50)

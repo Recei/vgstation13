@@ -37,7 +37,7 @@
 //Used by throw code to hand over the mob, instead of throwing the grab. The grab is then deleted by the throw code.
 /obj/item/weapon/grab/proc/throw()
 	if(affecting)
-		if(affecting.buckled)
+		if(affecting.buckled || !loc.Adjacent(affecting))
 			return null
 		if(state >= GRAB_AGGRESSIVE)
 			return affecting
@@ -79,10 +79,8 @@
 				allow_upgrade = 0
 		if(state == GRAB_AGGRESSIVE)
 			var/h = affecting.hand
-			affecting.hand = 0
-			affecting.drop_item()
-			affecting.hand = 1
-			affecting.drop_item()
+			affecting.drop_l_hand()
+			affecting.drop_r_hand()
 			affecting.hand = h
 			for(var/obj/item/weapon/grab/G in affecting.grabbed_by)
 				if(G == src) continue

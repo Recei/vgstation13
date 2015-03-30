@@ -245,7 +245,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	if(block & AIR_BLOCKED) return
 
 	var/direct = !(block & ZONE_BLOCKED)
-	var/space = !istype(B)
+	var/space = (!istype(B))
 
 	if(direct && !space)
 		if(equivalent_pressure(A.zone,B.zone) || current_cycle == 0)

@@ -220,6 +220,10 @@
 	if(..())
 		return 0 // don't update UIs attached to this object
 
+	if(href_list["close"])
+		if(usr.machine == src) usr.unset_machine()
+		return 1
+
 	if(href_list["switchOn"])
 		on = 1
 		update_icon()
@@ -258,8 +262,7 @@
 			user << "<span class='warning'>A beaker is already loaded into the machine.</span>"
 			return
 		beaker =  G
-		user.drop_item()
-		G.loc = src
+		user.drop_item(src)
 		user.visible_message("[user] adds \a [G] to \the [src]!", "You add \a [G] to \the [src]!")
 	if(..())
 		return
@@ -364,12 +367,16 @@
 	if (M.abiotic())
 		usr << "<span class='warning'>Subject may not have abiotic items on.</span>"
 		return
+	if(M.buckled)
+		M.buckled.unbuckle()
 	if(!node)
 		usr << "<span class='warning'>The cell is not correctly connected to its pipe network!</span>"
 		return
 	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
+	if(usr.pulling == M)
+		usr.stop_pulling()
 	M.stop_pulling()
 	M.loc = src
 	if(M.health > -100 && (M.health < 0 || M.sleeping))
@@ -404,7 +411,7 @@
 	set name = "Move Inside"
 	set category = "Object"
 	set src in oview(1)
-	if(usr.restrained() || usr.stat || usr.weakened || usr.stunned || usr.paralysis || usr.resting) //are you cuffed, dying, lying, stunned or other
+	if(usr.restrained() || usr.stat || usr.weakened || usr.stunned || usr.paralysis || usr.resting || usr.buckled) //are you cuffed, dying, lying, stunned or other
 		return
 	for(var/mob/living/carbon/slime/M in range(1,usr))
 		if(M.Victim == usr)

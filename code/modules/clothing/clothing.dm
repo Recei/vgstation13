@@ -86,6 +86,8 @@
 	var/see_invisible = 0
 	var/see_in_dark = 0
 	var/prescription = 0
+	min_harm_label = 12
+	harm_label_examine = list("<span class='info'>A label is covering one lens, but doesn't reach the other.</span>","<span class='warning'>A label covers the lenses!</span>")
 	species_restricted = list("exclude","Muton")
 /*
 SEE_SELF  // can see self, no matter what
@@ -96,7 +98,11 @@ SEE_PIXELS// if an object is located on an unlit area, but some of its pixels ar
           // in a lit area (via pixel_x,y or smooth movement), can see those pixels
 BLIND     // can't see anything
 */
-
+/obj/item/clothing/glasses/harm_label_update()
+	if(harm_labeled >= min_harm_label)
+		vision_flags |= BLIND
+	else
+		vision_flags &= ~BLIND
 
 //Gloves
 /obj/item/clothing/gloves
@@ -251,7 +257,8 @@ BLIND     // can't see anything
 	name = "Space helmet"
 	icon_state = "space"
 	desc = "A special helmet designed for work in a hazardous, low-pressure environment."
-	flags = FPRINT  | STOPSPRESSUREDMG
+	flags = FPRINT
+	pressure_resistance = 5 * ONE_ATMOSPHERE
 	item_state = "space"
 	permeability_coefficient = 0.01
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50)
@@ -272,7 +279,8 @@ BLIND     // can't see anything
 	w_class = 4//bulky item
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.02
-	flags = FPRINT  | STOPSPRESSUREDMG
+	flags = FPRINT
+	pressure_resistance = 5 * ONE_ATMOSPHERE
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency_oxygen,/obj/item/weapon/tank/emergency_nitrogen)
 	slowdown = 3
@@ -318,8 +326,7 @@ BLIND     // can't see anything
 	if(istype(I, /obj/item/clothing/accessory))
 		var/obj/item/clothing/accessory/A = I
 		if(can_attach_accessory(A))
-			user.drop_item()
-			A.loc = src
+			user.drop_item(src)
 			accessories.Add(A)
 			A.on_attached(src, user)
 			if(istype(loc, /mob/living/carbon/human))

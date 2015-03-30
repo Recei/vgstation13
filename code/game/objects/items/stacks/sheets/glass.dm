@@ -201,8 +201,8 @@
 	return 1
 
 /obj/item/stack/sheet/glass/glass/attackby(obj/item/W, mob/user)
-	if(istype(W,/obj/item/weapon/cable_coil))
-		var/obj/item/weapon/cable_coil/CC = W
+	if(istype(W,/obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/CC = W
 		if(CC.amount < 5)
 			user << "\b There is not enough wire in this coil. You need 5 lengths."
 			return
@@ -283,6 +283,7 @@
 	origin_tech = "materials=4;plasmatech=2"
 	created_window = /obj/structure/window/plasmareinforced
 	full_window = /obj/structure/window/full/plasmareinforced
+	windoor = /obj/structure/windoor_assembly/plasma
 	perunit = 2875
 	reinforced = 1
 	glass_quality = 1.3

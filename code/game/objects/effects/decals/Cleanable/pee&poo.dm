@@ -111,7 +111,7 @@
 	icon = 'icons/obj/poop.dmi'
 	icon_state = "poop2"
 	item_state = "poop"
-	random_icon_states = list("poop1", "poop2", "poop3", "poop4", "poop5", "poop6", "poop7")
+	var/list/random_icon_states = list("poop1", "poop2", "poop3", "poop4", "poop5", "poop6", "poop7")
 	bitesize = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/poo/New()

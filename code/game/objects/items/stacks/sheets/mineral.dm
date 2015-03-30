@@ -151,6 +151,7 @@ var/global/list/datum/stack_recipe/plastic_recipes = list ( \
 	new/datum/stack_recipe("plastic bag", /obj/item/weapon/storage/bag/plasticbag, 3, on_floor = 1), \
 	new/datum/stack_recipe("blood bag", /obj/item/weapon/reagent_containers/blood, 3, on_floor = 1), \
 	new/datum/stack_recipe("plastic coat", /obj/item/clothing/suit/raincoat, 5), \
+	new/datum/stack_recipe("plastic flaps", /obj/structure/plasticflaps, 10, one_per_turf = 1, on_floor = 1), \
 	)
 
 /obj/item/stack/sheet/mineral/plastic/New(var/loc, var/amount=null)
@@ -201,6 +202,7 @@ var/global/list/datum/stack_recipe/phazon_recipes = list()
 	desc = "Holy christ what is this?"
 	icon_state = "sheet-phazon"
 	item_state = "sheet-phazon"
+	sheettype = "phazon"
 	perunit = 1500
 	melt_temperature = MELTPOINT_PLASTIC
 	throwforce = 15.0
@@ -310,6 +312,7 @@ var/global/list/datum/stack_recipe/silver_recipes = list ( \
 	origin_tech = "materials=4"
 	perunit = 2000
 
+/*
 /obj/item/stack/sheet/mineral/pharosium
 	name = "pharosium"
 	icon_state = "sheet-pharosium"
@@ -463,4 +466,4 @@ var/global/list/datum/stack_recipe/silver_recipes = list ( \
 	throw_range = 3
 	origin_tech = "materials=5"
 	perunit = 3750
-
+*/

@@ -86,7 +86,7 @@
 	var/server
 	var/banappeals
 	var/wikiurl = "http://baystation12.net/wiki/index.php?title=Main_Page"
-	var/vgws_base_url = "http://vg13.undo.it" // No hanging slashes.
+	var/vgws_base_url = "http://ss13.pomf.se" // No hanging slashes.
 	var/forumurl = "http://baystation12.net/forums/"
 
 	var/media_base_url = "" // http://ss13.nexisonline.net/media
@@ -144,6 +144,7 @@
 	var/ghost_interaction = 0
 
 	var/comms_password = ""
+	var/paperwork_library = 0 //use the library DLL.
 
 	var/use_irc_bot = 0
 	var/irc_bot_host = "localhost"
@@ -160,6 +161,8 @@
 	var/emag_recharge_ticks = 0
 
 	var/map_voting = 0
+
+	var/default_ooc_color = "#002eb8"
 
 /datum/configuration/New()
 	. = ..()
@@ -480,6 +483,9 @@
 				if("comms_password")
 					config.comms_password = value
 
+				if("paperwork_library")
+					config.paperwork_library = 1
+
 				if("irc_bot_host")
 					config.irc_bot_host = value
 
@@ -616,12 +622,12 @@
 				sqllogin = value
 			if ("password")
 				sqlpass = value
-			if ("feedback_database")
+/*			if ("feedback_database")
 				sqlfdbkdb = value
 			if ("feedback_login")
 				sqlfdbklogin = value
 			if ("feedback_password")
-				sqlfdbkpass = value
+				sqlfdbkpass = value */
 			if ("enable_stat_tracking")
 				sqllogging = 1
 			else

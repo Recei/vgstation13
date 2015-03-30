@@ -116,7 +116,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 	switch(choice)
 		if("traitor")
-			if(M.mind in ticker.mode.traitors)	return 0
+			if(istraitor(M))	return 0
 			ticker.mode.traitors += M.mind
 			M.mind.special_role = "traitor"
 			ticker.mode.forge_traitor_objectives(M.mind)
@@ -157,7 +157,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 
 		if("changeling")
-			if(M.mind in ticker.mode.changelings)	return 0
+			if(ischangeling(M))	return 0
 			ticker.mode.changelings += M.mind
 			ticker.mode.grant_changeling_powers(M)
 			M.mind.special_role = "Changeling"
@@ -170,14 +170,14 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 
 		if("vampire")
-			if(M.mind in ticker.mode.vampires)	return 0
+			if(isvampire(M))	return 0
 			ticker.mode.vampires += M.mind
 			ticker.mode.grant_vampire_powers(M)
 			M.mind.special_role = "Vampire"
 			ticker.mode.forge_vampire_objectives(M.mind)
 			ticker.mode.greet_vampire(M.mind)
-			M.mind.vampire.bloodtotal = 500
-			M.mind.vampire.bloodusable = 500
+			M.mind.vampire.bloodtotal = 666
+			M.mind.vampire.bloodusable = 666
 			M.check_vampire_upgrade(M.mind)
 
 			var/obj/item/packobelongings/pack = new /obj/item/packobelongings(M)
@@ -197,7 +197,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 			M.equip_to_slot_or_del(new/obj/item/clothing/shoes/jackboots, slot_shoes)
 			M.equip_to_slot_or_del(new/obj/item/clothing/gloves/batmangloves, slot_gloves)
 			M.equip_to_slot_or_del(new/obj/item/clothing/mask/gas/death_commando, slot_wear_mask)
-			M.equip_to_slot_or_del(new/obj/item/clothing/suit/hgpirate, slot_wear_suit)
+			M.equip_to_slot_or_del(new/obj/item/clothing/suit/storage/draculacoat, slot_wear_suit)
 			M.equip_to_slot_or_del(new/obj/item/clothing/head/chaplain_hood, slot_head)
 			M.equip_to_slot_or_del(new/obj/item/weapon/tank/emergency_oxygen/double, slot_s_store)
 
@@ -205,13 +205,13 @@ client/proc/antag_madness(var/mob/M in mob_list)
 			M << "Your previous belongings have been stored in your backpack."
 			M.regenerate_icons()
 
-			M << "<span class='danger'>You have been gifted a total of 500 usable units of blood!</span>"
+			M << "<span class='danger'>You have been gifted a total of 666 usable units of blood!</span>"
 			return 1
 
 
 
 		if("cult")
-			if(M.mind in ticker.mode.cult)	return 0
+			if(iscult(M))	return 0
 			ticker.mode.cult += M.mind
 			ticker.mode.update_cult_icons_added(M.mind)
 			M.mind.special_role = "Cultist"
@@ -300,15 +300,15 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 			M << "<span class='danger'>You suddenly realize that you clearly remember every single rune word! Check your notes.</span>"
 
-			M << "A tome, a message from your new master, appears in your backpack."
+			M << "<span class='sinister'>A tome, a message from your new master, appears in your backpack.</span>"
 
-			M << "You have a talisman in your backpack, one that will help you start the cult on this station. Use it well and remember - there are others...or maybe not..."//duh
+			M << "<span class='sinister'>You have a talisman in your backpack, one that will help you start the cult on this station. Use it well and remember - there are others...or maybe not...</span>"//duh
 			return 1
 
 
 
 		if("rev")
-			if(M.mind in ticker.mode.head_revolutionaries)	return 0
+			if(isrevhead(M))	return 0
 			ticker.mode.head_revolutionaries += M.mind
 			ticker.mode.update_rev_icons_added(M.mind)
 			M.mind.special_role = "Head Revolutionary"
@@ -352,7 +352,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 
 		if("nuke")
-			if(M.mind in ticker.mode.syndicates)	return 0
+			if(isnukeop(M))	return 0
 			ticker.mode.syndicates += M.mind
 			ticker.mode.update_synd_icons_added(M.mind)
 			M.real_name = "[syndicate_name()] Operative"
@@ -397,7 +397,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 
 		if("deathsquad")
-			if(M.mind in ticker.mode.deathsquads)	return 0
+			if(isdeathsquad(M))	return 0
 			M.mind.assigned_role = "MODE"
 			M.mind.special_role = "Death Commando"
 			ticker.mode.deathsquads += M.mind
@@ -458,7 +458,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 
 		if("wizard")
-			if(M.mind in ticker.mode.wizards)	return 0
+			if(iswizard(M))	return 0
 			ticker.mode.wizards += M.mind
 			M.mind.special_role = "Wizard"
 			M.mind.assigned_role = "MODE"
@@ -548,7 +548,7 @@ client/proc/antag_madness(var/mob/M in mob_list)
 
 		if("monkey")
 			if(M.monkeyizing)	return 0
-			if(M.mind in ticker.mode.infected_monkeys)	return 0
+			if(isbadmonkey(M))	return 0
 			ticker.mode.infected_monkeys += M.mind
 			var/mob/living/carbon/human/H = M
 			var/mob/living/carbon/monkey/K = M

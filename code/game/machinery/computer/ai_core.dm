@@ -45,8 +45,7 @@
 				user << "<span class='notice'>You place the circuit board inside the frame.</span>"
 				icon_state = "1"
 				circuit = P
-				user.drop_item()
-				P.loc = src
+				user.drop_item(src)
 			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "<span class='notice'>You screw the circuit board into place.</span>"
@@ -65,7 +64,7 @@
 				user << "<span class='notice'>You unfasten the circuit board.</span>"
 				state = 1
 				icon_state = "1"
-			if(istype(P, /obj/item/weapon/cable_coil))
+			if(istype(P, /obj/item/stack/cable_coil))
 				if(P:amount >= 5)
 					playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 					if(do_after(user, 20))
@@ -83,7 +82,7 @@
 					user << "<span class='notice'>You remove the cables.</span>"
 					state = 2
 					icon_state = "2"
-					var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( loc )
+					var/obj/item/stack/cable_coil/A = new /obj/item/stack/cable_coil( loc )
 					A.amount = 5
 
 			if(istype(P, /obj/item/stack/sheet/glass/rglass))
@@ -122,7 +121,7 @@
 				usr << "Added a freeform law."
 			*/
 
-			if(istype(P, /obj/item/device/mmi) || istype(P, /obj/item/device/mmi/posibrain))
+			if(istype(P, /obj/item/device/mmi))
 				if(!P:brainmob)
 					user << "<span class='warning'>Sticking an empty [P] into the frame would sort of defeat the purpose.</span>"
 					return
@@ -139,8 +138,7 @@
 					ticker.mode.remove_revolutionary(P:brainmob.mind, 1)
 					ticker.mode.remove_gangster(P:brainmob.mind, 1)
 
-				user.drop_item()
-				P.loc = src
+				user.drop_item(src)
 				brain = P
 				usr << "Added [P]."
 				icon_state = "3b"

@@ -32,17 +32,42 @@
 	..()
 	parent = new_parent
 
+/mob/living/simple_animal/bee/Destroy()
+	..()
+	if(parent)
+		parent.owned_bee_swarms.Remove(src)
+
+/mob/living/simple_animal/bee/Die()
+	returnToPool(src)
+
 /mob/living/simple_animal/bee/CanPass(atom/movable/mover, turf/target, height=1.5, air_group = 0)
 	return 1
 
-/mob/living/simple_animal/bee/Destroy()
-	if(parent)
-		parent.owned_bee_swarms.Remove(src)
-	..()
-
 /mob/living/simple_animal/bee/Life()
 	..()
+	if(stat != DEAD) //If we're alive, see if we can be calmed down.
+		//smoke, water and steam calms us down
+		var/calming = 0
+		var/list/calmers = list(/obj/effect/effect/smoke/chem, \
+		/obj/effect/effect/water, \
+		/obj/effect/effect/foam, \
+		/obj/effect/effect/steam, \
+		/obj/effect/mist)
 
+		for(var/this_type in calmers)
+			var/check_effect = locate(this_type) in src.loc
+			if(check_effect && check_effect == this_type)
+				calming = 1
+				break
+
+		if(calming)
+			var/oldferal = feral
+			feral = -10
+			if(oldferal > 0 && feral <= 0)
+				src.visible_message("\blue The bees calm down!")
+				target = null
+				target_turf = null
+				wander = 1
 	if(stat == CONSCIOUS)
 		//if we're strong enough, sting some people
 		var/mob/living/carbon/human/M = target
@@ -80,7 +105,8 @@
 				target_turf = null
 			if(strength > 5)
 				//calm down and spread out a little
-				var/mob/living/simple_animal/bee/B = new(get_turf(pick(orange(src,1))))
+				var/turf/T = get_turf(pick(orange(src,1)))
+				var/mob/living/simple_animal/bee/B = getFromPool(/mob/living/simple_animal/bee,T)
 				B.strength = rand(1,5)
 				src.strength -= B.strength
 				if(src.strength <= 5)
@@ -94,35 +120,13 @@
 		if(prob(0.5))
 			src.visible_message("\blue [pick("Buzzzz.","Hmmmmm.","Bzzz.")]")
 
-		//smoke, water and steam calms us down
-		var/calming = 0
-		var/list/calmers = list(/obj/effect/effect/smoke/chem, \
-		/obj/effect/effect/water, \
-		/obj/effect/effect/foam, \
-		/obj/effect/effect/steam, \
-		/obj/effect/mist)
-
-		for(var/this_type in calmers)
-			var/check_effect = locate(this_type) in src.loc
-			if(check_effect && check_effect == this_type)
-				calming = 1
-				break
-
-		if(calming)
-			if(feral > 0)
-				src.visible_message("\blue The bees calm down!")
-			feral = -10
-			target = null
-			target_turf = null
-			wander = 1
-
 		for(var/mob/living/simple_animal/bee/B in src.loc)
 			if(B == src)
 				continue
 
 			if(feral > 0)
 				src.strength += B.strength
-				del(B)
+				returnToPool(B)
 				src.icon_state = "bees[src.strength]"
 				if(strength > 5)
 					icon_state = "bees_swarm"
@@ -135,7 +139,7 @@
 
 					B.icon_state = "bees[B.strength]"
 					if(src.strength <= 0)
-						del(src)
+						returnToPool(B)
 						return
 					src.icon_state = "bees[B.strength]"
 					var/turf/simulated/floor/T = get_turf(get_step(src, pick(1,2,4,8)))
@@ -182,7 +186,7 @@
 	if(!parent && prob(10))
 		strength -= 1
 		if(strength <= 0)
-			del(src)
+			returnToPool(src)
 		else if(strength <= 5)
 			icon_state = "bees[strength]"
 

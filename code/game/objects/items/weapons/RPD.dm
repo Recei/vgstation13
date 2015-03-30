@@ -407,6 +407,9 @@ var/global/list/RPD_recipes=list(
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
+	if(!src.Adjacent(usr))
+		usr.unset_machine(usr)
+		return
 	if(href_list["setdir"])
 		p_dir= text2num(href_list["setdir"])
 		show_menu(usr)
@@ -477,12 +480,12 @@ var/global/list/RPD_recipes=list(
 		return 0
 	if(istype(A,/area/shuttle)||istype(A,/turf/space/transit))
 		return 0
-	if(istype(A, /obj/structure/lattice))
+	if(istype(A, /obj/structure/lattice) || istype(A,/obj/structure/catwalk))
 		A = get_turf(A)
 
 	switch(p_class)
 		if(-2) // Paint pipes
-			if(!istype(A,/obj/machinery/atmospherics/pipe) || istype(A,/obj/machinery/atmospherics/pipe/tank) || istype(A,/obj/machinery/atmospherics/unary/vent) || istype(A,/obj/machinery/atmospherics/pipe/simple/heat_exchanging) || istype(A,/obj/machinery/atmospherics/pipe/simple/insulated))
+			if(!istype(A,/obj/machinery/atmospherics/pipe) || istype(A,/obj/machinery/atmospherics/unary/tank) || istype(A,/obj/machinery/atmospherics/unary/vent) || istype(A,/obj/machinery/atmospherics/pipe/simple/heat_exchanging) || istype(A,/obj/machinery/atmospherics/pipe/simple/insulated))
 				// Avoid spewing errors about invalid mode -2 when clicking on stuff that aren't pipes.
 				user << "\The [src]'s error light flickers.  Perhaps you need to only use it on pipes and pipe meters?"
 				return 0
@@ -521,7 +524,7 @@ var/global/list/RPD_recipes=list(
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 			if(do_after(user, 20))
 				activate()
-				var/obj/item/pipe/P = getFromPool(/obj/item/pipe, A) 
+				var/obj/item/pipe/P = getFromPool(/obj/item/pipe, A)
 				P.New(A,pipe_type=p_type,dir=p_dir) //new (A, pipe_type=p_type, dir=p_dir)
 				P.update()
 				P.add_fingerprint(usr)

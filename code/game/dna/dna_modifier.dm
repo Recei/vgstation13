@@ -97,7 +97,7 @@
 	for(var/obj/O in src)
 		if(!istype(O,/obj/item/weapon/circuitboard/clonescanner) && \
 		   !istype(O,/obj/item/weapon/stock_parts) && \
-		   !istype(O,/obj/item/weapon/cable_coil) && \
+		   !istype(O,/obj/item/stack/cable_coil) && \
 		   O != beaker)
 			O.loc = get_turf(src)//Ejects items that manage to get in there (exluding the components and beaker)
 	if(!occupant)
@@ -172,6 +172,8 @@
 	if(L == user)
 		return
 	visible_message("[user] puts [L.name] into the DNA Scanner.", 3)
+	if(user.pulling == L)
+		user.stop_pulling()
 	put_in(L)
 	if(user.pulling == L)
 		user.pulling = null
@@ -194,7 +196,8 @@
 		if (opened)
 			playsound(get_turf(src), 'sound/items/Crowbar.ogg', 50, 1)
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-			M.state = 2
+			M.state = 1
+			M.build_state = 2
 			M.icon_state = "box_1"
 			for(var/obj/I in component_parts)
 				if(I.reliability != 100 && crit_fail)
@@ -208,8 +211,7 @@
 			return
 
 		beaker = item
-		user.drop_item()
-		item.loc = src
+		user.drop_item(src)
 		user.visible_message("[user] adds \a [item] to \the [src]!", "You add \a [item] to \the [src]!")
 		return
 	if(istype(item, /obj/item/weapon/grab)) //sanity checks, you chucklefucks
@@ -221,6 +223,8 @@
 			return
 		if (G.affecting.abiotic())
 			user << "\blue <B>Subject cannot have abiotic items on.</B>"
+			return
+		if(G.affecting.buckled)
 			return
 		put_in(G.affecting)
 		src.add_fingerprint(user)
@@ -339,8 +343,7 @@
 	..()
 	if (istype(O, /obj/item/weapon/disk/data)) //INSERT SOME diskS
 		if (!src.disk)
-			user.drop_item()
-			O.loc = src
+			user.drop_item(src)
 			src.disk = O
 			user << "You insert [O]."
 			nanomanager.update_uis(src) // update all UIs attached to src()
@@ -550,6 +553,9 @@
 /obj/machinery/computer/scan_consolenew/Topic(href, href_list)
 	if(..())
 		return 0 // don't update uis
+	if(href_list["close"])
+		if(usr.machine == src)
+			usr.unset_machine()
 	if(!istype(usr.loc, /turf))
 		return 0 // don't update uis
 	if(!src || !src.connected)

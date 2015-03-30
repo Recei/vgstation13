@@ -390,8 +390,7 @@
 			if (stat & MAINT)
 				user << "\red There is no connector for your power cell."
 				return
-			user.drop_item()
-			W.loc = src
+			user.drop_item(src)
 			cell = W
 			user.visible_message(\
 				"\red [user.name] has inserted the power cell to [src.name]!",\
@@ -458,11 +457,11 @@
 					update_icon()
 				else
 					user << "You fail to [ locked ? "unlock" : "lock"] the APC interface."
-	else if (istype(W, /obj/item/weapon/cable_coil) && !terminal && opened && has_electronics!=2)
+	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
 		if (src.loc:intact)
 			user << "\red You must remove the floor plating in front of the APC first."
 			return
-		var/obj/item/weapon/cable_coil/C = W
+		var/obj/item/stack/cable_coil/C = W
 		if(C.amount < 10)
 			user << "\red You need more wires."
 			return
@@ -494,7 +493,7 @@
 				s.set_up(5, 1, src)
 				s.start()
 				return
-			new /obj/item/weapon/cable_coil(loc,10)
+			new /obj/item/stack/cable_coil(loc,10)
 			user.visible_message(\
 				"\red [user.name] cut the cables and dismantled the power terminal.",\
 				"You cut the cables and dismantle the power terminal.")
@@ -816,7 +815,9 @@
 /obj/machinery/power/apc/Topic(href, href_list)
 	if(..())
 		return 0
-
+	if(href_list["close"])
+		if(usr.machine == src) usr.unset_machine()
+		return 1
 	if(!can_use(usr, 1))
 		return 0
 	if(!istype(usr, /mob/living/silicon) && locked)
@@ -867,7 +868,7 @@
 			malfai.malfhack = src
 			malfai.malfhacking = 1
 			sleep(600)
-			if(src)
+			if(src && malfai)
 				if (!src.aidisabled)
 					malfai.malfhack = null
 					malfai.malfhacking = 0
@@ -1289,5 +1290,9 @@ obj/machinery/power/apc/proc/autoset(var/val, var/on)
 		return 1
 	else
 		return 0
+
+/obj/machinery/power/apc/cultify()
+	if(src.invisibility != INVISIBILITY_MAXIMUM)
+		src.invisibility = INVISIBILITY_MAXIMUM
 
 #undef APC_UPDATE_ICON_COOLDOWN

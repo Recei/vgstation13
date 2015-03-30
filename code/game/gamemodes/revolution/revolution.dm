@@ -321,7 +321,7 @@
 					for(var/image/I in rev_mind_1.current.client.images)
 						if((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
 							//del(I)
-							rev_mind.current.client.images -= I
+							rev_mind_1.current.client.images -= I
 
 		if(rev_mind.current)
 			if(rev_mind.current.client)
@@ -385,6 +385,11 @@
 			else
 				text += "body destroyed"
 			text += ")"
+			if(headrev.total_TC)
+				if(headrev.spent_TC)
+					text += "<br><span class='sinister'>TC: [headrev.spent_TC]/[headrev.total_TC] - The tools used by the Head Revolutionary were: [list2text(headrev.uplink_items_bought, ", ")]</span>"
+				else
+					text += "<span class='sinister'>The Head Revolutionary was a smooth operator this round (did not purchase any uplink items)</span>"
 
 			for(var/datum/objective/mutiny/objective in headrev.objectives)
 				targets |= objective.target

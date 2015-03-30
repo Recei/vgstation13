@@ -4,10 +4,6 @@
  * A large number of misc global procs.
  */
 
-//Returns the middle-most value
-/proc/dd_range(var/low, var/high, var/num)
-	return max(low,min(high,num))
-
 /proc/Get_Angle(atom/movable/start,atom/movable/end)//For beams.
 	if(!start || !end) return 0
 	var/dy
@@ -203,11 +199,11 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 //Ensure the frequency is within bounds of what it should be sending/recieving at
 /proc/sanitize_frequency(var/f)
-	f = round(f)
-	f = max(1201, f) // 120.1
-	f = min(1599, f) // 159.9
+	f = Clamp(round(f), 1201, 1599) // 120.1, 159.9
+
 	if ((f % 2) == 0) //Ensure the last digit is an odd number
 		f += 1
+
 	return f
 
 //Turns 1479 into 147.9
@@ -617,10 +613,11 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 // returns turf relative to A offset in dx and dy tiles
 // bound to map limits
-/proc/get_offset_target_turf(var/atom/A, var/dx, var/dy)
-	var/x = min(world.maxx, max(1, A.x + dx))
-	var/y = min(world.maxy, max(1, A.y + dy))
-	return locate(x,y,A.z)
+/proc/get_offset_target_turf(atom/A, dx, dy)
+	var/x = Clamp(A.x + dx, 1, world.maxx)
+	var/y = Clamp(A.y + dy, 1, world.maxy)
+
+	return locate(x, y, A.z)
 
 //returns random gauss number
 proc/GaussRand(var/sigma)
@@ -738,9 +735,8 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 	var/Location = user.loc
 	var/holding = user.get_active_hand()
 
-	for(var/i = 0, i<numticks, i++)
+	for (var/i = 1 to numticks)
 		sleep(delayfraction)
-
 
 		if(!user || user.stat || user.weakened || user.stunned || !(user.loc == Location))
 			return 0
@@ -1172,20 +1168,25 @@ proc/get_mob_with_client_list()
 
 
 /proc/parse_zone(zone)
-	if(zone == "r_hand") return "right hand"
-	else if (zone == "l_hand") return "left hand"
-	else if (zone == "l_arm") return "left arm"
-	else if (zone == "r_arm") return "right arm"
-	else if (zone == "l_leg") return "left leg"
-	else if (zone == "r_leg") return "right leg"
-	else if (zone == "l_foot") return "left foot"
-	else if (zone == "r_foot") return "right foot"
-	else if (zone == "l_hand") return "left hand"
-	else if (zone == "r_hand") return "right hand"
-	else if (zone == "l_foot") return "left foot"
-	else if (zone == "r_foot") return "right foot"
-	else return zone
-
+	switch(zone)
+		if ("r_hand")
+			return "right hand"
+		if ("l_hand")
+			return "left hand"
+		if ("l_arm")
+			return "left arm"
+		if ("r_arm")
+			return "right arm"
+		if ("l_leg")
+			return "left leg"
+		if ("r_leg")
+			return "right leg"
+		if ("l_foot")
+			return "left foot"
+		if ("r_foot")
+			return "right foot"
+		else
+			return zone
 
 /proc/get_turf(const/atom/O)
 	if (isnull(O) || isarea(O))
@@ -1211,7 +1212,7 @@ proc/get_mob_with_client_list()
 
 //Quick type checks for some tools
 var/global/list/common_tools = list(
-/obj/item/weapon/cable_coil,
+/obj/item/stack/cable_coil,
 /obj/item/weapon/wrench,
 /obj/item/weapon/weldingtool,
 /obj/item/weapon/screwdriver,
@@ -1302,11 +1303,7 @@ var/list/WALLITEMS = list(
 
 
 proc/get_angle(atom/a, atom/b)
-    return atan2(b.y - a.y, b.x - a.x)
-
-proc/atan2(x, y)
-	if(!x && !y) return 0
-	return y >= 0 ? arccos(x / sqrt(x * x + y * y)) : -arccos(x / sqrt(x * x + y * y))
+    return Atan2(b.y - a.y, b.x - a.x)
 
 proc/rotate_icon(file, state, step = 1, aa = FALSE)
 	var icon/base = icon(file, state)
@@ -1332,11 +1329,6 @@ proc/rotate_icon(file, state, step = 1, aa = FALSE)
 		result.Insert(temp, "[angle]")
 
 	return result
-
-/proc/iscatwalk(atom/A)
-	if(istype(A, /turf/simulated/floor/plating/airless/catwalk))
-		return 1
-	return 0
 
 /proc/has_edge(obj/O as obj)
 	if (!O) return 0

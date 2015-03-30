@@ -16,12 +16,18 @@
 	icon_state = "ash"
 	anchored = 1
 
+
 /obj/effect/decal/cleanable/ash/attackby(W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/reagent_containers/glass))
 		var/obj/item/weapon/reagent_containers/glass/G = W
 		G.reagents.add_reagent("ash", 20)
+		//user.visible_message("<span class='notice'>[user] scoops \the [src] to \the [G].</span>") Later
 	..()
 	return
+
+/obj/effect/decal/cleanable/ash/attack_hand(mob/user as mob)
+	user.visible_message("<span class='notice'>[user] wipes away \the [src].</span>")
+	qdel(src)
 
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"

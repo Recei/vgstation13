@@ -1,6 +1,7 @@
 #define DRYING_TIME 5 * 60*10			//for 1 unit of depth in puddle (amount var)
 
 var/global/list/image/splatter_cache=list()
+var/global/list/blood_list = list()
 
 /obj/effect/decal/cleanable/blood
 	name = "blood"
@@ -23,9 +24,18 @@ var/global/list/image/splatter_cache=list()
 	return
 
 /obj/effect/decal/cleanable/blood/Destroy()
+	blood_list -= src
 	for(var/datum/disease/D in viruses)
 		D.cure(0)
 		D.holder = null
+
+	if(ticker.mode && ticker.mode.name == "cult")
+		var/datum/game_mode/cult/mode_ticker = ticker.mode
+		var/turf/T = get_turf(src)
+		if(T)
+			if(locate(T) in mode_ticker.bloody_floors)
+				mode_ticker.bloody_floors -= T
+				mode_ticker.blood_check()
 	..()
 
 /obj/effect/decal/cleanable/blood/resetVariables()
@@ -33,10 +43,24 @@ var/global/list/image/splatter_cache=list()
 	viruses = list()
 	virus2 = list()
 	blood_DNA = list()
-	..("viruses","virus2", "blood_DNA", args)
+	..("viruses","virus2", "blood_DNA", "random_icon_states", args)
+
 /obj/effect/decal/cleanable/blood/New()
 	..()
+	blood_list += src
 	update_icon()
+
+	if(ticker && ticker.mode && ticker.mode.name == "cult")
+		var/datum/game_mode/cult/mode_ticker = ticker.mode
+		if((mode_ticker.objectives[mode_ticker.current_objective] == "bloodspill") && !mode_ticker.narsie_condition_cleared)
+			var/turf/T = get_turf(src)
+			if(T && (T.z == map.zMainStation))
+				if(locate("\ref[T]") in mode_ticker.bloody_floors)
+				else
+					mode_ticker.bloody_floors += T
+					mode_ticker.bloody_floors[T] = T
+					mode_ticker.blood_check()
+
 	if(istype(src, /obj/effect/decal/cleanable/blood/gibs))
 		return
 	if(istype(src, /obj/effect/decal/cleanable/blood/tracks))
@@ -46,7 +70,6 @@ var/global/list/image/splatter_cache=list()
 			for(var/obj/effect/decal/cleanable/blood/B in src.loc)
 				if(B != src)
 					if (B.blood_DNA)
-						src.amount += B.amount
 						blood_DNA |= B.blood_DNA.Copy()
 					returnToPool(B)
 
@@ -64,6 +87,7 @@ var/global/list/image/splatter_cache=list()
 		return
 	if(amount < 1)
 		return
+
 	if(perp.shoes)
 		perp.shoes:track_blood = max(amount,perp.shoes:track_blood)                //Adding blood to shoes
 		if(!perp.shoes.blood_overlay)
@@ -83,6 +107,7 @@ var/global/list/image/splatter_cache=list()
 			perp.feet_blood_DNA = list()
 		perp.feet_blood_DNA |= blood_DNA.Copy()
 		perp.feet_blood_color=basecolor
+
 	amount--
 
 /obj/effect/decal/cleanable/blood/proc/dry()
@@ -232,7 +257,7 @@ var/global/list/image/splatter_cache=list()
 /obj/effect/decal/cleanable/mucus
 	name = "mucus"
 	desc = "Disgusting mucus."
-	gender = PLURAL
+	setGender(PLURAL)
 	density = 0
 	anchored = 1
 	layer = 2

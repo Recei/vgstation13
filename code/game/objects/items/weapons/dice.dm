@@ -5,10 +5,12 @@
 	icon_state = "d6"
 	w_class = 1
 	var/sides = 6
+	var/minsides = 1
 	var/result = null
 
 /obj/item/weapon/dice/New()
-	result = rand(1, sides)
+	..()
+	result = rand(minsides, sides)
 	update_icon()
 
 /obj/item/weapon/dice/d2
@@ -64,7 +66,7 @@
 	diceroll(user, 1)
 
 /obj/item/weapon/dice/proc/diceroll(mob/user as mob, thrown)
-	result = rand(1, sides)
+	result = rand(minsides, sides)
 	var/comment = ""
 	if(sides == 20 && result == 20)
 		comment = "Nat 20!"
@@ -93,9 +95,12 @@
 /obj/item/weapon/dice/d20/e20/diceroll(mob/user as mob, thrown)
 	if(triggered) return
 	..()
+	message_admins("[user] has [thrown? "used" : "thrown"] an explosive dice and rolled a [result]")
+	log_game("[user] has [thrown? "used" : "thrown"] an explosive dice and rolled a [result]")
 	if(result == 1)
 		user << "<span class='danger'>Rocks fall, you die.</span>"
 		user.gib()
+		user.drop_item(src.loc)
 	else
 		triggered = 1
 		visible_message("<span class='notice'>You hear a quiet click.</span>")
@@ -105,8 +110,11 @@
 			if(result > MAX_EXPLOSION_RANGE && result != 20)
 				cap = 1
 				result = min(result, MAX_EXPLOSION_RANGE) //Apply the bombcap
+				if(result > 14)
+					sleep(20)
 			else if(result == 20) //Roll a nat 20, screw the bombcap
 				result = 24
+				sleep(40)
 			var/turf/epicenter = get_turf(src)
 			explosion(epicenter, round(result*0.25), round(result*0.5), round(result), round(result*1.5), 1, cap)
 			if(cap)

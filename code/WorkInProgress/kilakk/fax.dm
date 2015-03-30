@@ -20,6 +20,7 @@ var/list/alldepartments = list("Central Command")
 
 	var/obj/item/weapon/paper/tofax = null // what we're sending
 	var/sendcooldown = 0 // to avoid spamming fax messages
+	var/faxtime = 0 //so people can know when we can fax again!
 
 	var/department = "Unknown" // our department
 
@@ -69,7 +70,7 @@ var/list/alldepartments = list("Central Command")
 			dat += "<a href='byond://?src=\ref[src];remove=1'>Remove Paper</a><br><br>"
 
 			if(sendcooldown)
-				dat += "<b>Transmitter arrays realigning. Please stand by.</b><br>"
+				dat += "<b>Transmitter arrays realigning. Please stand by for [(faxtime - world.timeofday) / 10] second\s.</b><br>"
 
 			else
 				dat += "<a href='byond://?src=\ref[src];send=1'>Send</a><br>"
@@ -82,7 +83,7 @@ var/list/alldepartments = list("Central Command")
 		else
 			if(sendcooldown)
 				dat += "Please insert paper to send via secure connection.<br><br>"
-				dat += "<b>Transmitter arrays realigning. Please stand by.</b><br>"
+				dat += "<b>Transmitter arrays realigning. Please stand by for [(faxtime - world.timeofday) / 10] second\s.</b><br>"
 			else
 				dat += "Please insert paper to send via secure connection.<br><br>"
 
@@ -117,7 +118,7 @@ var/list/alldepartments = list("Central Command")
 				sendcooldown = 600
 
 			usr << "Message transmitted successfully."
-
+			faxtime = world.timeofday + sendcooldown
 			spawn(sendcooldown) // cooldown time
 				sendcooldown = 0
 
@@ -141,8 +142,7 @@ var/list/alldepartments = list("Central Command")
 		else
 			var/obj/item/I = usr.get_active_hand()
 			if (istype(I, /obj/item/weapon/card/id))
-				usr.drop_item()
-				I.loc = src
+				usr.drop_item(src)
 				scan = I
 		authenticated = 0
 
@@ -167,9 +167,8 @@ var/list/alldepartments = list("Central Command")
 
 	if(istype(O, /obj/item/weapon/paper))
 		if(!tofax)
-			user.drop_item()
+			user.drop_item(src)
 			tofax = O
-			O.loc = src
 			user << "<span class='notice'>You insert the paper into \the [src].</span>"
 			flick("faxsend", src)
 			updateUsrDialog()
@@ -180,8 +179,7 @@ var/list/alldepartments = list("Central Command")
 
 		var/obj/item/weapon/card/id/idcard = O
 		if(!scan)
-			usr.drop_item()
-			idcard.loc = src
+			usr.drop_item(src)
 			scan = idcard
 
 	else if(istype(O, /obj/item/weapon/wrench))
