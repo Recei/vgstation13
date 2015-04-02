@@ -661,6 +661,7 @@ obj/item/weapon/circuitboard/rdserver
 							"/obj/item/weapon/stock_parts/capacitor" = 1,
 							"/obj/item/weapon/stock_parts/scanning_module" = 2,
 							"/obj/item/weapon/stock_parts/manipulator" = 2)
+*/
 
 
 /obj/item/weapon/circuitboard/pipedispenser
