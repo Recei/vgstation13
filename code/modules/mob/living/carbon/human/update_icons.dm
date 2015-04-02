@@ -966,16 +966,13 @@ var/global/list/damage_icon_parts = list()
 	if (on_fire)
 		var/obj/Overlays/O = obj_overlays[FIRE_LAYER]
 		O.icon = fire_dmi
-		if(species == "Human")
-			switch(fire_stacks)
-				if(1 to 9.9)
-					O.icon_state = "flaming1"
-				if(10 to 15)
-					O.icon_state = "flaming2"
-				if(15.1 to INFINITY)
-					O.icon_state = "flaming3"
-		else
-			O.icon_state = fire_sprite
+		switch(fire_stacks)
+			if(1 to 9.9)
+				O.icon_state = "flaming1"
+			if(10 to 15)
+				O.icon_state = "flaming2"
+			if(15.1 to INFINITY)
+				O.icon_state = "flaming3"
 		overlays += O
 		obj_overlays[FIRE_LAYER] = O
 	if(update_icons)		update_icons()

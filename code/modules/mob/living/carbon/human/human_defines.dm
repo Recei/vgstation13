@@ -86,4 +86,4 @@
 
 
 	fire_dmi = 'icons/mob/OnFire.dmi'
-	fire_sprite = "Standing"
+	fire_sprite = "flaming1"

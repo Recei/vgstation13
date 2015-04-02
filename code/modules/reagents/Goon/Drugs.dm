@@ -55,7 +55,7 @@ datum/reagent/jenkem/on_mob_life(var/mob/living/carbon/M as mob)
 datum/reagent/jenkem/reaction_turf(var/turf/T, var/volume)
 	src = null
 	if(!istype(T, /turf/space))
-		new /obj/effect/decal/cleanable/poo(T)
+		getFromPool(/obj/effect/decal/cleanable/blood/poo, T)
 
 datum/reagent/jenkem/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 	if(method==INGEST)

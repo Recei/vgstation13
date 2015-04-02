@@ -771,7 +771,7 @@
 					playsound(src.loc, 'sound/misc/squishy.ogg', 40, 1)
 					wanttopoo = 0
 
-					var/obj/effect/decal/cleanable/poo/D = new/obj/effect/decal/cleanable/poo(get_turf(src))
+					var/obj/effect/decal/cleanable/blood/poo/D = getFromPool(/obj/effect/decal/cleanable/blood/poo, get_turf(src))
 					if(src.reagents)
 						src.reagents.trans_to(D, 10)
 
@@ -811,7 +811,7 @@
 					wanttopee = 0
 					m_type = VISIBLE
 				else
-					var/obj/effect/decal/cleanable/urine/D = new/obj/effect/decal/cleanable/urine(get_turf(src))
+					var/obj/effect/decal/cleanable/blood/urine/D = getFromPool(/obj/effect/decal/cleanable/blood/urine, get_turf(src))
 					if(src.reagents)
 						src.reagents.trans_to(D, 10)
 					message = "<B>[src]</B> urinates on the floor."
@@ -946,7 +946,7 @@
 	flick("e_flash", src.flash)
 	var/obj/item/clothing/head/butt/B = new /obj/item/clothing/head/butt(src.loc)
 	B.transfer_buttdentity(src)
-	new /obj/effect/decal/cleanable/poo(src.loc)
+	getFromPool(/obj/effect/decal/cleanable/blood/poo, src.loc)
 	world << sound('sound/effects/superfart.ogg')
 	loc << "<B>[src]</B>'s butt explodes!"
 	src.Weaken(12)

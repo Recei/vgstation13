@@ -227,3 +227,33 @@ var/global/list/image/fluidtrack_cache=list()
 	gender = PLURAL
 	random_icon_states = null
 	amount = 0
+
+//Snowflake shit
+
+/obj/effect/decal/cleanable/blood/tracks/poo/addDecalFeets(mob/living/carbon/human/perp)
+	if(perp.shoes)
+		perp.shoes:track_poo = max(amount,perp.shoes:track_poo)
+		perp.shoes.add_poo()                //Adding poo shoes
+		if(!perp.shoes.poo_overlay)
+			perp.shoes.generate_poo_overlay()
+		if(!perp.shoes.blood_DNA)
+			perp.shoes.blood_DNA = list()
+		perp.shoes.overlays += perp.shoes.poo_overlay
+		perp.shoes.blood_DNA |= blood_DNA.Copy()
+		perp.update_inv_shoes(1)
+	else
+		perp.track_poo = max(amount,perp.track_poo)                                //Or feet
+		if(!perp.feet_blood_DNA)
+			perp.feet_blood_DNA = list()
+		perp.feet_blood_DNA |= blood_DNA.Copy()
+
+/obj/effect/decal/cleanable/blood/tracks/poo/footprints
+	name = "wet footprints"
+	desc = "Whoops..."
+	coming_state = "human1"
+	going_state  = "human2"
+	amount = 0
+
+/obj/effect/decal/cleanable/blood/tracks/poo/footprints/vox
+	coming_state = "claw1"
+	going_state  = "claw2"

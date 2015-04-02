@@ -2439,8 +2439,8 @@ datum/chemical_reaction/barefoot
 	result = "barefoot"
 	required_reagents = list("berryjuice" = 1, "cream" = 1, "vermouth" = 1)
 	result_amount = 3
+
 ////DRINKS THAT REQUIRED IMPROVED SPRITES BELOW:: -Agouri/////
-<<<<<<< HEAD
 datum/chemical_reaction/sbiten
 	name = "Sbiten"
 	id = "sbiten"

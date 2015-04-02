@@ -88,6 +88,11 @@ var/global/list/blood_list = list()
 	if(amount < 1)
 		return
 
+	addDecalFeets(perp)
+
+	amount--
+
+/obj/effect/decal/cleanable/blood/proc/addDecalFeets(mob/living/carbon/human/perp)
 	if(perp.shoes)
 		perp.shoes:track_blood = max(amount,perp.shoes:track_blood)                //Adding blood to shoes
 		if(!perp.shoes.blood_overlay)
@@ -108,8 +113,6 @@ var/global/list/blood_list = list()
 		perp.feet_blood_DNA |= blood_DNA.Copy()
 		perp.feet_blood_color=basecolor
 
-	amount--
-
 /obj/effect/decal/cleanable/blood/proc/dry()
 	name = "dried [src.name]"
 	desc = "It's dry and crusty. Someone is not doing their job."
@@ -118,6 +121,10 @@ var/global/list/blood_list = list()
 
 /obj/effect/decal/cleanable/blood/attack_hand(mob/living/carbon/human/user)
 	..()
+	if(istype(src, /obj/effect/decal/cleanable/blood/poo))
+		return
+	if(istype(src, /obj/effect/decal/cleanable/blood/urine))
+		return
 	if (amount && istype(user))
 		add_fingerprint(user)
 		if (user.gloves)
