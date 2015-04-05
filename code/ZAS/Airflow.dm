@@ -65,9 +65,6 @@ mob/proc/airflow_stun()
 mob/living/silicon/airflow_stun()
 	return
 
-mob/living/carbon/metroid/airflow_stun()
-	return
-
 mob/living/carbon/human/airflow_stun()
 	if(last_airflow_stun > world.time - zas_settings.Get(/datum/ZAS_Setting/airflow_stun_cooldown))	return 0
 	if(buckled) return 0

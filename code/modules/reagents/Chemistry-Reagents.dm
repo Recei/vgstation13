@@ -2631,8 +2631,6 @@ ethanol
 	for(var/mob/living/carbon/human/H in T)
 		if(H.dna.mutantrace == "slime")
 			H.adjustToxLoss(rand(5,15))
-	for(var/mob/living/carbon/metroid/M in T)
-		M.adjustToxLoss(rand(15,30))
 
 /datum/reagent/sodiumchloride
 	name = "Table Salt"
