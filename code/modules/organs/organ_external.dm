@@ -46,6 +46,7 @@
 
 	var/has_fat=0 // Has a _fat variant
 
+
 /datum/organ/external/New(var/datum/organ/external/P)
 	if(P)
 		parent = P
@@ -583,8 +584,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 					organ= new /obj/item/weapon/organ/head(owner.loc, owner)
 				var/datum/organ/internal/brain/B = owner.internal_organs_by_name["brain"]
 				var/obj/item/weapon/organ/head/H = organ
-				H.organ_data = B
-				B.organ_holder = organ
+				if(B)
+					H.organ_data = B
+					B.organ_holder = organ
+					B.owner_dna = H.owner_dna
 				owner.internal_organs_by_name["brain"] = null
 				owner.internal_organs_by_name -= "brain"
 				owner.internal_organs -= B
@@ -1038,12 +1041,14 @@ Note that amputating the affected organ does in fact remove the infection from t
 obj/item/weapon/organ
 	icon = 'icons/mob/human_races/r_human.dmi'
 	var/datum/organ/internal/organ_data
+	var/datum/dna/owner_dna
 
 obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	..(loc)
 	if(!istype(H))
 		return
 	if(H.dna)
+		owner_dna = H.dna.Clone()
 		if(!blood_DNA)
 			blood_DNA = list()
 		blood_DNA[H.dna.unique_enzymes] = H.dna.b_type
@@ -1105,6 +1110,7 @@ obj/item/weapon/organ/r_leg
 	icon_state = "r_leg"
 
 obj/item/weapon/organ/head
+	dir = NORTH
 	name = "head"
 	icon_state = "head_m"
 	var/mob/living/carbon/brain/brainmob

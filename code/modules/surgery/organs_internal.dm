@@ -424,7 +424,7 @@
 	var/datum/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='notice'>[user] has transplanted \the [tool] into [target]'s [affected.display_name].</span>", \
 	"<span class='notice'>You have transplanted \the [tool] into [target]'s [affected.display_name].</span>")
-	user.drop_item(tool)
+	user.drop_item()
 	var/obj/item/organ/O = tool
 
 	if(istype(O))
@@ -465,7 +465,7 @@
 /datum/surgery_step/internal/attach_organ
 	allowed_tools = list(
 		/obj/item/weapon/FixOVein = 100,
-		/obj/item/weapon/cable_coil = 75,
+		/obj/item/stack/cable_coil = 75,
 		)
 
 	min_duration = 100

@@ -101,7 +101,8 @@ var/ELVISBLOCK = 0
 // Powers
 var/SOBERBLOCK = 0
 var/PSYRESISTBLOCK = 0
-var/SHADOWBLOCK = 0
+//var/SHADOWBLOCK = 0
+var/FARSIGHTBLOCK = 0
 var/CHAMELEONBLOCK = 0
 var/CRYOBLOCK = 0
 var/EATBLOCK = 0
@@ -278,11 +279,6 @@ var/sqldb = "tgstation"
 var/sqllogin = "root"
 var/sqlpass = ""
 
-	// Feedback gathering sql connection
-
-var/sqlfdbkdb = "test"
-var/sqlfdbklogin = "root"
-var/sqlfdbkpass = ""
 
 var/sqllogging = 0 // Should we log deaths, population stats, etc?
 
@@ -295,7 +291,6 @@ var/custom_event_msg = null
 //Database connections
 //A connection is established on world creation. Ideally, the connection dies when the server restarts (After feedback logging.).
 var/DBConnection/dbcon = new()	//Feedback database (New database)
-var/DBConnection/dbcon_old = new()	//Tgstation database (Old database) - See the files in the SQL folder for information what goes where.
 
 #define MIDNIGHT_ROLLOVER		864000	//number of deciseconds in a day
 

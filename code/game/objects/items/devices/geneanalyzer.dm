@@ -44,7 +44,7 @@
 							SANSBLOCK,
 							SOBERBLOCK,
 							PSYRESISTBLOCK,
-							SHADOWBLOCK,
+							/*SHADOWBLOCK,*/
 							CHAMELEONBLOCK,
 							CRYOBLOCK,
 							EATBLOCK,

@@ -13,8 +13,13 @@
 		if(M_HARDCORE in mutations)
 			mutations.Remove(M_HARDCORE)
 			src << "<span class='notice'>You feel like a pleb.</span>"
-
 	handle_beams()
+
+	//handles "call on life", allowing external life-related things to be processed
+	for(var/toCall in src.callOnLife)
+		if(locate(toCall) && callOnLife[toCall])
+			call(locate(toCall),callOnLife[toCall])()
+		else callOnLife -= toCall
 
 	if(mind)
 		if(mind in ticker.mode.implanted)
@@ -76,6 +81,11 @@
 			G.overlays += H.obj_overlays[HANDCUFF_LAYER]
 		G.invisibility = 0
 		G << "<span class='sinister'>You feel relieved as what's left of your soul finally escapes its prison of flesh.</span>"
+
+		if(ticker.mode.name == "cult")
+			var/datum/game_mode/cult/mode_ticker = ticker.mode
+			mode_ticker.harvested++
+
 	else
 		dust()
 
@@ -290,12 +300,12 @@
 				L += get_contents(D.wrapped)
 		return L
 
-/mob/living/proc/check_contents_for(A)
+/mob/living/check_contents_for(A)
 	var/list/L = src.get_contents()
 
 	for(var/obj/B in L)
 		if(B.type == A)
-			return 1
+			return B
 	return 0
 
 
@@ -357,8 +367,8 @@
 
 
 
-/mob/living/proc/revive()
-	rejuvenate()
+/mob/living/proc/revive(animation = 0)
+	rejuvenate(animation)
 	/*
 	buckled = initial(src.buckled)
 	*/
@@ -375,10 +385,10 @@
 	hud_updateflag |= 1 << HEALTH_HUD
 	hud_updateflag |= 1 << STATUS_HUD
 
-/mob/living/proc/rejuvenate()
+/mob/living/proc/rejuvenate(animation = 0)
 
 	var/turf/T = get_turf(src)
-	T.turf_animation('icons/effects/64x64.dmi',"rejuvinate",-16,0,MOB_LAYER+1,'sound/effects/rejuvinate.ogg')
+	if(animation) T.turf_animation('icons/effects/64x64.dmi',"rejuvinate",-16,0,MOB_LAYER+1,'sound/effects/rejuvinate.ogg')
 
 	// shut down various types of badness
 	setToxLoss(0)
@@ -510,7 +520,7 @@
 		for(var/mob/living/M in range(src, 1))
 			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if (t7 && pulling && (get_dist(src, pulling) <= 1 || pulling.loc == loc))
+	if (t7 && pulling && (Adjacent(pulling) || pulling.loc == loc))
 		var/turf/T = loc
 		. = ..()
 
@@ -593,6 +603,9 @@
 	if(istype(src.loc,/obj/item/weapon/holder))
 		var/obj/item/weapon/holder/H = src.loc
 		src.loc = get_turf(src.loc)
+		if(istype(H.loc, /mob/living))
+			var/mob/living/Location = H.loc
+			Location.drop_from_inventory(H)
 		del(H)
 		return
 
@@ -883,7 +896,7 @@ default behaviour is:
 
 /mob/living/Bump(atom/movable/AM as mob|obj, yes)
 	spawn(0)
-		if ((!( yes ) || now_pushing))
+		if ((!( yes ) || now_pushing) || !loc)
 			return
 		now_pushing = 1
 		if (istype(AM, /mob/living))
@@ -964,3 +977,6 @@ default behaviour is:
 				now_pushing = 0
 			return
 	return
+
+/mob/living/is_open_container()
+	return 1

@@ -69,7 +69,7 @@ datum/reagent/poo/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 datum/reagent/poo/reaction_turf(var/turf/T, var/volume)
 	src = null
 	if(!istype(T, /turf/space))
-		new /obj/effect/decal/cleanable/poo(T)
+		getFromPool(/obj/effect/decal/cleanable/blood/poo, T)
 
 datum/reagent/urine
 	name = "urine"
@@ -103,7 +103,7 @@ datum/reagent/urine/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 datum/reagent/urine/reaction_turf(var/turf/T, var/volume)
 	src = null
 	if(!istype(T, /turf/space))
-		new /obj/effect/decal/cleanable/urine(T)
+		getFromPool(/obj/effect/decal/cleanable/blood/urine, T)
 
 
 

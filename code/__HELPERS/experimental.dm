@@ -48,7 +48,7 @@
 var/global/list/masterPool = new
 
 // Read-only or compile-time vars and special exceptions.
-var/list/exclude = list("inhand_states", "loc", "locs", "parent_type", "vars", "verbs", "type", "x", "y", "z")
+var/list/exclude = list("inhand_states", "loc", "locs", "parent_type", "vars", "verbs", "type", "x", "y", "z","group")
 
 /*
  * @args
@@ -57,25 +57,34 @@ var/list/exclude = list("inhand_states", "loc", "locs", "parent_type", "vars", "
  *
  * Example call: getFromPool(/obj/item/weapon/shard, loc)
  */
-/proc/getFromPool(const/A, const/B)
+/proc/getFromPool()
+	var/A = args[1]
+	var/list/B = list()
+	B += (args - A)
 	if(length(masterPool["[A]"]) <= 0)
 		#ifdef DEBUG_OBJECT_POOL
-		world << text("DEBUG_OBJECT_POOL: new proc has been called ([]).", A)
+		world << text("DEBUG_OBJECT_POOL: new proc has been called ([] | []).", A, list2params(B))
 		#endif
 		//so the GC knows we're pooling this type.
 		if(isnull(masterPool["[A]"]))
-			masterPool["[A]"] = new
-		return new A(B)
+			masterPool["[A]"] = list(new A)
+		if(B && B.len)
+			return new A(arglist(B))
+		else
+			return new A()
 
 	var/atom/movable/O = masterPool["[A]"][1]
 	masterPool["[A]"] -= O
 
 	#ifdef DEBUG_OBJECT_POOL
-	world << text("DEBUG_OBJECT_POOL: getFromPool([]) [] left.", A, length(masterPool[A]))
+	world << text("DEBUG_OBJECT_POOL: getFromPool([]) [] left arglist([]).", A, length(masterPool[A]), list2params(B))
 	#endif
-	if(!O)
-		O = new A
-	O.loc = B
+	if(!O || !istype(O))
+		O = new A(arglist(B))
+	else
+		if(length(B))
+			O.loc = B[1]
+		O.New(arglist(B))
 	return O
 
 /*
@@ -100,8 +109,9 @@ var/list/exclude = list("inhand_states", "loc", "locs", "parent_type", "vars", "
 		return
 
 	if(isnull(masterPool["[AM.type]"]))
-		masterPool["[AM.type]"] = new
+		masterPool["[AM.type]"] = list()
 
+	AM.Destroy()
 	AM.resetVariables()
 	masterPool["[AM.type]"] += AM
 
@@ -132,7 +142,12 @@ var/list/exclude = list("inhand_states", "loc", "locs", "parent_type", "vars", "
  * /obj/item/weapon/resetVariables()
  * 	..("var4")
  */
-/atom/movable/proc/resetVariables()
+
+//RETURNS NULL WHEN INITIALIZED AS A LIST() AND POSSIBLY OTHER DISCRIMINATORS
+//IF YOU ARE USING SPECIAL VARIABLES SUCH A LIST() INITIALIZE THEM USING RESET VARIABLES
+//SEE http://www.byond.com/forum/?post=76850 AS A REFERENCE ON THIS
+
+/atom/movable/resetVariables()
 	loc = null
 
 	var/list/exclude = global.exclude + args // explicit var exclusion

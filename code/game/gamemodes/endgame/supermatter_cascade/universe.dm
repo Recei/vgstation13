@@ -32,7 +32,13 @@
 
 // Apply changes when entering state
 /datum/universal_state/supermatter_cascade/OnEnter()
+	set background = 1
 	world << "<span class='sinister' style='font-size:22pt'>You are blinded by a brilliant flash of energy.</span>"
+
+	world << sound('sound/effects/cascade.ogg')
+
+	for(var/mob/M in player_list)
+		flick("e_flash", M.flash)
 
 	if(emergency_shuttle.direction==2)
 		captain_announce("The emergency shuttle has returned due to bluespace distortion.")
@@ -41,9 +47,55 @@
 
 	suspend_alert = 1
 
+	AreaSet()
+	OverlaySet()
+	MiscSet()
+	APCSet()
+	AmbientSet()
+
+	// Disable Nar-Sie.
+	ticker.mode.eldergod=0
+
+	ticker.StartThematic("endgame")
+
+	PlayerSet()
+
+	new /obj/machinery/singularity/narsie/large/exit(pick(endgame_exits))
+	spawn(rand(30,60) SECONDS)
+		var/txt = {"
+There's been a galaxy-wide electromagnetic pulse.  All of our systems are heavily damaged and many personnel are dead or dying. We are seeing increasing indications of the universe itself beginning to unravel.
+
+[station_name()], you are the only facility nearby a bluespace rift, which is near your research outpost.  You are hereby directed to enter the rift using all means necessary, quite possibly as the last humans alive.
+
+You have five minutes before the universe collapses. Good l\[\[###!!!-
+
+AUTOMATED ALERT: Link to [command_name()] lost."}
+		command_alert(txt,"SUPERMATTER CASCADE DETECTED")
+		sleep(5 MINUTES)
+		ticker.declare_completion()
+		ticker.station_explosion_cinematic(0,null) // TODO: Custom cinematic
+
+		world << "<B>Resetting in 30 seconds!</B>"
+
+		feedback_set_details("end_error","Universe ended")
+
+		if(blackbox)
+			blackbox.save_all_data_to_sql()
+
+		if (watchdog.waiting)
+			world << "\blue <B>Server will shut down for an automatic update in a few seconds.</B>"
+			watchdog.signal_ready()
+			return
+		sleep(300)
+		log_game("Rebooting due to universal collapse")
+		CallHook("Reboot",list())
+		world.Reboot()
+		return
+
+/datum/universal_state/supermatter_cascade/proc/AreaSet()
 	for(var/area/ca in world)
 		var/area/A=get_area_master(ca)
-		if(!istype(A,/area) || A.name=="Space")
+		if(!istype(A,/area) || A.name=="Space" || istype(A,/area/beach))
 			continue
 
 		// No cheating~
@@ -71,24 +123,31 @@
 
 		A.updateicon()
 
+/datum/universal_state/supermatter_cascade/proc/OverlaySet()
 	for(var/turf/space/spess in world)
 		spess.overlays += "end01"
 
+/datum/universal_state/supermatter_cascade/proc/AmbientSet()
+	for(var/turf/T in world)
+		if(istype(T, /turf/space))	continue
+		if(T.z != map.zCentcomm)
+			T.update_lumcount(1, 160, 255, 0, 0)
+
+/datum/universal_state/supermatter_cascade/proc/MiscSet()
 	for (var/obj/machinery/firealarm/alm in world)
 		if (!(alm.stat & BROKEN))
 			alm.ex_act(2)
 
+/datum/universal_state/supermatter_cascade/proc/APCSet()
 	for (var/obj/machinery/power/apc/APC in world)
 		if (!(APC.stat & BROKEN) && !APC.is_critical)
+			APC.chargemode = 0
 			if(APC.cell)
 				APC.cell.charge = 0
 			APC.emagged = 1
 			APC.queue_icon_update()
 
-	// Disable Nar-Sie.
-	ticker.mode.eldergod=0
-
-	ticker.StartThematic("endgame")
+/datum/universal_state/supermatter_cascade/proc/PlayerSet()
 	for(var/datum/mind/M in player_list)
 		if(!istype(M.current,/mob/living))
 			continue
@@ -108,7 +167,7 @@
 			M.objectives += live
 
 		if(failed_objectives)
-			M << "\red<b><font size=3>You have permitted the universe to collapse and have therefore failed your objectives.</font></b>"
+			M << "<span class='danger'><font size=3>You have permitted the universe to collapse and have therefore failed your objectives.</font></span>"
 
 		// Delete all runes
 		for(var/obj/effect/rune/R in rune_list)
@@ -117,13 +176,13 @@
 
 		if(M in ticker.mode.revolutionaries)
 			ticker.mode.revolutionaries -= M
-			M << "\red <FONT size = 3><B>The massive pulse of energy clears your mind.  You are no longer a revolutionary.</B></FONT>"
+			M << "<span class='danger'><FONT size = 3>The massive pulse of energy clears your mind.  You are no longer a revolutionary.</FONT></span>"
 			ticker.mode.update_rev_icons_removed(M)
 			M.special_role = null
 
 		if(M in ticker.mode.head_revolutionaries)
 			ticker.mode.head_revolutionaries -= M
-			M.current << "\red <FONT size = 3><B>The massive pulse of energy clears your mind.  You are no longer a head revolutionary.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>The massive pulse of energy clears your mind.  You are no longer a head revolutionary.</FONT></span>"
 			ticker.mode.update_rev_icons_removed(M)
 			M.special_role = null
 
@@ -134,14 +193,14 @@
 			var/datum/game_mode/cult/cult = ticker.mode
 			if (istype(cult))
 				cult.memoize_cult_objectives(M)
-			M.current << "\red <FONT size = 3><B>Nar-Sie loses interest in this plane. You are no longer a cultist.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>Nar-Sie loses interest in this plane. You are no longer a cultist.</FONT></span>"
 			M.memory = ""
 
 		if(M in ticker.mode.wizards)
 			ticker.mode.wizards -= M
 			M.special_role = null
 			M.current.spellremove(M.current, config.feature_object_spell_system? "object":"verb")
-			M.current << "\red <FONT size = 3><B>Your powers ebb and you feel weak. You are no longer a wizard.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>Your powers ebb and you feel weak. You are no longer a wizard.</FONT></span>"
 			ticker.mode.update_wizard_icons_removed(M)
 
 		if(M in ticker.mode.changelings)
@@ -151,7 +210,7 @@
 			M.current.verbs -= /datum/changeling/proc/EvolutionMenu
 			if(M.changeling)
 				del(M.changeling)
-			M.current << "<FONT color='red' size = 3><B>You grow weak and lose your powers. You are no longer a changeling and are stuck in your current form.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>You grow weak and lose your powers. You are no longer a changeling and are stuck in your current form.</FONT></span>"
 
 		if(M in ticker.mode.vampires)
 			ticker.mode.vampires -= M
@@ -159,7 +218,7 @@
 			M.current.remove_vampire_powers()
 			if(M.vampire)
 				del(M.vampire)
-			M.current << "<FONT color='red' size = 3><B>You grow weak and lose your powers. You are no longer a vampire and are stuck in your current form.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>You grow weak and lose your powers. You are no longer a vampire and are stuck in your current form.</FONT></span>"
 
 		if(M in ticker.mode.syndicates)
 			ticker.mode.syndicates -= M
@@ -167,12 +226,12 @@
 			M.special_role = null
 			//for (var/datum/objective/nuclear/O in objectives)
 			//	objectives-=O
-			M.current << "\red <FONT size = 3><B>Your masters are likely dead or dying. You are no longer a syndicate operative.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>Your masters are likely dead or dying. You are no longer a syndicate operative.</FONT></span>"
 
 		if(M in ticker.mode.traitors)
 			ticker.mode.traitors -= M
 			M.special_role = null
-			M.current << "\red <FONT size = 3><B>Your masters are likely dead or dying.  You are no longer a traitor.</B></FONT>"
+			M.current << "<span class='danger'><FONT size = 3>Your masters are likely dead or dying.  You are no longer a traitor.</FONT></span>"
 			if(isAI(M.current))
 				var/mob/living/silicon/ai/A = M.current
 				A.set_zeroth_law("")
@@ -194,32 +253,4 @@
 			A.show_laws()
 			A.icon_state = "ai"
 
-			A << "\red <FONT size = 3><B>The massive blast of energy has fried the systems that were malfunctioning.  You are no longer malfunctioning.</B></FONT>"
-
-	new /obj/machinery/singularity/narsie/large/exit(pick(endgame_exits))
-	spawn(rand(30,60) SECONDS)
-		var/txt = {"
-There's been a galaxy-wide electromagnetic pulse.  All of our systems are heavily damaged and many personnel are dead or dying. We are seeing increasing indications of the universe itself beginning to unravel.
-
-[station_name()], you are the only facility nearby a bluespace rift, which is near your research outpost.  You are hereby directed to enter the rift using all means necessary, quite possibly as the last humans alive.
-
-You have five minutes before the universe collapses. Good l\[\[###!!!-
-
-AUTOMATED ALERT: Link to [command_name()] lost."}
-		command_alert(txt,"SUPERMATTER CASCADE DETECTED")
-		sleep(5 MINUTES)
-		ticker.declare_completion()
-		ticker.station_explosion_cinematic(0,null) // TODO: Custom cinematic
-
-		world << "<B>Resetting in 30 seconds!</B>"
-
-		feedback_set_details("end_error","Universe ended")
-
-		if(blackbox)
-			blackbox.save_all_data_to_sql()
-
-		sleep(300)
-		log_game("Rebooting due to universal collapse")
-		CallHook("Reboot",list())
-		world.Reboot()
-		return
+			A << "<span class='danger'><FONT size = 3>The massive blast of energy has fried the systems that were malfunctioning.  You are no longer malfunctioning.</FONT></span>"

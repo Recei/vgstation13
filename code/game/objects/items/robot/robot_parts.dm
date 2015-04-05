@@ -114,37 +114,32 @@
 		qdel(src)
 	if(istype(W, /obj/item/robot_parts/l_leg))
 		if(src.l_leg)	return
-		user.drop_item()
-		W.loc = src
+		user.drop_item(src)
 		src.l_leg = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/r_leg))
 		if(src.r_leg)	return
-		user.drop_item()
-		W.loc = src
+		user.drop_item(src)
 		src.r_leg = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/l_arm))
 		if(src.l_arm)	return
-		user.drop_item()
-		W.loc = src
+		user.drop_item(src)
 		src.l_arm = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/r_arm))
 		if(src.r_arm)	return
-		user.drop_item()
-		W.loc = src
+		user.drop_item(src)
 		src.r_arm = W
 		src.updateicon()
 
 	if(istype(W, /obj/item/robot_parts/chest))
 		if(src.chest)	return
 		if(W:wires && W:cell)
-			user.drop_item()
-			W.loc = src
+			user.drop_item(src)
 			src.chest = W
 			src.updateicon()
 		else if(!W:wires)
@@ -155,8 +150,7 @@
 	if(istype(W, /obj/item/robot_parts/head))
 		if(src.head)	return
 		if(W:flash2 && W:flash1)
-			user.drop_item()
-			W.loc = src
+			user.drop_item(src)
 			src.head = W
 			src.updateicon()
 		else
@@ -255,16 +249,15 @@
 			user << "<span class='notice'>You have already inserted a cell!</span>"
 			return
 		else
-			user.drop_item()
-			W.loc = src
+			user.drop_item(src)
 			src.cell = W
 			user << "<span class='notice'>You insert the cell!</span>"
-	if(istype(W, /obj/item/weapon/cable_coil))
+	if(istype(W, /obj/item/stack/cable_coil))
 		if(src.wires)
 			user << "<span class='notice'>You have already inserted wire!</span>"
 			return
 		else
-			var/obj/item/weapon/cable_coil/coil = W
+			var/obj/item/stack/cable_coil/coil = W
 			coil.use(1)
 			src.wires = 1.0
 			user << "<span class='notice'>You insert the wire!</span>"
@@ -277,13 +270,11 @@
 			user << "<span class='notice'>You have already inserted the eyes!</span>"
 			return
 		else if(src.flash1)
-			user.drop_item()
-			W.loc = src
+			user.drop_item(src)
 			src.flash2 = W
 			user << "<span class='notice'>You insert the flash into the eye socket!</span>"
 		else
-			user.drop_item()
-			W.loc = src
+			user.drop_item(src)
 			src.flash1 = W
 			user << "<span class='notice'>You insert the flash into the eye socket!</span>"
 	else if(istype(W, /obj/item/weapon/stock_parts/manipulator))

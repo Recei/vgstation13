@@ -263,8 +263,7 @@ datum/reagents/proc/trans_id_to(var/obj/target, var/reagent, var/amount=1, var/p
 
 	return total_transfered
 */
-
-datum/reagents/proc/metabolize(var/mob/M)
+datum/reagents/proc/metabolize(var/mob/M, var/alien)
 	if(last_tick == 3)
 		last_tick = 1
 		for(var/A in reagent_list)
@@ -283,7 +282,7 @@ datum/reagents/proc/metabolize(var/mob/M)
 					for(var/datum/reagent/addicted_reagent in addiction_list)
 						if(istype(R, addicted_reagent))
 							addicted_reagent.addiction_stage = -15 // you're satisfied for a good while.
-				R.on_mob_life(M)
+				R.on_mob_life(M, alien)
 	if(addiction_tick == 6)
 		addiction_tick = 1
 		for(var/A in addiction_list)
@@ -460,6 +459,7 @@ datum/reagents/proc/del_reagent(var/reagent, var/update_totals=1)
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
 		if (R.id == reagent)
+			R.reagent_deleted()
 			reagent_list -= A
 			R.holder = null
 			total_dirty=1

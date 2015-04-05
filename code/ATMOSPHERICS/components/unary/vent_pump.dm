@@ -49,7 +49,7 @@
 		assign_uid()
 		id_tag = num2text(uid)
 	if(ticker && ticker.current_state == 3)//if the game is running
-		src.initialize()
+		//src.initialize()
 		src.broadcast_status()
 
 /obj/machinery/atmospherics/unary/vent_pump/high_volume
@@ -143,6 +143,11 @@
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = radio_controller.add_object(src, frequency,radio_filter_in)
+
+/obj/machinery/atmospherics/unary/vent_pump/buildFrom(var/mob/usr,var/obj/item/pipe/pipe)
+	..()
+	src.broadcast_status()
+	return 1
 
 /obj/machinery/atmospherics/unary/vent_pump/proc/broadcast_status()
 	if(!radio_connection)
@@ -337,26 +342,7 @@
 	if (!(stat & NOPOWER) && on)
 		user << "<span class='warning'>You cannot unwrench this [src], turn it off first.</span>"
 		return 1
-	var/turf/T = src.loc
-	if (level==1 && isturf(T) && T.intact)
-		user << "<span class='warning'>You must remove the plating first.</span>"
-		return 1
-	var/datum/gas_mixture/int_air = return_air()
-	var/datum/gas_mixture/env_air = loc.return_air()
-	if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
-		user << "<span class='warning'>You cannot unwrench this [src], it too exerted due to internal pressure.</span>"
-		add_fingerprint(user)
-		return 1
-	playsound(get_turf(src), 'sound/items/Ratchet.ogg', 50, 1)
-	user << "<span class='notice'>You begin to unfasten \the [src]...</span>"
-	if (do_after(user, 40))
-		user.visible_message( \
-			"[user] unfastens \the [src].", \
-			"<span class='notice'>You have unfastened \the [src].</span>", \
-			"You hear ratchet.")
-		var/obj/item/pipe/P = getFromPool(/obj/item/pipe,loc)
-		P.New(loc,make_from=src) //new /obj/item/pipe(loc, make_from=src)
-		del(src)
+	return ..()
 
 /obj/machinery/atmospherics/unary/vent_pump/Destroy()
 	areaMaster.air_vent_info.Remove(id_tag)

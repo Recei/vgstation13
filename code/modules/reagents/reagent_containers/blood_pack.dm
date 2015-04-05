@@ -1,20 +1,19 @@
 /obj/item/weapon/reagent_containers/blood
-	name = "BloodPack"
+	name = "Bloodpack"
 	desc = "Contains blood used for transfusion."
 	icon = 'icons/obj/bloodpack.dmi'
 	icon_state = "iv_bag0"
 	volume = 200
-	flags = FPRINT
+	flags = FPRINT | OPENCONTAINER
 
 	var/blood_type = null
 
 /obj/item/weapon/reagent_containers/blood/New()
 	..()
 	if(blood_type != null)
-		name = "BloodPack [blood_type]"
+		name = "[blood_type] Bloodpack"
 		reagents.add_reagent("blood", 200, list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
-		update_icon()
-
+	update_icon()
 
 /obj/item/weapon/reagent_containers/blood/on_reagent_change()
 	update_icon()
@@ -39,26 +38,47 @@
 			filling.icon += mix_color_from_reagents(reagents.reagent_list)
 			src.overlays += filling
 
+/obj/item/weapon/reagent_containers/blood/on_reagent_change()
+	update_icon()
+	if(volume == 0 && name != "Empty Bloodback")
+		name = "Empty Bloodpack"
+		desc = "Empty bloodpacks are good in vampire movies, but bad in hospitals."
+	else if (reagents.reagent_list.len > 0)
+		var/target_type = null
+		var/the_volume = 0
+		for(var/datum/reagent/A in reagents.reagent_list)
+			if(A.id == "blood")
+				if(A.volume > the_volume && ("blood_type" in A.data))
+					the_volume = A.volume
+					target_type = A.data["blood_type"]
+		if (target_type)
+			name = "[target_type] Bloodpack"
+			desc = "A bloodpack filled with [target_type] blood."
+			blood_type = target_type
+		else
+			var/reagent_name = reagents.get_master_reagent_name()
+			name = "[reagent_name] IV Kit"
+			desc = "A IV kit filled with [reagent_name]."
 
-/obj/item/weapon/reagent_containers/blood/attack_self()
+/obj/item/weapon/reagent_containers/blood/examine(mob/user)
+	//I don't want this to be an open container.
 	..()
-	if (is_open_container())
-		usr << "<span class = 'notice'>You sealed \the [src].</span>"
-		flags ^= OPENCONTAINER
-	else
-		usr << "<span class = 'notice'>You unsealed \the [src].</span>"
-		flags |= OPENCONTAINER
+	if(get_dist(user,src) > 3)
+		user << "<span class='info'>You can't make out the contents.</span>"
+		return
+	if(reagents)
+		user << "It contains:"
+		if(reagents.reagent_list.len)
+			for(var/datum/reagent/R in reagents.reagent_list)
+				if (R.id == "blood")
+					var/type = R.data["blood_type"]
+					user << "<span class='info'>[R.volume] units of [R.name], of type [type]</span>"
+				else
+					user << "<span class='info'>[R.volume] units of [R.name]</span>"
+		else
+			user << "<span class='info'>Nothing.</span>"
 
-
-/obj/item/weapon/reagent_containers/blood/examine()
-	..()
-	if (!is_open_container())
-		usr << "<span class = 'notice'>[src.reagents.total_volume] units of liquid.</span>" //A bit hacky
-		usr << "<span class = 'notice'>It's sealed completely.</span>"
-	else
-		usr << "<span class = 'notice'>It's unsealed</span>"
-
-
+//These should be kept for legacy purposes, probably. At least until they disappear from maps.
 /obj/item/weapon/reagent_containers/blood/APlus
 	blood_type = "A+"
 

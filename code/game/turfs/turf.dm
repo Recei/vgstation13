@@ -33,6 +33,9 @@
 	// holy water
 	var/holy = 0
 
+	// For building on the asteroid.
+	var/under_turf = /turf/space
+
 /turf/New()
 	..()
 	for(var/atom/movable/AM as mob|obj in src)
@@ -144,9 +147,9 @@
 
 /turf/Entered(atom/movable/Obj,atom/OldLoc)
 	var/loopsanity = 100
+
 	if(ismob(Obj))
-		Obj:lastarea = get_area(Obj.loc)
-		if(Obj:lastarea.has_gravity == 0)
+		if(Obj.areaMaster && Obj.areaMaster.has_gravity == 0)
 			inertial_drift(Obj)
 
 	/*
@@ -180,8 +183,6 @@
 /turf/proc/is_wood_floor()
 	return 0
 /turf/proc/is_carpet_floor()
-	return 0
-/turf/proc/is_catwalk()
 	return 0
 /turf/proc/return_siding_icon_state()		//used for grass floors, which have siding.
 	return 0
@@ -287,7 +288,7 @@
 	if(istype(src,/turf/simulated/floor))
 		var/turf/simulated/floor/F = src
 		if(F.floor_tile)
-			qdel(F.floor_tile)
+			returnToPool(F.floor_tile)
 			F.floor_tile = null
 		F = null
 	if(ispath(N, /turf/simulated/floor))
@@ -477,3 +478,15 @@
 				O.singularity_act()
 	ChangeTurf(/turf/space)
 	return(2)
+
+//Return a lattice to allow catwalk building
+/turf/proc/canBuildCatwalk()
+	return BUILD_FAILURE
+
+//Return true to allow lattice building
+/turf/proc/canBuildLattice()
+	return BUILD_FAILURE
+
+//Return a lattice to allow plating building, return 0 for error message, return -1 for silent fail.
+/turf/proc/canBuildPlating()
+	return BUILD_SILENT_FAILURE

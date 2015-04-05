@@ -7,7 +7,8 @@
 	opacity = 0
 	anchored = 1
 	unacidable = 1
-
+	ghost_read = 0
+	ghost_write = 0
 	var/const/max_health = 200
 	var/health = max_health //The shield can only take so much beating (prevents perma-prisons)
 
@@ -152,6 +153,8 @@
 		var/malfunction = 0 //Malfunction causes parts of the shield to slowly dissapate
 		var/list/deployed_shields = list()
 		var/locked = 0
+		ghost_read = 0
+		ghost_write = 0
 
 		machine_flags = EMAGGABLE | WRENCHMOVE | FIXED2WORK | SCREWTOGGLE
 
@@ -279,8 +282,8 @@
 	if(..())
 		return 1
 
-	if(istype(W, /obj/item/weapon/cable_coil) && malfunction && panel_open)
-		var/obj/item/weapon/cable_coil/coil = W
+	if(istype(W, /obj/item/stack/cable_coil) && malfunction && panel_open)
+		var/obj/item/stack/cable_coil/coil = W
 		user << "\blue You begin to replace the wires."
 		//if(do_after(user, min(60, round( ((maxhealth/health)*10)+(malfunction*10) ))) //Take longer to repair heavier damage
 		if(do_after(user, 30))

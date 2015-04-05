@@ -14,8 +14,8 @@
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if((H.mind in ticker.mode.vampires) || H.mind.vampire) //if vampire
-			if(!(VAMP_FULL in H.mind.vampire.powers))
+		if(isvampire(H))
+			if(!(VAMP_MATURE in H.mind.vampire.powers))
 				H << "<span class='notice'>You don't see anything.</span>"
 				return
 		var/userloc = H.loc

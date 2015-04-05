@@ -269,14 +269,32 @@
 
 /obj/machinery/portable_atmospherics/canister/Topic(href, href_list)
 
+	if(href_list["close"])
+		if(usr.machine == src)
+			usr.unset_machine()
+		return 1
 	//Do not use "if(..()) return" here, canisters will stop working in unpowered areas like space or on the derelict. // yeah but without SOME sort of Topic check any dick can mess with them via exploits as he pleases -walter0o
 	if (!istype(src.loc, /turf))
 		return 0
+	if(!isAI(usr) && usr.z != z) return 1
 
-	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr)) // exploit protection -walter0o
-		usr << browse(null, "window=canister")
-		onclose(usr, "canister")
-		return
+	var/ghost_flags=0
+	if(ghost_write)
+		ghost_flags |= PERMIT_ALL
+	if(!canGhostWrite(usr,src,"",ghost_flags))
+		if(usr.restrained() || usr.lying || usr.stat || !usr.canmove)
+			usr << browse(null, "window=canister")
+			onclose(usr, "canister")
+			return 1
+
+		if(!Adjacent(usr))
+			if(usr.mutations && usr.mutations.len)
+				if(!(M_TK in usr.mutations))
+					usr << browse(null, "window=canister")
+					onclose(usr, "canister")
+					return 1
+	else if(!custom_aghost_alerts)
+		log_adminghost("[key_name(usr)] screwed with [src] ([href])!")
 
 	if(href_list["toggle"])
 		var/datum/gas/sleeping_agent/S = locate() in src.air_contents.trace_gases
@@ -343,6 +361,7 @@
 				src.name = "Canister: [label]"
 
 	src.add_fingerprint(usr)
+	src.add_hiddenprint(usr)
 	update_icon()
 
 	return 1

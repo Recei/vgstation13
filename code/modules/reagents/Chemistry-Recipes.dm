@@ -2109,7 +2109,7 @@ datum/chemical_reaction/patron
 	name = "Patron"
 	id = "patron"
 	result = "patron"
-	required_reagents = list("tequilla" = 10, "silver" = 1)
+	required_reagents = list("tequila" = 10, "silver" = 1)
 	result_amount = 10
 
 datum/chemical_reaction/bilk
@@ -2255,14 +2255,14 @@ datum/chemical_reaction/brave_bull
 	name = "Brave Bull"
 	id = "bravebull"
 	result = "bravebull"
-	required_reagents = list("tequilla" = 2, "kahlua" = 1)
+	required_reagents = list("tequila" = 2, "kahlua" = 1)
 	result_amount = 3
 
-datum/chemical_reaction/tequilla_sunrise
-	name = "Tequilla Sunrise"
-	id = "tequillasunrise"
-	result = "tequillasunrise"
-	required_reagents = list("tequilla" = 2, "orangejuice" = 1)
+datum/chemical_reaction/tequila_sunrise
+	name = "tequila Sunrise"
+	id = "tequilasunrise"
+	result = "tequilasunrise"
+	required_reagents = list("tequila" = 2, "orangejuice" = 1)
 	result_amount = 3
 
 datum/chemical_reaction/toxins_special
@@ -2332,14 +2332,14 @@ datum/chemical_reaction/margarita
 	name = "Margarita"
 	id = "margarita"
 	result = "margarita"
-	required_reagents = list("tequilla" = 2, "limejuice" = 1)
+	required_reagents = list("tequila" = 2, "limejuice" = 1)
 	result_amount = 3
 
 datum/chemical_reaction/longislandicedtea
 	name = "Long Island Iced Tea"
 	id = "longislandicedtea"
 	result = "longislandicedtea"
-	required_reagents = list("vodka" = 1, "gin" = 1, "tequilla" = 1, "cubalibre" = 1)
+	required_reagents = list("vodka" = 1, "gin" = 1, "tequila" = 1, "cubalibre" = 1)
 	result_amount = 4
 
 datum/chemical_reaction/threemileisland
@@ -2439,6 +2439,7 @@ datum/chemical_reaction/barefoot
 	result = "barefoot"
 	required_reagents = list("berryjuice" = 1, "cream" = 1, "vermouth" = 1)
 	result_amount = 3
+
 ////DRINKS THAT REQUIRED IMPROVED SPRITES BELOW:: -Agouri/////
 datum/chemical_reaction/sbiten
 	name = "Sbiten"
@@ -2636,3 +2637,117 @@ datum/chemical_reaction/rewriter
 	result = "rewriter"
 	required_reagents = list("spacemountainwind" = 1, "coffee" = 1)
 	result_amount = 2
+
+datum/chemical_reaction/vinegar
+	name = "Vinegar"
+	id = "vinegar"
+	result = "vinegar"
+	required_reagents = list("wine" = 5)
+	required_catalysts = list("enzyme" = 5)
+	result_amount = 5
+
+datum/chemical_reaction/acidtea
+	name = "Earl's Grey Tea"
+	id = "acidtea"
+	result = "acidtea"
+	required_reagents = list("sacid" = 1, "tea" = 1)
+	result_amount = 2
+
+datum/chemical_reaction/chifir
+	name = "Chifir"
+	id = "chifir"
+	result = "chifir"
+	required_reagents = list("tea" = 5, "redtea" = 5, "greentea" = 5)
+	result_amount = 15
+
+datum/chemical_reaction/yinyang
+	name = "Zen Tea"
+	id = "yinyang"
+	result = "yinyang"
+	required_reagents = list("tea" = 5, "nothing" = 5)
+	result_amount = 10
+
+datum/chemical_reaction/singularitea
+	name = "Singularitea"
+	id = "singularitea"
+	result = "singularitea"
+	required_reagents = list("radium" = 1, "tea" = 5, "redtea" = 5)
+	result_amount = 10
+
+datum/chemical_reaction/gyro
+	name = "Gyro"
+	id = "gyro"
+	result = "gyro"
+	required_reagents = list("greentea" = 5, "whiskey" = 5, "iron" = 1)
+	result_amount = 10
+
+datum/chemical_reaction/plasmatea
+	name = "Plasma Pekoe"
+	id = "plasmatea"
+	result = "plasmatea"
+	required_reagents = list("tea" = 5, "plasma" = 5)
+	result_amount = 10
+
+datum/chemical_reaction/espresso
+	name = "Espresso"
+	id = "espresso"
+	result = "espresso"
+	required_reagents = list("coffee" = 1, "water" = 1)
+	result_amount = 2
+
+
+datum/chemical_reaction/cappuccino
+	name = "Cappuccino"
+	id = "cappuccino"
+	result = "cappuccino"
+	required_reagents = list("espresso" = 1, "cream" = 1)
+	result_amount = 2
+
+datum/chemical_reaction/tonio
+	name = "Tonio"
+	id = "tonio"
+	result = "tonio"
+	required_reagents = list("coffee" = 5, "limejuice" = 1, "tomatojuice" = 1, "lemonjuice" = 1, "watermelonjuice" = 1, "honey" = 1)
+	result_amount = 10
+
+datum/chemical_reaction/doppio
+	name = "Doppio"
+	id = "doppio"
+	result = "doppio"
+	required_reagents = list("coffee" = 5, "redtea" = 5, "greentea" = 5)
+	result_amount = 10
+
+datum/chemical_reaction/passione
+	name = "Passione"
+	id = "passione"
+	result = "passione"
+	required_reagents = list("cappuccino" = 5, "gold" = 1, "honey" =5)
+	result_amount = 10
+
+datum/chemical_reaction/seccoffee
+	name = "Wake up call"
+	id = "seccoffee"
+	result = "seccoffee"
+	required_reagents = list("coffee" = 5, "sprinkles" = 1, "beepskysmash" = 5)
+	result_amount = 10
+
+datum/chemical_reaction/medcoffee
+	name = "Lifeline"
+	id = "medcoffee"
+	result = "medcoffee"
+	required_reagents = list("coffee" = 5, "doctorsdelight" = 5, "blood" = 1)
+	result_amount = 10
+
+datum/chemical_reaction/detcoffee
+	name = "Joe"
+	id = "detcoffee"
+	result = "detcoffee"
+	required_reagents = list("coffee" = 5, "whiskey" = 5)
+	result_amount = 5
+
+datum/chemical_reaction/etank
+	name = "Recharger"
+	id = "tank"
+	result = "etank"
+	required_reagents = list("coffee" = 1, "iron" = 1, "lithium" = 1, "fuel" = 1, "aluminum" = 1)
+	result_amount = 5

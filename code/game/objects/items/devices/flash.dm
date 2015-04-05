@@ -10,6 +10,8 @@
 	flags = FPRINT
 	siemens_coefficient = 1
 	origin_tech = "magnets=2;combat=1"
+	min_harm_label = 15 //Multiple layers?
+	harm_label_examine = list("<span class='info'>A label is on the bulb, but doesn't cover it.</span>", "<span class='warning'>A label covers the bulb!</span>")
 
 	var/times_used = 0 //Number of times it's been used.
 	var/broken = 0     //Is the flash burnt out?
@@ -73,7 +75,7 @@
 
 	playsound(get_turf(user), 'sound/weapons/flash.ogg', 100, 1)
 
-	var/flashfail = FALSE
+	var/flashfail = (harm_labeled >= min_harm_label) //Flashfail is always true if the device has been successfully harm-labeled.
 
 	if(iscarbon(M))
 		var/mob/living/carbon/Subject = M
@@ -83,13 +85,13 @@
 			Subject.Weaken(10)
 			flick("e_flash", Subject.flash)
 
-			if(ishuman(user) && user.mind && ((user.mind in ticker.mode.head_revolutionaries) || (user.mind in ticker.mode.A_bosses) || (user.mind in ticker.mode.B_bosses)))// alien revhead when?
+			if(user.mind && (isrevhead(user) || isboss(user))) // alien revhead when?
 				if(ishuman(Subject))
 					if(Subject.stat != DEAD)
 						Subject.mind_initialize() // give them a mind datum if they don't have one
 						var/result = null
 
-						if(user.mind in ticker.mode.head_revolutionaries)
+						if(isrevhead(user))
 							result = ticker.mode.add_revolutionary(Subject.mind)
 
 							if(result == 1)
@@ -102,9 +104,9 @@
 							else if(result == -3) // loyalty implanted
 								user << "<span class=\"warning\">Something seems to be blocking the flash!</span>"
 						else
-							if(user.mind in ticker.mode.A_bosses)
+							if(isAboss(user))
 								result = ticker.mode.add_gangster(Subject.mind,"A")
-							if(user.mind in ticker.mode.B_bosses)
+							if(isBboss(user))
 								result = ticker.mode.add_gangster(Subject.mind,"B")
 							if(result == -1)// member of hostile gang
 								user << "<span class=\"warning\">You can't convert your enemy!</span>"
@@ -165,6 +167,7 @@
 			user.show_message("<span class='warning'>*click* *click*</span>", 2)
 			return
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, 1)
+	if(harm_labeled >= min_harm_label)	return //Act as if the flash was activated except the useful part.
 	flick("flash2", src)
 	if(user && isrobot(user))
 		spawn(0)
@@ -208,7 +211,7 @@
 				icon_state = "flashburnt"
 				return
 			times_used++
-			if(istype(loc, /mob/living/carbon))
+			if(istype(loc, /mob/living/carbon) && harm_labeled < min_harm_label)
 				var/mob/living/carbon/M = loc
 				var/safety = M.eyecheck()
 				if(safety <= 0)

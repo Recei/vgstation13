@@ -36,20 +36,31 @@
 /turf/simulated/floor/vox/wood
 	name = "floor"
 	icon_state = "wood"
-	floor_tile = new/obj/item/stack/tile/wood
+	floor_tile
 
 	autoignition_temperature = AUTOIGNITION_WOOD
 	fire_fuel = 10
 	soot_type = null
 	melt_temperature = 0 // Doesn't melt.
 
+	New()
+		if(floor_tile)
+			returnToPool(floor_tile)
+			floor_tile = null
+		floor_tile = getFromPool(/obj/item/stack/tile/wood, null)
+		..()
+
 /turf/simulated/floor/light
 	name = "Light floor"
 	luminosity = 5
 	icon_state = "light_on"
-	floor_tile = new/obj/item/stack/tile/light
+	floor_tile
 
 	New()
+		if(floor_tile)
+			returnToPool(floor_tile)
+			floor_tile = null
+		floor_tile = getFromPool(/obj/item/stack/tile/light, null)
 		floor_tile.New() //I guess New() isn't run on objects spawned without the definition of a turf to house them, ah well.
 		var/n = name //just in case commands rename it in the ..() call
 		..()
@@ -61,12 +72,16 @@
 /turf/simulated/floor/wood
 	name = "floor"
 	icon_state = "wood"
-	floor_tile = new/obj/item/stack/tile/wood
+	floor_tile
 
 	autoignition_temperature = AUTOIGNITION_WOOD
 	fire_fuel = 10
 	soot_type = null
 	melt_temperature = 0 // Doesn't melt.
+
+	New()
+		floor_tile = getFromPool(/obj/item/stack/tile/wood,null)
+		..()
 
 /turf/simulated/floor/vault
 	icon_state = "rockvault"
@@ -138,8 +153,14 @@
 /turf/simulated/floor/plating
 	name = "plating"
 	icon_state = "plating"
-	floor_tile = null
 	intact = 0
+
+/turf/simulated/floor/plating/New()
+	..()
+	if(floor_tile)
+		returnToPool(floor_tile)
+		floor_tile = null
+
 
 /turf/simulated/floor/plating/airless
 	icon_state = "plating"
@@ -236,9 +257,13 @@
 /turf/simulated/floor/grass
 	name = "Grass patch"
 	icon_state = "grass1"
-	floor_tile = new/obj/item/stack/tile/grass
+	floor_tile
 
 	New()
+		if(floor_tile)
+			returnToPool(floor_tile)
+			floor_tile = null
+		floor_tile = getFromPool(/obj/item/stack/tile/grass, null)
 		floor_tile.New() //I guess New() isn't ran on objects spawned without the definition of a turf to house them, ah well.
 		icon_state = "grass[pick("1","2","3","4")]"
 		..()
@@ -253,9 +278,13 @@
 /turf/simulated/floor/carpet
 	name = "Carpet"
 	icon_state = "carpet"
-	floor_tile = new/obj/item/stack/tile/carpet
+	floor_tile
 	var/has_siding=1
 	New()
+		if(floor_tile)
+			returnToPool(floor_tile)
+			floor_tile = null
+		floor_tile = getFromPool(/obj/item/stack/tile/carpet, null)
 		floor_tile.New() //I guess New() isn't ran on objects spawned without the definition of a turf to house them, ah well.
 		if(!icon_state)
 			icon_state = initial(icon_state)
@@ -306,68 +335,3 @@
 	oxygen=0 // BIRDS HATE OXYGEN FOR SOME REASON
 	nitrogen = MOLES_O2STANDARD+MOLES_N2STANDARD // So it totals to the same pressure
 	//icon = 'icons/turf/shuttle-debug.dmi'
-
-
-// CATWALKS
-// Space and plating, all in one buggy fucking turf!
-/turf/simulated/floor/plating/airless/catwalk
-	icon = 'icons/turf/catwalks.dmi'
-	icon_state = "catwalk0"
-	name = "catwalk"
-	desc = "Cats really don't like these things."
-
-	temperature = TCMB
-	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	heat_capacity = 700000
-
-	lighting_lumcount = 4		//starlight
-
-	intact = 0
-
-	soot_type = null
-	melt_temperature = 0 // Doesn't melt.
-
-	New()
-		..()
-		// Fucking cockshit dickfuck shitslut
-		name = "catwalk"
-		update_icon(1)
-
-	update_icon(var/propogate=1)
-		underlays.len = 0
-		underlays += new /icon('icons/turf/space.dmi',"[((x + y) ^ ~(x * y) + z) % 25]")
-
-		var/dirs = 0
-		for(var/direction in cardinal)
-			var/turf/T = get_step(src,direction)
-			if(T.is_catwalk())
-				var/turf/simulated/floor/plating/airless/catwalk/C=T
-				dirs |= direction
-				if(propogate)
-					C.update_icon(0)
-		icon_state="catwalk[dirs]"
-
-
-	attackby(obj/item/C as obj, mob/user as mob)
-		if(!C || !user)
-			return 0
-		if(istype(C, /obj/item/weapon/screwdriver))
-			user << "<span class='notice'>You begin undoing the screws holding the catwalk together.</span>"
-			playsound(src, 'sound/items/Screwdriver.ogg', 80, 1)
-			if(do_after(user, 30))
-				user << "<span class='notice'>You finish taking taking the catwalk apart.</span>"
-				new /obj/item/stack/rods(src, 2)
-				ReplaceWithLattice()
-				// Update adjacent catwalk icons
-				for (var/direction in cardinal)
-					var/turf/T = get_step(src, direction)
-					if (T.is_catwalk())
-						T:update_icon(0)
-			return
-
-		if(istype(C, /obj/item/weapon/cable_coil))
-			var/obj/item/weapon/cable_coil/coil = C
-			coil.turf_place(src, user)
-
-	is_catwalk()
-		return 1

@@ -55,7 +55,7 @@ datum/reagent/jenkem/on_mob_life(var/mob/living/carbon/M as mob)
 datum/reagent/jenkem/reaction_turf(var/turf/T, var/volume)
 	src = null
 	if(!istype(T, /turf/space))
-		new /obj/effect/decal/cleanable/poo(T)
+		getFromPool(/obj/effect/decal/cleanable/blood/poo, T)
 
 datum/reagent/jenkem/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
 	if(method==INGEST)
@@ -298,7 +298,7 @@ datum/reagent/crank/on_mob_life(var/mob/living/M as mob)
 	name = "Methampetamine"
 	id = "methamphetamine"
 	result = "methamphetamine"
-	required_reagents = list("ephedrine" = 1, "hydrogen" = 1, "phosphorous" = 1, "iodine" = 1)
+	required_reagents = list("ephedrine" = 1, "hydrogen" = 1, "phosphorus" = 1, "iodine" = 1)
 	result_amount = 4
 	mix_message = "The mixture violently reacts, leaving behind a few crystalline shards."
 	required_temp = 374

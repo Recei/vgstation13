@@ -162,20 +162,21 @@
 	return
 
 /obj/machinery/door/firedoor/attack_ai(mob/user)
-	. = ..()
-	if(.)
-		spawn()
-			var/area/A = get_area_master(src)
-			ASSERT(istype(A)) // This worries me.
-			var/alarmed = A.doors_down || A.fire
-			if(density && alert("Override firelock safeties and open \the [src]?",,"Yes","No") == "Yes")
-				open()
-			else if(!density)
-				close()
-			else
-				return
-			log_admin("[user]/([user.ckey]) [density ? "closed the open" : "opened the closed"] [alarmed ? "and alarming" : ""] firelock at [formatJumpTo(get_turf(src))]")
-			message_admins("[user]/([user.ckey]) [density ? "closed the open" : "opened the closed"] [alarmed ? "and alarming" : ""] firelock at [formatJumpTo(get_turf(src))]")
+	if(isobserver(user) || user.stat)
+		return
+	spawn()
+		var/area/A = get_area_master(src)
+		ASSERT(istype(A)) // This worries me.
+		var/alarmed = A.doors_down || A.fire
+		var/old_density = src.density
+		if(old_density && alert("Override the [alarmed ? "alarming " : ""]firelock safeties and open \the [src]?",,"Yes","No") == "Yes")
+			open()
+		else if(!old_density)
+			close()
+		else
+			return
+		log_admin("[user]/([user.ckey]) [density ? "closed the open" : "opened the closed"] [alarmed ? "and alarming" : ""] firelock at [formatJumpTo(get_turf(src))]")
+		message_admins("[user]/([user.ckey]) [density ? "closed the open" : "opened the closed"] [alarmed ? "and alarming" : ""] firelock at [formatJumpTo(get_turf(src))]")
 
 /obj/machinery/door/firedoor/attack_hand(mob/user as mob)
 	return attackby(null, user)
@@ -294,7 +295,7 @@
 			if(alarmed && !density)
 				close()
 /obj/machinery/door/firedoor/open()
-	if(!loc)
+	if(!loc || blocked)
 		return
 	..()
 	latetoggle()
@@ -307,6 +308,8 @@
 			close()
 
 /obj/machinery/door/firedoor/close()
+	if(blocked || !loc)
+		return
 	..()
 	latetoggle()
 	layer = 3.1
@@ -343,8 +346,7 @@
 
 // CHECK PRESSURE
 /obj/machinery/door/firedoor/process()
-	if(1)
-		return ..()
+	..()
 
 	if(density)
 		var/changed = 0

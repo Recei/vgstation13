@@ -1275,7 +1275,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods."}
 	character.sec_record = sec_record
 	character.gen_record = gen_record
 
-	character.gender = gender
+	character.setGender(gender)
 	character.age = age
 	character.b_type = b_type
 
@@ -1323,8 +1323,8 @@ NOTE:  The change will take effect AFTER any current recruiting periods."}
 		else if(status == "mechanical")
 			I.mechanize()
 		else continue
-
-	if(disabilities & DISABILITY_FLAG_FAT && species=="Human")//character.species.flags & CAN_BE_FAT)
+	var/datum/species/chosen_species = all_species[species]
+	if( (disabilities & DISABILITY_FLAG_FAT) && (chosen_species.flags & CAN_BE_FAT) )
 		character.mutations += M_FAT
 		character.mutations += M_OBESITY
 	if(disabilities & DISABILITY_FLAG_NEARSIGHTED)
@@ -1350,7 +1350,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods."}
 	if(character.gender in list(PLURAL, NEUTER))
 		if(isliving(src)) //Ghosts get neuter by default
 			message_admins("[character] ([character.ckey]) has spawned with their gender as plural or neuter. Please notify coders.")
-			character.gender = MALE
+			character.setGender(MALE)
 
 /datum/preferences/proc/open_load_dialog(mob/user)
 

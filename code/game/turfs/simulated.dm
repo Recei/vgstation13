@@ -70,25 +70,25 @@
 					if(H.shoes && H.shoes:blood_covering)
 						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,H.dir,0,bloodcolor) // Coming
 					if(H.shoes && H.shoes:poop_covering)
-						src.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints/vox,bloodDNA,H.dir,0)
+						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/poo/footprints/vox,bloodDNA,H.dir,0,"#402000")
 
 				else
 					if(H.shoes && H.shoes:blood_covering)
 						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,H.dir,0,bloodcolor) // Coming
 					if(H.shoes && H.shoes:poop_covering)
-						src.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints,bloodDNA,H.dir,0)
+						src.AddTracks(/obj/effect/decal/cleanable/blood/tracks/poo/footprints,bloodDNA,H.dir,0,"#402000")
 				var/turf/simulated/from = get_step(H,reverse_direction(H.dir))
 				if(istype(from) && from)
 					if(istype(M,/mob/living/carbon/human/vox))
 						if(H.shoes && H.shoes:blood_covering)
 							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints/vox,bloodDNA,0,H.dir,bloodcolor) // Going
 						if(H.shoes && H.shoes:poop_covering)
-							from.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints/vox,bloodDNA,0,H.dir,0)
+							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/poo/footprints/vox,bloodDNA,0,H.dir,"#402000")
 					else
 						if(H.shoes && H.shoes:blood_covering)
 							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/footprints,bloodDNA,0,H.dir,bloodcolor) // Going
 						if(H.shoes && H.shoes:poop_covering)
-							from.AddTracks(/obj/effect/decal/cleanable/poo/tracks/footprints,bloodDNA,0,H.dir)
+							from.AddTracks(/obj/effect/decal/cleanable/blood/tracks/poo/footprints,bloodDNA,0,H.dir,"#402000")
 
 			bloodDNA = null
 

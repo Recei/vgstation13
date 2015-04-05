@@ -38,8 +38,7 @@ var/bomb_set
 /obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob)
 	if (src.extended)
 		if (istype(O, /obj/item/weapon/disk/nuclear))
-			usr.drop_item()
-			O.loc = src
+			usr.drop_item(src)
 			src.auth = O
 			src.add_fingerprint(user)
 			return
@@ -173,13 +172,13 @@ var/bomb_set
 		src.deployable = 1
 
 /obj/machinery/nuclearbomb/Topic(href, href_list)
-	..()
+	if(..()) return 1
 	if (!usr.canmove || usr.stat || usr.restrained())
 		return
 	if (!ishuman(usr))
 		usr << "\red You don't have the dexterity to do this!"
 		return 1
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))))
+	if (istype(src.loc, /turf))
 		usr.set_machine(src)
 		if (href_list["auth"])
 			if (src.auth)
@@ -189,8 +188,7 @@ var/bomb_set
 			else
 				var/obj/item/I = usr.get_active_hand()
 				if (istype(I, /obj/item/weapon/disk/nuclear))
-					usr.drop_item()
-					I.loc = src
+					usr.drop_item(src)
 					src.auth = I
 		if (src.auth)
 			if (href_list["type"])

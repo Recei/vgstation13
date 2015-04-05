@@ -74,16 +74,22 @@
 		O.loc = C
 		C.occupant = O
 		connected = null
-	O.real_name = text("monkey ([])",copytext(md5(M.real_name), 2, 6))
-	O.take_overall_damage(M.getBruteLoss() + 40, M.getFireLoss())
-	O.adjustToxLoss(M.getToxLoss() + 20)
-	O.adjustOxyLoss(M.getOxyLoss())
+
+	if(istype(O))//so chicken don't instantly die, or get named as "monkey"
+		O.real_name = text("monkey ([])",copytext(md5(M.real_name), 2, 6))
+		O.take_overall_damage(M.getBruteLoss() + 40, M.getFireLoss())
+		O.adjustToxLoss(M.getToxLoss() + 20)
+		O.adjustOxyLoss(M.getOxyLoss())
+	else
+		O.a_intent = "help"
+
 	O.stat = M.stat
 	O.a_intent = I_HURT
 	for (var/obj/item/weapon/implant/I in implants)
 		I.loc = O
 		I.implanted = O
 //		O.update_icon = 1	//queue a full icon update at next life() call
+	H.monkeyizing = 0
 	del(M)
 	return
 
@@ -118,9 +124,9 @@
 		O.set_species(Mo.greaterform)
 
 	if (M.dna.GetUIState(DNA_UI_GENDER))
-		O.gender = FEMALE
+		O.setGender(FEMALE)
 	else
-		O.gender = MALE
+		O.setGender(MALE)
 
 	if (M)
 		if (M.dna)
@@ -167,5 +173,6 @@
 		I.loc = O
 		I.implanted = O
 //		O.update_icon = 1	//queue a full icon update at next life() call
+	Mo.monkeyizing = 0
 	del(M)
 	return
