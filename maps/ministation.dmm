@@ -544,7 +544,7 @@
 "akx" = (/obj/machinery/door/airlock/engineering{icon = 'icons/obj/doors/Doorsci.dmi'; name = "Mechanics Workshop"; req_access_txt = "501"},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor,/area/science/lab)
 "aky" = (/obj/machinery/camera/autoname{dir = 4},/turf/simulated/floor,/area/hallway/primary/central)
 "akz" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/simulated/floor,/area/hallway/primary/central)
-"akA" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden,/obj/machinery/door/airlock/research{name = "Research and Development Lab"; req_access_txt = "7"},/turf/simulated/floor{icon_state = "white"},/area/science/lab)
+"akA" = (/obj/machinery/atmospherics/pipe/simple/supply/hidden,/obj/machinery/door/airlock/research{name = "Research and Development Lab"; req_access_txt = "47"},/turf/simulated/floor{icon_state = "white"},/area/science/lab)
 "akB" = (/obj/machinery/atmospherics/pipe/simple{dir = 2},/obj/effect/landmark{name = "blobstart"},/turf/simulated/floor{icon_state = "white"},/area/science/lab)
 "akC" = (/obj/machinery/atmospherics/unary/cold_sink/freezer{current_temperature = 80; dir = 2; on = 1},/turf/simulated/floor{icon_state = "white"},/area/science/lab)
 "akD" = (/obj/machinery/mass_driver{dir = 4; id_tag = "toxinsdriver"},/turf/simulated/floor/plating,/area/science/lab)
