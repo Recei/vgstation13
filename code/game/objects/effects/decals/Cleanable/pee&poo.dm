@@ -31,8 +31,8 @@
 	perp << "\blue You slipped on the wet poo stain!"
 //	M.achievement_give("Oh Shit!", 68)
 	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
-	perp.stunned = 6
-	perp.weakened = 5
+	perp.Stun(6)
+	perp.Weaken(5)
 
 /obj/effect/decal/cleanable/blood/poo/update_icon()
 	return
@@ -78,6 +78,7 @@
 	desc = "Someone couldn't hold it.."
 	icon = 'icons/effects/pooeffect.dmi'
 	icon_state = "pee1"
+	random_icon_states = list("pee1", "pee2", "pee3")
 
 /obj/effect/decal/cleanable/blood/urine/addDecalFeets(mob/living/carbon/human/perp)
 	if(perp.shoes)
@@ -98,8 +99,8 @@
 	perp << "\blue You slipped in the urine puddle!"
 //	perp.achievement_give("Pissed!", 69)
 	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
-	perp.stunned = 8
-	perp.weakened = 5
+	perp.Stun(8)
+	perp.Weaken(5)
 
 /obj/effect/decal/cleanable/blood/urine/New()
 	..()
