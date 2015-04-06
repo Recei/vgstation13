@@ -267,7 +267,7 @@
 		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (id, ckey, firstseen, lastseen, ip, computerid, lastadminrank, accountjoined) VALUES (null, '[sql_ckey]', Now(), Now(), '[sql_address]', '[sql_computerid]', '[sql_admin_rank]', '[Joined]')")
 		query_insert.Execute()
 
-	if(!isnum(age))
+/*	if(!isnum(age))
 		var/DBQuery/query_age = dbcon.NewQuery("SELECT datediff(Now(),accountjoined) as age2 FROM erro_player WHERE ckey = '[sql_ckey]'")
 		query_age.Execute()
 		while(query_age.NextRow())
@@ -275,7 +275,7 @@
 	if(age < 14)
 		message_admins("[ckey(key)]/([src]) is a relatively new player, may consider watching them. AGE = [age]  First seen = [player_age]")
 		log_admin(("[ckey(key)]/([src]) is a relatively new player, may consider watching them. AGE = [age] First seen = [player_age]"))
-	testing("[src]/[ckey(key)] logged in with age of [age]/[player_age]/[Joined]")
+	testing("[src]/[ckey(key)] logged in with age of [age]/[player_age]/[Joined]")*/
 	account_age = age
 
 	// logging player access
