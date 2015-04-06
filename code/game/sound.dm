@@ -31,7 +31,8 @@ var/list/carpetfootsteps= list('sound/effects/footsteps/carpet/carpet_step1.ogg'
 
 	var/frequency = get_rand_frequency() // Same frequency for everybody
 	var/turf/turf_source = get_turf(source)
-
+	if(!turf_source)
+		return
 
 /* What's going on in this block?
 	If the proc isn't set to not be modified by air, the following steps occur:
@@ -71,7 +72,7 @@ var/list/carpetfootsteps= list('sound/effects/footsteps/carpet/carpet_step1.ogg'
 
 		var/turf/player_turf = get_turf(player)
 
-		if (player_turf && player_turf.z == turf_source.z)
+		if (player_turf && turf_source && player_turf.z == turf_source.z)
 			if(get_dist(player_turf, turf_source) <= Dist)
 				player.playsound_local(turf_source, soundin, vol, vary, frequency, falloff, gas_modified)
 
