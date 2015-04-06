@@ -139,6 +139,7 @@ var/list/freqtoname = list(
 	output = "[output]'>"
 	return output
 
+
 /atom/movable/proc/GetVoice()
 	return name
 
@@ -156,7 +157,7 @@ var/list/freqtoname = list(
 	return
 
 /atom/movable/proc/GetSource()
-	return
+	return src
 
 /atom/movable/proc/GetRadio()
 
@@ -185,3 +186,12 @@ var/list/freqtoname = list(
 	radio = null
 
 	..("job", "faketrack", "source", "radio")
+
+proc/handle_render(var/mob,var/message,var/speaker)
+	if(istype(mob, /mob/new_player)) return //One extra layer of sanity
+	if(istype(mob,/mob/dead/observer))
+		var/reference = "<a href='?src=\ref[mob];follow=\ref[speaker]'>(Follow)</a> "
+		message = reference+message
+		mob << message
+	else
+		mob << message
