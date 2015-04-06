@@ -287,7 +287,7 @@ var/global/ZAS_Settings/zas_settings = new
 
 // INTERNAL USE ONLY
 /ZAS_Settings/proc/ChangeSetting(var/user,var/id)
-	var/datum/ZAS_Setting/setting = src.settings["[id]"]
+	var/datum/ZAS_Setting/setting = src.settings[id]
 	var/displayedValue=""
 	switch(setting.valtype)
 		if(ZAS_TYPE_NUMERIC)
