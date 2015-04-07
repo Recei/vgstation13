@@ -1106,7 +1106,7 @@ var/list/slot_equipment_priority = list( \
 			else
 				stat(null, "Garbage Controller is not running.")
 
-			if(processScheduler && processScheduler.getIsRunning())
+			if(processScheduler.getIsRunning())
 				var/datum/controller/process/process
 
 				process = processScheduler.getProcess("vote")
