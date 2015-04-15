@@ -96,6 +96,23 @@ REAGENT SCANNER
 	healthanalyze(M, user, mode)
 	src.add_fingerprint(user)
 
+/proc/chemscan(var/mob/living/M, var/mob/living/user)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.reagents)
+			if(H.reagents.reagent_list.len)
+				user.show_message("<span class='notice'>Subject contains the following reagents:</span>")
+				for(var/datum/reagent/R in H.reagents.reagent_list)
+					user.show_message("<span class='notice'>[R.volume]u of [R.name][R.overdosed == 1 ? "</span> - <span class = 'boldannounce'>OVERDOSING</span>" : ".</span>"]")
+			else
+				user.show_message("<span class = 'notice'>Subject contains no reagents.</span>")
+			if(H.reagents.addiction_list.len)
+				user.show_message("<span class='danger'>Subject is addicted to the following reagents:</span>")
+				for(var/datum/reagent/R in H.reagents.addiction_list)
+					user.show_message("<span class='danger'>[R.name]</span>")
+			else
+				user.show_message("<span class='notice'>Subject is not addicted to any reagents.</span>")
+
 proc/healthanalyze(mob/living/M as mob, mob/living/user as mob, var/mode = 0)
 	if (( (M_CLUMSY in user.mutations) || user.getBrainLoss() >= 60) && prob(50))
 		user << text("\red You try to analyze the floor's vitals!")
@@ -161,7 +178,7 @@ proc/healthanalyze(mob/living/M as mob, mob/living/user as mob, var/mode = 0)
 	user.show_message("[OX] | [TX] | [BU] | [BR]")
 	if (istype(M, /mob/living/carbon))
 		if(M:reagents.total_volume > 0)
-			user.show_message(text("\red Warning: Unknown substance detected in subject's blood."))
+			chemscan(M, user)
 		if(M:virus2.len)
 			var/mob/living/carbon/C = M
 			for (var/ID in C.virus2)
@@ -203,7 +220,7 @@ proc/healthanalyze(mob/living/M as mob, mob/living/user as mob, var/mode = 0)
 			for(var/datum/wound/W in e.wounds) if(W.internal)
 				user.show_message(text("\red Internal bleeding detected. Advanced scanner required for location."), 1)
 				break
-		if(M:vessel)
+		if(H.vessel)
 			var/blood_volume = round(M:vessel.get_reagent_amount("blood"))
 			var/blood_percent =  blood_volume / 560
 			blood_percent *= 100
@@ -213,6 +230,8 @@ proc/healthanalyze(mob/living/M as mob, mob/living/user as mob, var/mode = 0)
 				user.show_message("\red <b>Warning: Blood Level CRITICAL: [blood_percent]% [blood_volume]cl")
 			else
 				user.show_message("\blue Blood Level Normal: [blood_percent]% [blood_volume]cl")
+		if(H.heart_attack)
+			user.show_message("<span class='userdanger'>Subject suffering from heart attack: Apply defibrillator immediately.</span>")
 		user.show_message("\blue Subject's pulse: <font color='[H.pulse == PULSE_THREADY || H.pulse == PULSE_NONE ? "red" : "blue"]'>[H.get_pulse(GETPULSE_TOOL)] bpm.</font>")
 	return
 

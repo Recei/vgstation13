@@ -463,6 +463,7 @@
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
 		C.handcuffed = initial(C.handcuffed)
+		C.heart_attack = 0
 	for(var/datum/disease/D in viruses)
 		D.cure(0)
 	if(stat == DEAD)

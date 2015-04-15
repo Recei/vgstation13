@@ -101,6 +101,9 @@
 	if(damage <= 0)
 		damage = 0
 
+	if(heart_attack && prob(25))
+		heart_attack = 0
+
 	if(take_overall_damage(0, damage, "[source]") == 0) // godmode
 		return 0
 

@@ -567,20 +567,26 @@
 
 		// Needed for M_TOXIC_FART
 		if("fart")
-			if (fail_farts >= 10 && !superfart_processing)
+			if(reagents.has_reagent("simethicone"))
+				message = "<b>[src]</b> strains, and nothing happens."
+				m_type = VISIBLE
+			if (fail_farts >= 15 && !superfart_processing)
 				emote("superfart")
 				return
 			if(src.op_stage.butt != 4)
-				if(world.time-lastFart <  40 && !superfart_processing)//4 seconds
-					usr << "<span class='warning'>You feeling like your ass cracking. Uh-oh...</span>"
-					fail_farts ++
-				for(var/obj/item/weapon/storage/bible/B in src.loc)//Goon's feature
-					if(B)
-						message = "<span class='alert'> <B>[src]</B> farts on the bible and then blows up!</span>"
-						src.gib()
-						var/obj/item/clothing/head/butt/Bt = new /obj/item/clothing/head/butt(src.loc)
-						Bt.transfer_buttdentity(src)
-				if (src.nutrition >= 250)
+				if(locate(/obj/item/weapon/storage/bible) in get_turf(src))
+					message = "<span class='warning'><b>[src]</b> tries to fart on the bible.<b>A mysterious force smites [src]!</b></span>"
+					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+					s.set_up(3, 1, src)
+					s.start()
+					src.gib()
+					var/obj/item/clothing/head/butt/Bt = new /obj/item/clothing/head/butt(src.loc)
+					Bt.transfer_buttdentity(src)
+				else
+					if(world.time-lastFart <  40 && !superfart_processing)//4 seconds
+						if(!reagents.has_reagent("fartonium"))
+							usr << "<span class='warning'>You feeling like your ass cracking. Uh-oh...</span>"
+							fail_farts ++
 					for(var/mob/M in view(0))
 						if(M != src && M.loc == src.loc)
 							if(!miming)
@@ -608,7 +614,7 @@
 						message=""
 						playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
 						playsound(get_turf(src), 'sound/misc/fart.ogg', 50, 1)
-						if(wearing_suit)
+						if(wear_suit && wear_suit.body_parts_covered & LOWER_TORSO) //wearing suit
 							src << "<span class = 'warning'>You gas yourself!</span>"
 							if(!wearing_mask)
 								reagents.add_reagent("jenkem", rand(10,50))
@@ -658,14 +664,15 @@
 							"neckbeards",
 							"Ian",
 							"early 21st century internet",
-							"Soylent Surprise!",
-							"George Melons' perfume!",
-							"atmos in here now!",
-							"Tiny Turtle.",
-
-							"medbay in here now!"
+							"Soylent Surprise",
+							"George Melons' perfume",
+							"atmos",
+							"Tiny Turtle",
+							"medbay"
 							)
+
 						var/smell = pick(smells)
+
 						var/list/farts = list(
 							"farts.",
 							"passes wind.",
@@ -684,11 +691,11 @@
 							"doesn't fart. Just kidding.",
 							"tries not to fart, but fails.",
 							"burps, the burp smells like a fart!",
-							"farts. Now it smells like [smell] in here.",
+							"farts. Now it smells like [smell] in here!",
 							"lets out a girly little 'toot' from butt.",
 							"farts loudly!",
 							"lets one rip!",
-							"farts! It sounds wet and smells like [smell].",
+							"farts! It sounds wet and smells like [smell]!",
 							"farts robustly!",
 							"farted! It reminds you of your grandmother's queefs.",
 							"groans and moans, farting like the world depended on it.",
@@ -716,13 +723,11 @@
 								playsound(get_turf(src), pick('sound/items/bikehorn.ogg','sound/items/AirHorn.ogg'), 50, 1)
 							else
 								playsound(get_turf(src), 'sound/misc/fart.ogg', 50, 1)
-						else
-							message = "<b>[src]</b> [fart]"
 
 						m_type = HEARABLE
-					lastFart=world.time
 			else
-				message = "<b>[src]</b> strains, and nothing happens."
+				src << "<span class='notice'><b>You don't have a butt!</b></span>"
+				message = "<b>[src]</b> tries to fart, but \he lost \his butt."
 				m_type = VISIBLE
 
 
@@ -741,6 +746,7 @@
 						emote("fart")
 						sleep(1)
 					anus_bombanull()
+					superfart_processing = 0
 
 		if(("poo") || ("poop") || ("shit") || ("crap"))
 
@@ -956,8 +962,8 @@
 			src.UpdateDamageIcon()
 		src.updatehealth()
 
-/mob/living/carbon/human/var/fail_farts = 0
 /mob/living/carbon/human/var/superfart_processing = 0
+/mob/living/carbon/human/var/fail_farts = 0
 
 /mob/living/carbon/human/proc/get_excrement_holder()
 	for(var/obj/O in src.loc)

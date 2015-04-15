@@ -96,7 +96,7 @@
 		user << "<span class='warning'>Take the paddles out first.</span>"
 	else
 		var/mob/living/carbon/human/target = M
-		if(!(target.stat == 2 || target.stat == DEAD))
+		if(!(target.stat == 2 || target.stat == DEAD || target.heart_attack))
 			if(emagged)
 				shockAttack(target,user)
 			else
@@ -156,25 +156,28 @@
 			target.apply_damage(-target.getOxyLoss(),OXY)
 			target.updatehealth()
 			target.visible_message("<span class='danger'>[target]'s body convulses a bit.</span>")
-			var/datum/organ/external/head/head = target.get_organ("head")
-			if((target.health > config.health_threshold_dead)\
-			&&(!(head.status & ORGAN_DESTROYED))\
-			&&(!(M_NOCLONE in target.mutations))\
-			&&(target.has_brain()))
-				target.timeofdeath = 0
-				target.visible_message("<span class='notice'>[src] beeps: Defibrillation successful.</span>")
-				dead_mob_list -= target
-				living_mob_list |= list(target)
-				target.tod = null
-				target.stat = UNCONSCIOUS
-				target.regenerate_icons()
-				target.update_canmove()
-				flick("e_flash",target.flash)
-				target.apply_effect(10, EYE_BLUR) //I'll still put this back in to avoid dumd "pounce back up" behavior
-				target.apply_effect(10, PARALYZE)
-				target.update_canmove()
-				target << "<span class='notice'>You suddenly feel a spark and your consciousness returns, dragging you back to the mortal plane.</span>"
-			else
-				target.visible_message("<span class='notice'>[src] buzzes: Defibrillation failed. Patient's condition does not allow reviving.</span>")
+			if(target.heart_attack)
+				target.heart_attack = 0
+			if(target.stat == 2 || target.stat == DEAD)
+				var/datum/organ/external/head/head = target.get_organ("head")
+				if((target.health > config.health_threshold_dead)\
+				&&(!(head.status & ORGAN_DESTROYED))\
+				&&(!(M_NOCLONE in target.mutations))\
+				&&(target.has_brain()))
+					target.timeofdeath = 0
+					target.visible_message("<span class='notice'>[src] beeps: Defibrillation successful.</span>")
+					dead_mob_list -= target
+					living_mob_list |= list(target)
+					target.tod = null
+					target.stat = UNCONSCIOUS
+					target.regenerate_icons()
+					target.update_canmove()
+					flick("e_flash",target.flash)
+					target.apply_effect(10, EYE_BLUR) //I'll still put this back in to avoid dumd "pounce back up" behavior
+					target.apply_effect(10, PARALYZE)
+					target.update_canmove()
+					target << "<span class='notice'>You suddenly feel a spark and your consciousness returns, dragging you back to the mortal plane.</span>"
+				else
+					target.visible_message("<span class='notice'>[src] buzzes: Defibrillation failed. Patient's condition does not allow reviving.</span>")
 		target.apply_damage(rand(1,5),BURN,"chest") //Better not try too much times
 		return

@@ -1456,3 +1456,12 @@ var/list/slot_equipment_priority = list( \
 
 mob/proc/assess_threat()
 	return 0
+
+/mob/proc/fakevomit() //for aesthetic vomits that need to be instant and do not stun. -Fox
+	if(stat==DEAD)
+		return
+	var/turf/location = loc
+	if (istype(location, /turf/simulated))
+		src.visible_message("<span class='warning'>[src] pukes all over \himself!</span>","<span class='warning'>You puke all over yourself!</span>")
+		location.add_vomit_floor(src, 1)
+		playsound(location, 'sound/effects/splat.ogg', 50, 1)

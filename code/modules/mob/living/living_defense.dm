@@ -185,7 +185,3 @@
 	IgniteMob()
 
 //Mobs on Fire end
-
-/mob/living/acid_act(var/acidpwr, var/toxpwr, var/acid_volume)
-	if(!unacidable)
-		take_organ_damage(min(10*toxpwr, acid_volume * toxpwr))

@@ -192,6 +192,13 @@ var/global/list/organ_damage_overlays = list(
 			src << "Successfully handled sims gameplay"
 			last_processed = "Handle Sims"
 
+		//HEARTATTACKS, YAY
+		handle_heartattack()
+
+		if(client && client.prefs.toggles & CHAT_DEBUGLOGS)
+			src << "Successfully handled hearttattack"
+			last_processed = "Handle Heartattack"
+
 		//Disabilities
 		handle_disabilities()
 
@@ -1308,12 +1315,12 @@ var/global/list/organ_damage_overlays = list(
 				spawn()
 					animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff , time = 1, loop = -1)
 					animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, time = 1, loop = -1, easing = BOUNCE_EASING)
-					
+
 					pixel_x_diff = rand(-amplitude, amplitude)
 					pixel_y_diff = rand(-amplitude, amplitude)
 					animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff , time = 1, loop = -1)
 					animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, time = 1, loop = -1, easing = BOUNCE_EASING)
-					
+
 					pixel_x_diff = rand(-amplitude, amplitude)
 					pixel_y_diff = rand(-amplitude, amplitude)
 					animate(src, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff , time = 1, loop = -1)
@@ -1790,6 +1797,9 @@ var/global/list/organ_damage_overlays = list(
 	if(stat == DEAD)
 		return PULSE_NONE	//that's it, you're dead, nothing can influence your pulse
 
+	if(heart_attack)
+		return PULSE_NONE
+
 	var/temp = PULSE_NORM
 
 	if(round(vessel.get_reagent_amount("blood")) <= BLOOD_VOLUME_BAD)	//how much blood do we have
@@ -2056,6 +2066,17 @@ var/global/list/organ_damage_overlays = list(
 					if(0 to 150)					hydra_message = pick(lowdrink3)
 
 				src << "<font color='#654081'>[hydra_message]</font>"
+
+
+/mob/living/carbon/human/proc/handle_heartattack()
+	if(!heart_attack)
+		return
+	else
+		losebreath += 5
+		adjustOxyLoss(10)
+		adjustBrainLoss(rand(4,10))
+		Paralyse(2)
+	return
 
 
 

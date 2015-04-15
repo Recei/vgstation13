@@ -25,11 +25,8 @@ datum/reagent
 		var/hydration_factor = 0 //Such copypasta, but is there another way?
 		var/custom_metabolism = REAGENTS_METABOLISM
 		//var/list/viruses = list()
+		var/shock_reduction = 0
 		var/color = "#000000" // rgb: 0, 0, 0 (does not support alpha channels - yet!)
-		var/overdose_threshold = 0
-		var/addiction_threshold = 0
-		var/addiction_stage = 0
-		var/overdosed = 0 // You fucked up and this is now triggering it's overdose effects, purge that shit quick.
 
 /datum/reagent/proc/reaction_mob(var/mob/M, var/method=TOUCH, var/volume) //By default we have a chance to transfer some
 	if(!istype(M, /mob/living))	return 0
@@ -79,6 +76,7 @@ datum/reagent
 
 	if(!holder) return
 	holder.remove_reagent(src.id, custom_metabolism) //By default it slowly disappears.
+	current_cycle++
 	return
 
 /datum/reagent/proc/on_move(var/mob/M)
@@ -93,33 +91,6 @@ datum/reagent
 	return
 
 /datum/reagent/proc/on_update(var/atom/A)
-	return
-
-// Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects
-/datum/reagent/proc/overdose_process(var/mob/living/M as mob)
-	return
-
-/datum/reagent/proc/overdose_start(var/mob/living/M as mob)
-	return
-
-/datum/reagent/proc/addiction_act_stage1(var/mob/living/M as mob)
-	if(prob(30))
-		M << "<span class = 'notice'>You feel like some [name] right about now.</span>"
-	return
-
-/datum/reagent/proc/addiction_act_stage2(var/mob/living/M as mob)
-	if(prob(30))
-		M << "<span class = 'notice'>You feel like you need [name]. You just can't get enough.</span>"
-	return
-
-/datum/reagent/proc/addiction_act_stage3(var/mob/living/M as mob)
-	if(prob(30))
-		M << "<span class = 'danger'>You have an intense craving for [name].</span>"
-	return
-
-/datum/reagent/proc/addiction_act_stage4(var/mob/living/M as mob)
-	if(prob(30))
-		M << "<span class = 'userdanger'>You're not feeling good at all! You really need some [name].</span>"
 	return
 
 /datum/reagent/muhhardcores
@@ -1090,38 +1061,96 @@ silicate
 	..()
 	return
 
-//ACID
-/datum/reagent/toxin/acid
+/datum/reagent/sacid
 	name = "Sulphuric acid"
 	id = "sacid"
 	description = "A strong mineral acid with the molecular formula H2SO4."
+	reagent_state = LIQUID
 	color = "#DB5008" // rgb: 219, 80, 8
-	toxpwr = 1
-	var/acidpwr = 10 //the amount of protection removed from the armour
 
-/datum/reagent/toxin/acid/reaction_mob(var/mob/living/carbon/C, var/method=TOUCH, var/volume)
-	if(!istype(C))
+/datum/reagent/sacid/on_mob_life(var/mob/living/M as mob)
+
+	if(!holder) return
+	if(!M) M = holder.my_atom
+
+	if(ishuman(M))
+		var/mob/living/carbon/human/H=M
+		if(H.species.name=="Grey")
+			..()
+			return // Greys lurve dem some sacid
+
+	M.adjustToxLoss(1*REM)
+	M.take_organ_damage(0, 1*REM)
+	..()
+	return
+
+/datum/reagent/sacid/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
+	if(!istype(M, /mob/living))
 		return
-	if(method != TOUCH)
-		if(!C.unacidable)
-			C.take_organ_damage(min(6*toxpwr, volume * toxpwr))
-			return
+	if(method == TOUCH)
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
 
-	C.acid_act(acidpwr, toxpwr, volume)
+			if(H.wear_mask)
+				if(!H.wear_mask.unacidable)
+					del (H.wear_mask)
+					H.update_inv_wear_mask()
+					H << "\red Your mask melts away but protects you from the acid!"
+				else
+					H << "\red Your mask protects you from the acid!"
+				return
 
-/datum/reagent/toxin/acid/reaction_obj(var/obj/O, var/volume)
-	if(istype(O.loc, /mob)) //handled in human acid_act()
-		return
-	O.acid_act(acidpwr, toxpwr, volume)
+			if(H.head && !istype(H.head, /obj/item/weapon/reagent_containers/glass/bucket))
+				if(prob(15) && !H.head.unacidable)
+					del(H.head)
+					H.update_inv_head()
+					H << "\red Your helmet melts away but protects you from the acid"
+				else
+					H << "\red Your helmet protects you from the acid!"
+				return
 
-/datum/reagent/toxin/acid/fluacid
-	name = "Fluorosulfuric acid"
-	id = "facid"
-	description = "Fluorosulfuric acid is a an extremely corrosive chemical substance."
-	color = "#8E18A9" // rgb: 142, 24, 169
-	toxpwr = 2
-	acidpwr = 20
+		else if(ismonkey(M))
+			var/mob/living/carbon/monkey/MK = M
+			if(MK.wear_mask)
+				if(!MK.wear_mask.unacidable)
+					del (MK.wear_mask)
+					MK.update_inv_wear_mask()
+					MK << "\red Your mask melts away but protects you from the acid!"
+				else
+					MK << "\red Your mask protects you from the acid!"
+				return
 
+		if(!M.unacidable)
+			if(prob(15) && istype(M, /mob/living/carbon/human) && volume >= 30)
+				var/mob/living/carbon/human/H = M
+				if(H.species.name=="Grey")
+					..()
+					return // Greys lurve dem some sacid
+				var/datum/organ/external/affecting = H.get_organ("head")
+				if(affecting)
+					if(affecting.take_damage(25, 0))
+						H.UpdateDamageIcon(1)
+					H.status_flags |= DISFIGURED
+					H.emote("scream",,, 1)
+			else
+				M.take_organ_damage(min(15, volume * 2)) // uses min() and volume to make sure they aren't being sprayed in trace amounts (1 unit != insta rape) -- Doohl
+	else
+		if(!M.unacidable)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				if(H.species.name=="Grey")
+					..()
+					return // Greys lurve dem some sacid
+			M.take_organ_damage(min(15, volume * 2))
+
+/datum/reagent/sacid/reaction_obj(var/obj/O, var/volume)
+	if((istype(O,/obj/item) || istype(O,/obj/effect/glowshroom)) && prob(10))
+		if(!O.unacidable)
+			var/obj/effect/decal/cleanable/molten_item/I = new/obj/effect/decal/cleanable/molten_item(O.loc)
+			I.desc = "Looks like this was \an [O] some time ago."
+			for(var/mob/M in viewers(5, O))
+				M << "\red \the [O] melts."
+			del(O)
 
 /datum/reagent/glycerol
 	name = "Glycerol"
@@ -1261,41 +1290,29 @@ silicate
 	..()
 	return
 //Painkillers
-/datum/reagent/painkiller
+/datum/reagent/paracetamol
 	name = "Paracetamol"
 	id = "paracetamol"
 	description = "Most probably know this as Tylenol, but this chemical is a mild, simple painkiller."
 	reagent_state = LIQUID
 	color = "#C855DC"
-	var/heal_shock = 50
-	var/heal_shock_stage = 5
+	shock_reduction = 40
 
-/datum/reagent/painkiller/on_mob_life(var/mob/living/M as mob)
-	if(!holder) return
-	M.traumatic_shock -= heal_shock
-	if(iscarbon(M))
-		var/mob/living/carbon/C = M
-		C.shock_stage -= heal_shock_stage
-	..()
-	return
-
-/datum/reagent/painkiller/tramadol
+/datum/reagent/tramadol
 	name = "Tramadol"
 	id = "tramadol"
 	description = "A simple, yet effective painkiller."
 	reagent_state = LIQUID
 	color = "#C8A5DC"
-	heal_shock = 80
-	heal_shock_stage = 8
+	shock_reduction = 80
 
-/datum/reagent/painkiller/oxycodone
+/datum/reagent/oxycodone
 	name = "Oxycodone"
 	id = "oxycodone"
 	description = "An effective and very addictive painkiller."
 	reagent_state = LIQUID
 	color = "#C805DC"
-	heal_shock = 200
-	heal_shock_stage = 20
+	shock_reduction = 200
 
 /datum/reagent/virus_food
 	name = "Virus Food"
@@ -2994,145 +3011,13 @@ syndicream
 	..()
 	return
 
-/datum/reagent/discount
-	name = "Discount Dan's Special Sauce"
-	id = "discount"
-	description = "You can almost feel your liver failing, just by looking at it."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
+/*
+************************************
+*******  Goon Food moved to  *******
+*code/modules/reagents/Goon/Food.dm*
+************************************
+*/
 
-/datum/reagent/discount/on_mob_life(var/mob/living/M as mob)
-	if(!holder) return
-	if(!M) M = holder.my_atom
-	if(!data) data = 1
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		switch(volume)
-			if(1 to 20)
-				if(prob(5))
-					H << "<span class='warning'>You don't feel very good..</span>"
-					holder.remove_reagent(src.id, 0.1 * REAGENTS_METABOLISM)
-			if(20 to 35)
-				if(prob(10))
-					H << "<span class='warning'>You REALLY don't feel very good..</span>"
-				if(prob(5))
-					H.adjustToxLoss(0.1)
-					H.visible_message("[H] groans.")
-					holder.remove_reagent(src.id, 0.3 * REAGENTS_METABOLISM)
-			if(35 to INFINITY)
-				if(prob(10))
-					H << "<span class='warning'>Your stomach grumbles unsettlingly..</span>"
-				if(prob(5))
-					H << "<span class='warning'>Something feels wrong with your body..</span>"
-					var/datum/organ/internal/liver/L = H.internal_organs_by_name["liver"]
-					if (istype(L))
-						L.take_damage(0.1, 1)
-					H.adjustToxLoss(0.13)
-					holder.remove_reagent(src.id, 0.5 * REAGENTS_METABOLISM)
-			else
-				return
-
-/datum/reagent/irradiatedbeans
-	name = "Irradiated Beans"
-	id = "irradiatedbeans"
-	description = "You can almost taste the lead sheet behind it!"
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/toxicwaste
-	name = "Toxic Waste"
-	id = "toxicwaste"
-	description = "Yum!"
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/refriedbeans
-	name = "Re-Fried Beans"
-	id = "refriedbeans"
-	description = "Mmm.."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/mutatedbeans
-	name = "Mutated Beans"
-	id = "mutatedbeans"
-	description = "Mutated flavor."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/beff
-	name = "Beff"
-	id = "beff"
-	description = "What's beff? Find out!"
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/horsemeat
-	name = "Horse Meat"
-	id = "horsemeat"
-	description = "Tastes excellent in lasagna."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/moonrocks
-	name = "Moon Rocks"
-	id = "moonrocks"
-	description = "We don't know much about it, but we damn well know that it hates the human skeleton."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/offcolorcheese
-	name = "Off-Color Cheese"
-	id = "offcolorcheese"
-	description = "American Cheese."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/bonemarrow
-	name = "Bone Marrow"
-	id = "bonemarrow"
-	description = "Looks like a skeleton got stuck in the production line."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/greenramen
-	name = "Greenish Ramen Noodles"
-	id = "greenramen"
-	description = "That green isn't organic."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/glowingramen
-	name = "Glowing Ramen Noodles"
-	id = "glowingramen"
-	description = "That glow 'aint healthy."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/deepfriedramen
-	name = "Deep Fried Ramen Noodles"
-	id = "deepfriedramen"
-	description = "Ramen, deep fried."
-	reagent_state = LIQUID
-	color = "#6F884F" // rgb: 255,255,255 //to-do
-
-/datum/reagent/peptobismol
-	name = "Peptobismol"
-	id = "peptobismol"
-	description = "Jesus juice." //You're welcome, guy in the thread that rolled a 69.
-	reagent_state = LIQUID
-	color = "#C8A5DC" // rgb: 200, 165, 220
-
-/datum/reagent/peptobismol/on_mob_life(var/mob/living/M as mob)
-	if(!holder) return
-	if(!M) M = holder.my_atom
-	M.drowsyness = max(M.drowsyness-2*REM, 0)
-	if(holder.has_reagent("discount"))
-		holder.remove_reagent("discount", 2*REM)
-	M.hallucination = max(0, M.hallucination - 5*REM)
-	M.adjustToxLoss(-2*REM)
-	..()
-	return
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////DRINKS BELOW, Beer is up there though, along with cola. Cap'n Pete's Cuban Spiced Rum//////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -30,6 +30,10 @@
 		src.traumatic_shock -= 20
 	if(src.analgesic)
 		src.traumatic_shock = 0
+	if(reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
+			if(R.shock_reduction)
+				src.traumatic_shock -= R.shock_reduction // now you too can varedit cyanide to reduce shock by 1000 - Iamgoofball
 
 	// broken or ripped off organs will add quite a bit of pain
 	if(istype(src,/mob/living/carbon/human))

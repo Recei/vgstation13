@@ -50,6 +50,16 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "flour"
 
+/obj/effect/decal/cleanable/flour/foam
+	name = "Fire fighting foam"
+	desc = "It's foam."
+	color = "#EBEBEB"
+
+/obj/effect/decal/cleanable/flour/foam/New()
+	..()
+	spawn(150)// 15 seconds
+		qdel(src)
+
 /obj/effect/decal/cleanable/greenglow
 	name = "glowing goo"
 	desc = "Jeez. I hope that's not for lunch."

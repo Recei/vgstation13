@@ -23,6 +23,22 @@
 	if (!possible_transfer_amounts)
 		src.verbs -= /obj/item/weapon/reagent_containers/verb/set_APTFT
 
+/obj/item/weapon/reagent_containers/process()
+	if(reagents)
+		reagents.reagent_on_tick()
+	return
+
+/obj/item/weapon/reagent_containers/ex_act()
+	if(reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
+			R.on_ex_act()
+	..()
+
+/obj/item/weapon/reagent_containers/fire_act()
+	reagents.chem_temp += 30
+	reagents.handle_reactions()
+	..()
+
 /obj/item/weapon/reagent_containers/attack_self(mob/user as mob)
 	return
 

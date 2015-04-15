@@ -839,24 +839,3 @@
 		else if(current_size > STAGE_ONE)
 			step_towards(src,S)
 		else ..()
-
-/obj/item/acid_act(var/acidpwr, var/toxpwr, var/acid_volume)
-	. = 1
-	for(var/V in armor)
-		if(armor[V] > 0)
-			.-- //it survives the acid...
-			break
-	if(.)
-		var/turf/T = get_turf(src)
-		if(T)
-			T.visible_message("<span class='danger'>[src] melts away!</span>")
-			var/obj/effect/decal/cleanable/molten_item/I = new (T)
-			I.pixel_x = rand(-16,16)
-			I.pixel_y = rand(-16,16)
-			I.desc = "Looks like this was \an [src] some time ago."
-		qdel(src)
-	else
-		for(var/armour_value in armor) //but is weakened
-			armor[armour_value] = max(armor[armour_value]-acidpwr,0)
-		if(!findtext(desc, "it looks slightly melted...")) //it looks slightly melted... it looks slightly melted... it looks slightly melted... etc.
-			desc += " it looks slightly melted..." //needs a space at the start, formatting

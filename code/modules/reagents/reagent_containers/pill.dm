@@ -30,17 +30,17 @@
 		"<span class='notice'>You [apply_method] \the [src].</span>")
 		M.drop_from_inventory(src) //Icon update
 		if(reagents.total_volume) //Is there anything in the pill ?
-			reagents.reaction(M, INGEST) //Ready up
+			reagents.reaction(M, apply_type) //Ready up
 			spawn(5)
 				reagents.trans_to(M, reagents.total_volume) //Transfer whatever is good to go
-				del(src)
+				qdel(src)
 		else //Nothing in the pill, just get rid of it
-			del(src)
+			qdel(src)
 		return 1
 
 	else if(istype(M, /mob/living/carbon/human)) //Feeding to someone else
 		user.visible_message("<span class='warning'>[user] attempts to force [M] to [apply_method] \the [src].</span>", \
-		"<span class='notice'>You attempt to force [M] to swallow \the [src].</span>")
+		"<span class='notice'>You attempt to force [M] to [apply_method] \the [src].</span>")
 
 		if(!do_mob(user, M))
 			return
@@ -58,12 +58,12 @@
 			M.LAssailant = user
 
 		if(reagents.total_volume)
-			reagents.reaction(M, INGEST)
+			reagents.reaction(M, apply_type)
 			spawn(5)
 				reagents.trans_to(M, reagents.total_volume)
-				del(src)
+				qdel(src)
 		else
-			del(src)
+			qdel(src)
 
 		return 1
 	return 0
@@ -88,16 +88,16 @@
 		if(trans)
 			if(reagents.total_volume == 0) //Total transfer case
 				if(hadContents)
-					user << "<span class='notice'>You dissolve the pill into \the [target]</span>"
+					user << "<span class='notice'>You dissolve the [src] into \the [target]</span>"
 				else
-					user << "<span class='notice'>You crush the pill into \the [target]</span>"
+					user << "<span class='notice'>You crush the [src] into \the [target]</span>"
 				spawn(1)
 					qdel(src)
 			else //Partial transfer case
 				if(hadContents)
-					user << "<span class='notice'>You partially dissolve the pill into \the [target], filling it</span>"
+					user << "<span class='notice'>You partially dissolve the [src] into \the [target], filling it</span>"
 				else
-					user << "<span class='notice'>You crush part of the pill into \the [target], filling it</span>"
+					user << "<span class='notice'>You crush part of the [src] into \the [target], filling it</span>"
 			user.visible_message("<span class='warning'>[user] puts something in \the [target].</span>", \
 			"<span class='notice'>You put \the [src] in \the [target].</span>")
 		else //No transfer case

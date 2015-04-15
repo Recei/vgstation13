@@ -5,7 +5,6 @@ datum/chemical_reaction
 	var/result = null
 	var/list/required_reagents = new/list()
 	var/list/required_catalysts = new/list()
-	var/list/required_stabilizers = new/list()
 
 	// Both of these variables are mostly going to be used with slime cores - but if you want to, you can use them for other things
 	var/atom/required_container = null // the container required for the reaction to happen
@@ -17,10 +16,6 @@ datum/chemical_reaction
 	var/secondary = 0 // set to nonzero if secondary reaction
 	var/list/secondary_results = list()		//additional reagents produced by the reaction
 	//var/requires_heating = 0  Replaced by required_temp
-
-	var/required_temp = 0
-	var/mix_message = "The solution begins to bubble."
-	var/unstable_message = "Something goes wrong."
 
 // /vg/: Send admin alerts with standardized code.
 datum/chemical_reaction/proc/send_admin_alert(var/datum/reagents/holder, var/reaction_name=src.name)
@@ -45,23 +40,6 @@ datum/chemical_reaction/proc/send_admin_alert(var/datum/reagents/holder, var/rea
 
 datum/chemical_reaction/proc/on_reaction(var/datum/reagents/holder, var/created_volume)
 		return
-
-datum/chemical_reaction/proc/unstable_reaction(var/datum/reagents/holder, var/created_volume)
-	var/atom/A = holder.my_atom
-	sleep(10)
-	if(A)
-		var/turf/T = get_turf(A)
-		A.visible_message("<span class='caution'>\icon[A] [unstable_message]</span>")
-		var/datum/effect/effect/system/reagents_explosion/e = new()
-		e.set_up(round(created_volume/10, 1), T, 0, 0)
-		e.holder_damage(A)
-		if(isliving(A))
-			e.amount *= 0.5
-			var/mob/living/L = holder.my_atom
-			if(L.stat!=DEAD)
-				e.amount *= 0.5
-		e.start()
-		holder.clear_reagents()
 
 //I recommend you set the result amount to the total volume of all components.
 
@@ -237,14 +215,6 @@ datum/chemical_reaction/lube
 	result = "lube"
 	required_reagents = list("water" = 1, "silicon" = 1, "oxygen" = 1)
 	result_amount = 4
-
-/datum/chemical_reaction/facid
-	name = "Fluorosulfuric acid"
-	id = "facid"
-	result = "facid"
-	required_reagents = list("sacid" = 1, "fluorine" = 1, "hydrogen" = 1, "potassium" = 1)
-	result_amount = 4
-	required_temp = 380
 
 datum/chemical_reaction/synaptizine
 	name = "Synaptizine"
@@ -518,32 +488,6 @@ datum/chemical_reaction/smoke
 			S.start()
 		holder.clear_reagents()
 		return	*/
-
-datum/chemical_reaction/chemsmoke
-	name = "Chemsmoke"
-	id = "chemsmoke"
-	result = null
-	required_reagents = list("potassium" = 1, "sugar" = 1, "phosphorus" = 1)
-	result_amount = null
-	required_temp = 374
-	required_stabilizers = list("stabilizer" = 1)
-	secondary = 1
-
-datum/chemical_reaction/chemsmoke/on_reaction(var/datum/reagents/holder, var/created_volume)
-	var/location = get_turf(holder.my_atom)
-	var/datum/effect/effect/system/smoke_spread/chem/S = new /datum/effect/effect/system/smoke_spread/chem
-	S.attach(location)
-	S.set_up(holder, 10, 0, location)
-	playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
-	spawn(0)
-		S.start()
-		sleep(10)
-		S.start()
-	holder.clear_reagents()
-	return
-
-datum/chemical_reaction/chemsmoke/unstable_reaction(var/datum/reagents/holder, var/created_volume)
-	return on_reaction(holder, created_volume)
 
 datum/chemical_reaction/chloralhydrate
 	name = "Chloral Hydrate"
