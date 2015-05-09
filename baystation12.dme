@@ -1712,5 +1712,7 @@
 #include "maps\RandomZLevels\challenge.dm"
 #include "maps\RandomZLevels\stationCollision.dm"
 #include "maps\RandomZLevels\wildwest.dm"
+#include "maps\bearcat3.dm"
+#include "maps\bearcat3.dmm"
 // END_INCLUDE
 
