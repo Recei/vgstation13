@@ -1842,6 +1842,30 @@ proc/process_adminbus_teleport_locs()
 	name = "Construction Site Storage"
 	icon_state = "yellow"
 
+/area/ship/engineering
+	name = "\improper Ship Engine"
+	icon_state = "yellow"
+
+/area/ship/atmos
+	name = "\improper Ship Atmospheric"
+	icon_state = "atmos"
+
+/area/ship/janitor
+	name = "\improper Ship Janitor Storage"
+	icon_state = "green"
+
+/area/ship/engineering/control
+	name = "\improper Ship"
+	icon_state = "yellow"
+
+/area/ship/hallway
+	name = "\improper Ship"
+	icon_state = "aft"
+
+/area/ship/maint
+	name = "\improper Ship Maintenance"
+	icon_state = "storage"
+
 //AI
 
 /area/ai_monitored/storage/eva
@@ -2245,6 +2269,7 @@ var/list/the_station_areas = list (
 	/area/science,
 	/area/storage,
 	/area/tcomms,
+	/area/ship,
 	/area/construction,
 	/area/ai_monitored/storage/eva, //do not try to simplify to "/area/ai_monitored" --rastaf0
 	/area/ai_monitored/storage/secure,
